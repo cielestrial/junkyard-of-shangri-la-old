@@ -15,6 +15,9 @@ class scrapedProductTemplate:
     status: str
     link: str
 
+    def __str__(self):
+        return f"{self.name}, {self.status}, {self.price}"
+
 
 def initializeDriver():
     options = webdriver.FirefoxOptions()
@@ -25,7 +28,7 @@ def initializeDriver():
 def getHtmlContent(url: str, driver: WebDriver):
     driver.get(url)
     content = driver.page_source
-    driver.close()
+    driver.quit()
     return BeautifulSoup(content, "lxml")
 
 
