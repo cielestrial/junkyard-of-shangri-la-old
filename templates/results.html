@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<h3 style="margin: 0 auto">{{ total }} results found</h3>
+
+<ul
+  style="
+    width: 80%;
+    height: max-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0;
+    margin: 1rem auto;
+    border: groove gray;
+  "
+>
+  {% for scrapedProduct in results %}
+  <li>
+    <div
+      class="item"
+      style="width: min-content; height: min-content; margin: 1rem"
+    >
+      <img
+        style="border: inset gray"
+        src="{{ scrapedProduct.image }}"
+        alt="Image of {{ scrapedProduct.name }}"
+      />
+      <p>
+        <b>{{ loop.index }}. {{ scrapedProduct.name }}</b>
+      </p>
+      <p>{{ scrapedProduct.price }}</p>
+      <p>{{ scrapedProduct.status }}</p>
+      <a
+        href="{{ scrapedProduct.link }}"
+        target="_blank"
+        rel="noreferrer noopener"
+        >View Product</a
+      >
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

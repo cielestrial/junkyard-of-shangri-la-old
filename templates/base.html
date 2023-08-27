@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Junkyard of Shangri-La</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body style="display: flex; flex-direction: column; text-align: center">
+    <h1>Junkyard of Shangri-La</h1>
+    <form action="/search" method="post">
+      <div id="search_group">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          style="width: 20%"
+          placeholder="Search"
+          required
+          pattern="^(?:\\w+[-\\+']?\\w* ?)+$"
+          maxlength="50"
+          autofocus
+          autocomplete="off"
+        />
+        <button id="submit" type="submit">Search</button>
+      </div>
+      <div
+        id="checkbox_group"
+        style="
+          margin: 0.75rem auto 1.75rem;
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: center;
+          gap: 0.5rem;
+        "
+      >
+        <div>
+          <input
+            type="checkbox"
+            name="websites"
+            id="BookStore"
+            value="BookStore"
+            checked
+          />
+          <label for="BookStore">BookStore</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="websites"
+            id="placeholder"
+            value="Placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+        </div>
+      </div>
+    </form>
+    {% block content %} {% endblock %}
+  </body>
+</html>

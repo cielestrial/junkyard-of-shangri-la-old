@@ -1,0 +1,3 @@
+- read up on Jinja2 
+- proxy implementation
+- cache? (1-2 hours ttl)
