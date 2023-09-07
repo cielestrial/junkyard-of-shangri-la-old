@@ -1,6 +1,11 @@
 from bs4 import BeautifulSoup, Tag
-from selenium import webdriver
-from selenium.webdriver.remote.webdriver import WebDriver
+import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SPM_APIKEY = os.getenv("SPM_APIKEY")
 
 
 class scrapedProductTemplate:
@@ -19,17 +24,9 @@ class scrapedProductTemplate:
         return f"{self.name}, {self.status}, {self.price}"
 
 
-def initializeDriver():
-    options = webdriver.FirefoxOptions()
-    options.add_argument("-headless")
-    return webdriver.Firefox(options=options)
-
-
-def getHtmlContent(url: str, driver: WebDriver):
-    driver.get(url)
-    content = driver.page_source
-    driver.quit()
-    return BeautifulSoup(content, "lxml")
+def getHtmlContent(url: str):
+    response = requests.get(url)
+    return BeautifulSoup(response.content, "lxml")
 
 
 def getImage(product: Tag):
@@ -84,8 +81,8 @@ def getLink(product: Tag):
         raise TypeError("link must be of type(Tag)")
 
 
-def scraper(name: str, url: str, driver: WebDriver):
-    soup = getHtmlContent(url, driver)
+def scraper(name: str, url: str):
+    soup = getHtmlContent(url)
     products: list[Tag] = soup.find_all("article", attrs={"class": "product_pod"})
     results: list[scrapedProductTemplate] = []
 
@@ -93,7 +90,7 @@ def scraper(name: str, url: str, driver: WebDriver):
         scrapedProduct = scrapedProductTemplate()
         productName = getName(product)
         if name not in productName.casefold():
-            print(productName.casefold())
+            # print(productName.casefold())
             continue
         status = getStatus(product)
         if "In" not in status.title():
@@ -109,9 +106,11 @@ def scraper(name: str, url: str, driver: WebDriver):
     return results
 
 
-testCase = "T"
-tester = scraper(testCase, "http://books.toscrape.com/", initializeDriver())
-for x in tester:
-    print(x)
+def bookScraperTester():
+    testCase = "T"
+    tester = scraper(testCase, "http://books.toscrape.com/")
+    for x in tester:
+        print(x)
+
 
 # going to display data on our html page

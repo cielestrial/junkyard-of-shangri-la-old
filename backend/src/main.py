@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request  # ,Depends, Form, status
 from starlette.templating import Jinja2Templates
 
-from src.bookScraper import initializeDriver, scrapedProductTemplate, scraper
+from src.bookScraper import scrapedProductTemplate, scraper
 from src.helperFunctions import *
 
 # from starlette.responses import RedirectResponse
@@ -26,14 +26,13 @@ async def scrape(request: Request):
     targets = cleanupFormInput(requestStr)
 
     if len(targets) > 1:
-        webDriver = {"driver": initializeDriver()}
         for x in range(len(targets) - 1):
             # will need to open multiple browsers
             url = getWebsiteUrl(targets[x + 1])
             if url == "":
                 continue
             else:
-                results += scraper(targets[0], url, webDriver["driver"])
+                results += scraper(targets[0], url)
     total = len(results)
     print("\nResults:\n")
     for y in results:
