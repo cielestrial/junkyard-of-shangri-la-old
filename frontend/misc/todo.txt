@@ -1,10 +1,9 @@
-#Header#
-Fonts
+#All#
 Aria
+Accessible Navigation
+Responsiveness
+Apply Web Design Tips
 
-#Main#
-Search: search bar, search button, gear icon button
+Functionality: submit & display search results
 
 #Footer#
-
-#Extra

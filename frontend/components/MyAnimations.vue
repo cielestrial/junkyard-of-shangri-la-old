@@ -1,36 +1,43 @@
 <script setup lang="ts">
-const animationList = ["fade", "slide", "scale"] as const;
+type animationList = ["fade", "slide", "scale", "switch"];
 defineProps<{
-  name: (typeof animationList)[number];
+  name: animationList[number];
 }>();
 </script>
 
 <template>
-  <Transition type="animation" :name="name">
+  <Transition type="animation" mode="out-in" :name="name">
     <slot></slot>
   </Transition>
 </template>
 
 <style>
 .slide-enter-active {
-  animation: slide-down 0.2s ease-out both;
+  animation: slide-down 300ms ease-out both;
 }
 .slide-leave-active {
-  animation: slide-up 0.2s ease-out both;
+  animation: slide-up 300ms ease-out both;
 }
 
 .scale-enter-active {
-  animation: scale-down 0.34s cubic-bezier(0.38, 0, 0.64, 1) reverse both;
+  animation: scale-down 300ms cubic-bezier(0.38, 0, 0.64, 1) reverse both;
 }
 .scale-leave-active {
-  animation: scale-down 0.5s cubic-bezier(0.38, 0, 0.64, 1) both;
+  animation: scale-down 300ms cubic-bezier(0.38, 0, 0.64, 1) both;
 }
 
-.fade-in-active {
-  animation: fade-in 0.67s cubic-bezier(0.38, 0, 0.64, 1) both;
+.fade-enter-active {
+  animation: fade-in 250ms cubic-bezier(0.38, 0, 0.64, 1) both;
 }
-.fade-out-active {
-  animation: fade-in 0.5s cubic-bezier(0.38, 0, 0.64, 1) reverse both;
+.fade-leave-active {
+  animation: fade-in 250ms cubic-bezier(0.38, 0, 0.64, 1) reverse both;
+}
+
+.switch-enter-active {
+  animation: fade-in 50ms cubic-bezier(0.38, 0, 0.64, 1) both;
+}
+.switch-leave-active {
+  animation: fade-in 50ms cubic-bezier(0.38, 0, 0.64, 1) reverse both;
 }
 
 @keyframes slide-up {

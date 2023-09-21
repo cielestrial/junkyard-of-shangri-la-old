@@ -1,27 +1,33 @@
 <script setup lang="ts">
 import { computed, inject, ref } from "vue";
-import BIcons from "../icons/BIcons.vue";
+import MyAnimations from "~/components/MyAnimations.vue";
 import { theme } from "~/pages/index.vue";
+import BIcons from "../icons/BIcons.vue";
 
 const { darkTheme, changeTheme } = inject("theme") as theme;
 const switchRef = ref<HTMLDivElement | null>(null);
 const outer = computed(
   () =>
-    "flex flex-row border-4 rounded-full w-14 h-8 px-0.5 content-center " +
-    "cursor-pointer drop-shadow box-content transition transform-gpu " +
-    (darkTheme.value ? "bg-slate-900 " : "bg-sky-400 ")
+    "relative flex border-4 rounded-full w-16 h-9 shadow-md " +
+    "transition " +
+    (darkTheme.value
+      ? "bg-slate-900 border-slate-400 "
+      : "bg-sky-300 border-slate-600 ")
 );
+// Trasnslation: 0rem is the left, side 1rem is the center, and 2rem if the right side.
 const inner = computed(
   () =>
-    " rounded-full w-6 h-6 flex flex-row my-auto transition transform-gpu " +
-    " fill-current drop-shadow border-2 box-content " +
+    "absolute rounded-full w-6 aspect-[1] flex mt-[0.1875rem] shadow-md " +
+    "border-2 transition " +
     (darkTheme.value
-      ? "text-white bg-sky-400 translate-x-[105%] "
-      : "text-black bg-white ")
+      ? "bg-sky-700 border-slate-300 translate-x-[1.9rem] "
+      : "bg-white border-slate-700 translate-x-[0.1rem] ")
 );
 function toggle() {
-  switchRef.value?.blur();
-  changeTheme();
+  if (switchRef.value !== null) {
+    //switchRef.value.blur();
+    changeTheme();
+  }
 }
 </script>
 
@@ -29,13 +35,14 @@ function toggle() {
   <button type="button" class="w-fit h-fit">
     <div ref="switchRef" :class="outer" @click="toggle">
       <div :class="inner">
-        <BIcons
-          icon="moon-stars-fill"
-          size="1rem"
-          class="m-auto"
-          v-if="darkTheme"
-        />
-        <BIcons icon="cloud-sun" size="1.3rem" class="m-auto" v-else />
+        <MyAnimations name="switch">
+          <div v-if="darkTheme" class="m-auto text-white">
+            <BIcons icon="moon-stars-fill" size="0.8rem" />
+          </div>
+          <span v-else class="m-auto text-black">
+            <BIcons icon="cloud-sun" size="1.1rem" />
+          </span>
+        </MyAnimations>
       </div>
     </div>
   </button>

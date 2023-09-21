@@ -1,41 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, inject } from "vue";
-import Overlay from "../../Overlay.vue";
-import Flags_EN from "./En_Flags.vue";
-import BIcons from "../../icons/BIcons.vue";
+import { computed, inject, ref } from "vue";
+import MyAnimations from "~/components/MyAnimations.vue";
+import Overlay from "~/components/Overlay.vue";
 import { theme } from "~/pages/index.vue";
-import MyAnimations from "../../MyAnimations.vue";
+import BIcons from "../../icons/BIcons.vue";
+import Flags_EN from "./En_Flags.vue";
+import { countryCodes, countryCodesT } from "./countryData";
 
 const { darkTheme, colorScheme } = inject("theme") as theme;
-
-interface all_countries {
-  AU: "Australia";
-  BE: "Belgium";
-  CA: "Canada";
-  DK: "Denmark";
-  EU: "Europe";
-  FR: "France";
-  GB: "United Kingdom";
-  IE: "Ireland";
-  JP: "Japan";
-  LT: "Lithuania";
-  PL: "Poland";
-  RO: "Romania";
-  SE: "Sweden";
-  US: "United States";
-  ZA: "South Africa";
-}
-const en_countries = Object.freeze({
-  AU: "Australia",
-  CA: "Canada",
-  EU: "Europe",
-  GB: "United Kingdom",
-  US: "United States",
-});
-type countriesT = typeof en_countries;
-// type countryNames = countriesT[keyof countriesT];
-export type countryCodesT = keyof countriesT;
-const countryCodes = Object.keys(en_countries) as Array<countryCodesT>;
 
 const opened = ref(false);
 const options = ref(countryCodes);
@@ -46,61 +18,65 @@ function menuHandler(option: countryCodesT) {
   opened.value = false;
 }
 
-const dropdownMenu = "relative w-28 cursor-pointer ";
+const dropdownMenu = "relative w-28 h-fit";
 
 const select = computed(
   () =>
-    "rounded flex flex-row justify-between items-center p-2 border-2 " +
-    "drop-shadow hover:bg-slate-300 text " +
-    colorScheme.value +
-    (opened.value ? "border-b-0 rounded-bl-none rounded-br-none " : " ")
+    "w-28 h-10 rounded flex justify-between items-center p-2 border-2 " +
+    "shadow-md hover:bg-slate-300 relative z-10 " +
+    (opened.value ? "border-b-0 rounded-bl-none rounded-br-none " : "") +
+    colorScheme.value
 );
 
 const caret = computed(
   () =>
-    "transition transform-gpu origin-center ml-2 " +
-    (opened.value ? "rotate-180 " : "")
+    "my-auto ml-2 transition " +
+    (opened.value ? "rotate-180 " : "") +
+    (darkTheme.value ? "text-white/90 " : "text-black/90 ")
 );
 
 const dropdownList = computed(
   () =>
-    "w-28 cursor-pointer absolute mt-[2.63rem] list-outside list-none " +
-    "drop-shadow-2xl transition transform-gpu border-2 " +
-    "border-t-0 rounded-br rounded-bl " +
+    "w-28 h-fit mt-10 absolute list-outside list-none shadow-md z-10 " +
+    "border-2 border-t-0 rounded-br rounded-bl " +
     colorScheme.value
 );
 
 const dropdownItem = computed(
   () =>
-    "flex flex-row p-2 text border-t-2 hover:bg-slate-300 " +
+    "w-full h-10 flex p-2 border-t-2 hover:bg-slate-300 " +
     (darkTheme.value ? "border-slate-400 " : "border-slate-700 ")
 );
 </script>
 
 <template>
   <div>
-    <Overlay v-if="opened" @click="opened = false" />
+    <MyAnimations name="fade">
+      <Overlay z="z-10" v-if="opened" @click="opened = false" />
+    </MyAnimations>
     <MyAnimations name="slide">
       <ul v-if="opened" :class="dropdownList">
         <li
           v-for="(option, key) in options"
           :key="key"
           :class="{ active: option === selected }"
-          @click="() => menuHandler(option)"
         >
-          <button type="button" :class="dropdownItem">
-            <Flags_EN class="mr-2" :country="option" size="1.5rem" />
-            {{ option }}
+          <button
+            type="button"
+            :class="dropdownItem"
+            @click="() => menuHandler(option)"
+          >
+            <Flags_EN class="mr-2 my-auto" :country="option" size="2.5rem" />
+            <span class="my-auto text-left">{{ option }}</span>
           </button>
         </li>
       </ul>
     </MyAnimations>
-
     <div :class="dropdownMenu">
       <button type="button" :class="select" @click="opened = !opened">
-        <div class="flex flex-row">
-          <Flags_EN class="mr-2" :country="selected" size="1.5rem" />
-          <span class="selected">{{ selected }}</span>
+        <div class="flex">
+          <Flags_EN class="mr-2 my-auto" :country="selected" size="2rem" />
+          <span class="my-auto text-left">{{ selected }}</span>
         </div>
         <BIcons :class="caret" icon="caret-down-fill" size="1rem" />
       </button>
@@ -110,8 +86,7 @@ const dropdownItem = computed(
 
 <style scoped>
 .active {
-  background-color: gray !important;
-  cursor: default !important;
-  pointer-events: none !important;
+  background-color: #94a3b8;
+  pointer-events: none;
 }
 </style>

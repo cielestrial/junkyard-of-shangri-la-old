@@ -8,31 +8,32 @@ import { inject, computed } from "vue";
 const { darkTheme } = inject("theme") as theme;
 const nav = computed(
   () =>
-    "w-full h-20 flex justify-end pr-10 pt-5 drop-shadow " +
-    "transition transform-gpu select-none " +
-    (darkTheme.value
-      ? "border-b-2 border-slate-700 pb-[0.69rem] "
-      : "border-b border-slate-100 pb-[0.75rem] ")
+    "w-full h-fit flex justify-end px-10 py-2.5 select-none " +
+    "transition shadow-md border-b-2 z-10 " +
+    (darkTheme.value ? "border-slate-700 " : "border-slate-200 ")
 );
 const title = computed(
   () =>
-    "title w-fit h-fit text-[2.5vw] font-semibold cursor-default mx-auto my-10 " +
-    "bg-transparent transition transform-gpu " +
-    (darkTheme.value ? "text-white " : "text-black ")
+    "title w-fit h-fit text-center text-[15vmin] my-10 " +
+    "cursor-default transition box-shadow-md mx-auto z-0 " +
+    (darkTheme.value ? "text-white/90 " : "text-black/90 ")
 );
 </script>
+
 <template>
-  <header class="flex flex-col w-full">
+  <header class="flex flex-col w-full h-fit">
     <!--title, members, switch, country-->
     <div :class="nav">
-      <div class="flex items-center justify-between min-w-[28rem]">
+      <div class="flex items-end justify-between min-w-[28rem]">
         <Members />
         <MySwitch />
         <Country />
       </div>
     </div>
-    <div class="w-full">
-      <h1 :class="title">Junkyard of Shangri-La</h1>
-    </div>
+    <h1 :class="title">
+      Junkyard of
+      <br />
+      Shangri-La
+    </h1>
   </header>
 </template>
