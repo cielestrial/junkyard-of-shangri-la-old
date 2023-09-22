@@ -37,7 +37,7 @@ const caret = computed(
 
 const dropdownList = computed(
   () =>
-    "w-28 h-fit mt-10 absolute list-outside list-none shadow-md z-10 " +
+    "w-28 h-fit mt-10 absolute list-outside shadow-md z-10 " +
     "border-2 border-t-0 rounded-br rounded-bl " +
     colorScheme.value
 );

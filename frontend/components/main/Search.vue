@@ -5,8 +5,10 @@ import { theme } from "~/pages/index.vue";
 import Overlay from "../Overlay.vue";
 import BIcons from "../icons/BIcons.vue";
 import { optionsArrayT, optionsList } from "./optionsList";
+import { api } from "./MyMain.vue";
 
 const { darkTheme, colorScheme } = inject("theme") as theme;
+const { getSearchResults } = inject("api") as api;
 
 const inputRef = ref<HTMLInputElement | null>(null);
 const searchItem = ref("");
@@ -33,7 +35,7 @@ watch([searchItem, opened], ([newString, newValue]) => {
 function checkForm(e: Event) {
   validate("both");
   if (errors.value.length !== 0) {
-    // get search results from python server
+    getSearchResults(searchItem.value, selectedSearchOptions.value);
   }
   e.preventDefault();
 }
@@ -147,7 +149,7 @@ const checkboxInnerArea = computed(
     colorScheme.value
 );
 const checkboxGroup =
-  "flex flex-col flex-wrap w-full h-full list-outside list-none pl-[1.5vmin] " +
+  "flex flex-col flex-wrap w-full h-full list-outside pl-[1.5vmin] " +
   "gap-x-2 gap-y-0.5 overflow-auto scroll-smooth overscroll-none ";
 </script>
 
@@ -174,7 +176,11 @@ const checkboxGroup =
         <button id="submit" type="submit" :class="searchButton">Search</button>
 
         <button type="button" :class="optionsButton" @click="opened = !opened">
-          <BIcons class="rounded-full mx-2" icon="gear-fill" size="1.5rem" />
+          <BIcons
+            class="rounded-full mx-2 -rotate-45"
+            icon="gear-fill"
+            size="1.5rem"
+          />
         </button>
 
         <MyAnimations name="fade">

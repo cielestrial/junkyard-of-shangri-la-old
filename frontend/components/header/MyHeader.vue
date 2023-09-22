@@ -12,16 +12,13 @@ const nav = computed(
     "transition shadow-md border-b-2 z-10 " +
     (darkTheme.value ? "border-slate-700 " : "border-slate-200 ")
 );
-const title = computed(
-  () =>
-    "title w-fit h-fit text-center text-[15vmin] my-10 " +
-    "cursor-default transition box-shadow-md mx-auto z-0 " +
-    (darkTheme.value ? "text-white/90 " : "text-black/90 ")
-);
+const title =
+  "title w-fit h-fit text-center text-[15vmin] my-10 " +
+  "cursor-default box-shadow-md mx-auto z-0 ";
 </script>
 
 <template>
-  <header class="flex flex-col w-full h-fit">
+  <header class="flex flex-col w-full h-fit self-start">
     <!--title, members, switch, country-->
     <div :class="nav">
       <div class="flex items-end justify-between min-w-[28rem]">

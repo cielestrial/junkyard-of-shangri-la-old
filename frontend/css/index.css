@@ -37,6 +37,7 @@
   line-height: 24px;
   font-weight: 400;
   font-variation-settings: "wght" 400;
+  overflow-x: clip;
   touch-action: none;
  
   font-synthesis: none;
@@ -72,12 +73,18 @@
   .view-height {
     height: 100vh;
   }
+  .min-view-height {
+    min-height: 100vh;
+  }
   @supports(height: 100dvh) {
     .view-width {
       width: 100dvw;
     }
     .view-height {
       height: 100dvh;
+    }
+    .min-view-height {
+      min-height: 100dvh;
     }
   }
 }

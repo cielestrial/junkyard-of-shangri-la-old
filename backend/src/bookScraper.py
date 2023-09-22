@@ -1,27 +1,13 @@
-from bs4 import BeautifulSoup, Tag
-import requests
 import os
+
+import requests
+from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
+from src.schemas import scrapedProductSchema
 
 load_dotenv()
 
 SPM_APIKEY = os.getenv("SPM_APIKEY")
-
-
-class scrapedProductTemplate:
-    """
-    Has the following properties: image, name, price, status, and link.
-    The values of these properties are all of type(str).
-    """
-
-    image: str
-    name: str
-    price: str
-    status: str
-    link: str
-
-    def __str__(self):
-        return f"{self.name}, {self.status}, {self.price}"
 
 
 def getHtmlContent(url: str):
@@ -84,10 +70,12 @@ def getLink(product: Tag):
 def scraper(name: str, url: str):
     soup = getHtmlContent(url)
     products: list[Tag] = soup.find_all("article", attrs={"class": "product_pod"})
-    results: list[scrapedProductTemplate] = []
+    results: list[scrapedProductSchema] = []
 
     for product in products:
-        scrapedProduct = scrapedProductTemplate()
+        scrapedProduct = scrapedProductSchema(
+            image="", name="", price="", status="", link=""
+        )
         productName = getName(product)
         if name not in productName.casefold():
             # print(productName.casefold())

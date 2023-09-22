@@ -4,6 +4,12 @@ import MyFooter from "~/components/footer/MyFooter.vue";
 import MyHeader from "~/components/header/MyHeader.vue";
 import MyMain from "~/components/main/MyMain.vue";
 
+export type theme = {
+  darkTheme: Readonly<Ref<boolean>>;
+  changeTheme: () => void;
+  colorScheme: Readonly<Ref<typeof _colorScheme>>;
+};
+
 const _darkTheme = ref(false);
 function changeTheme() {
   _darkTheme.value = !_darkTheme.value;
@@ -15,17 +21,15 @@ const colorScheme = readonly(_colorScheme);
 const darkTheme = readonly(_darkTheme);
 
 provide("theme", { darkTheme, changeTheme, colorScheme });
-export type theme = {
-  darkTheme: Readonly<Ref<boolean>>;
-  changeTheme: () => void;
-  colorScheme: Readonly<Ref<typeof _colorScheme>>;
-};
+
 const container = computed(
   () =>
-    "text-[4vmin] sm:text-[3vmin] w-full h-full flex flex-col m-0 p-0 leading-none " +
+    "view-width min-view-height flex flex-col " +
+    "text-[4vmin] sm:text-[3vmin] leading-none " +
     colorScheme.value
 );
 </script>
+
 <template>
   <div :class="container">
     <MyHeader />

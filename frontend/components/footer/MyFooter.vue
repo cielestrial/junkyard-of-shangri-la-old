@@ -6,10 +6,8 @@ const { darkTheme } = inject("theme") as theme;
 
 const foot = computed(
   () =>
-    "w-full h-fit flex mt-5 px-10 py-2.5 transition select-none border-t-2 relative z-0 " +
-    (darkTheme.value
-      ? "bg-slate-900 border-slate-700 "
-      : "bg-sky-300 border-slate-400 ")
+    "w-full h-fit flex self-end px-10 pt-6 pb-2 transition select-none " +
+    "relative z-0 "
 );
 </script>
 <template>

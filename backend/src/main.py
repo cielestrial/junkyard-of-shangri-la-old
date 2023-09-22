@@ -1,11 +1,12 @@
+import asyncio
+
 from fastapi import FastAPI, Request  # ,Depends, Form, status
+from src.bookScraper import scraper
+from src.helperFunctions import *
+from src.schemas import MessageSchema, scrapedProductSchema, scrapedProductsSchema
 from starlette.templating import Jinja2Templates
 
-from src.bookScraper import scrapedProductTemplate, scraper
-from src.helperFunctions import *
-
 # from starlette.responses import RedirectResponse
-
 
 templates = Jinja2Templates(directory="templates")
 
@@ -17,10 +18,17 @@ async def root(request: Request):
     return templates.TemplateResponse("base.html", {"request": request})
 
 
+@app.get("/ping")
+async def ping() -> MessageSchema:
+    await asyncio.sleep(5)
+    message = MessageSchema(message="pong")
+    return message
+
+
 @app.post("/search")
-async def scrape(request: Request):
+async def scrape(request: Request) -> scrapedProductsSchema:
     url = ""
-    results: list[scrapedProductTemplate] = []
+    results: list[scrapedProductSchema] = []
     requestStr = (await request.body()).decode("utf-8")
     print(requestStr)
     targets = cleanupFormInput(requestStr)
@@ -37,6 +45,5 @@ async def scrape(request: Request):
     print("\nResults:\n")
     for y in results:
         print(y)
-    return templates.TemplateResponse(
-        "results.html", {"request": request, "results": results, "total": total}
-    )
+    message = scrapedProductsSchema(total=total, results=results)
+    return message
