@@ -15,8 +15,13 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=[
+        "Access-Control-Allow-Headers",
+        "Content-Type",
+        "Authorization",
+        "Access-Control-Allow-Origin",
+    ],
 )
 
 
@@ -32,19 +37,21 @@ async def redirect_docs():
 
 
 @app.get("/ping")
-async def ping() -> MessageSchema:
+async def ping(response: Response) -> MessageSchema:
     try:
         redis_instance = await createRedisInstance(True)
         if isinstance(redis_instance, Redis):
             await redis_instance.close()
     except Exception as err:
+        response.status_code = 500
         return MessageSchema(status_code=500, details=f"{err}")
     else:
+        response.status_code = 200
         return MessageSchema(status_code=200, details="pong")
 
 
 @app.get("/clear")
-async def clear_cache() -> MessageSchema:
+async def clear_cache(response: Response) -> MessageSchema:
     try:
         filter_key = "http"
         redis_instance = await createRedisInstance(True)
@@ -65,13 +72,16 @@ async def clear_cache() -> MessageSchema:
             message = "Error clearing cache"
         print(message)
     except Exception as err:
+        response.status_code = 500
         return MessageSchema(status_code=500, details=f"{err}")
     else:
+        response.status_code = 200
         return MessageSchema(status_code=200, details=message)
 
 
 @app.post("/search")
 async def scrape(
+    response: Response,
     searchRequest: searchSchema = Body(...),
 ) -> scrapedProductsSchema | MessageSchema:
     try:
@@ -93,6 +103,8 @@ async def scrape(
         # print(f"\nResults:\n{results}\n")
         total = len(results)
     except Exception as err:
+        response.status_code = 500
         return MessageSchema(status_code=500, details=f"{err}")
     else:
+        response.status_code = 200
         return scrapedProductsSchema(status_code=200, total=total, results=results)
