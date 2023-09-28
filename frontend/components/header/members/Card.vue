@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import { theme } from "~/pages/index.vue";
-import Overlay from "../../Overlay.vue";
-import BIcons from "../../icons/BIcons.vue";
+import { theme } from '~/pages/index.vue';
+import Overlay from '~/components/effects/Overlay.vue';
+import BIcons from '../../icons/BIcons.vue';
 
-const { colorScheme } = inject("theme") as theme;
+defineEmits<{ (e: 'close'): void }>();
 
-const border = "border-4 rounded ";
-const outer = computed(
-  () => "h-fit w-fit shadow-md m-auto z-20 " + border + colorScheme.value
-);
-const inner = computed(
-  () =>
-    "w-[40vmin] aspect-[3/4] m-[1.5vmin] relative " + border + colorScheme.value
-);
+const { colorScheme } = inject('theme') as theme;
+
+const border = 'border-4 rounded ';
+const outer = 'h-fit w-fit shadow-md m-auto z-20 ' + border + colorScheme;
+const inner =
+  'w-[40vmin] aspect-[3/4] m-[1.5vmin] relative ' + border + colorScheme;
 </script>
 
 <template>
@@ -22,7 +19,9 @@ const inner = computed(
     <div :class="outer">
       <div :class="inner">
         <div class="absolute top-0 left-0 h-full w-full flex">
-          <h2 class="text-center w-fit h-fit m-auto underline">Coming Soon!</h2>
+          <h2 class="text-center text-2xl w-fit h-fit m-auto">
+            Coming Soon! <span class="text-xs absolute">TM</span>
+          </h2>
         </div>
         <div class="h-9 text-amber-400">
           <BIcons

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 type icons = [
-  "cloud-sun",
-  "moon-stars-fill",
-  "star-fill",
-  "stars",
-  "caret-down-fill",
-  "x-square-fill",
-  "gear-fill"
+  'cloud-sun',
+  'moon-stars-fill',
+  'star-fill',
+  'stars',
+  'caret-down-fill',
+  'x-square-fill',
+  'gear-fill',
 ];
 defineProps<{ icon: icons[number]; size: string }>();
 </script>

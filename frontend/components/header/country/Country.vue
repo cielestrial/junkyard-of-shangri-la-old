@@ -1,52 +1,46 @@
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
-import MyAnimations from "~/components/MyAnimations.vue";
-import Overlay from "~/components/Overlay.vue";
-import { theme } from "~/pages/index.vue";
-import BIcons from "../../icons/BIcons.vue";
-import Flags_EN from "./En_Flags.vue";
-import { countryCodes, countryCodesT } from "./countryData";
+import MyAnimations from '~/components/effects/MyAnimations.vue';
+import Overlay from '~/components/effects/Overlay.vue';
+import { theme } from '~/pages/index.vue';
+import BIcons from '../../icons/BIcons.vue';
+import Flags_EN from './En_Flags.vue';
+import { countryCodes, countryCodesT } from './countryData';
 
-const { darkTheme, colorScheme } = inject("theme") as theme;
+const { colorScheme } = inject('theme') as theme;
 
 const opened = ref(false);
 const options = ref(countryCodes);
-const selected = ref<countryCodesT>("CA");
+const selected = ref<countryCodesT>('CA');
 
 function menuHandler(option: countryCodesT) {
   selected.value = option;
   opened.value = false;
 }
 
-const dropdownMenu = "relative w-28 h-fit";
+const dropdownMenu = 'relative w-28 h-fit';
 
 const select = computed(
   () =>
-    "w-28 h-10 rounded flex justify-between items-center p-2 border-2 " +
-    "shadow-md hover:bg-slate-300 relative z-10 " +
-    (opened.value ? "border-b-0 rounded-bl-none rounded-br-none " : "") +
-    colorScheme.value
+    'w-28 h-10 rounded flex justify-between items-center p-2 border-2 ' +
+    'shadow-md hover:bg-slate-300 relative z-10 ' +
+    (opened.value ? 'border-b-0 rounded-bl-none rounded-br-none ' : '') +
+    colorScheme
 );
 
 const caret = computed(
   () =>
-    "my-auto ml-2 transition " +
-    (opened.value ? "rotate-180 " : "") +
-    (darkTheme.value ? "text-white/90 " : "text-black/90 ")
+    'my-auto ml-2 transition text-black/90 dark:text-white/90 ' +
+    (opened.value ? 'rotate-180 ' : '')
 );
 
-const dropdownList = computed(
-  () =>
-    "w-28 h-fit mt-10 absolute list-outside shadow-md z-10 " +
-    "border-2 border-t-0 rounded-br rounded-bl " +
-    colorScheme.value
-);
+const dropdownList =
+  'w-28 h-fit mt-10 absolute list-outside shadow-md z-10 ' +
+  'border-2 border-t-0 rounded-br rounded-bl ' +
+  colorScheme;
 
-const dropdownItem = computed(
-  () =>
-    "w-full h-10 flex p-2 border-t-2 hover:bg-slate-300 " +
-    (darkTheme.value ? "border-slate-400 " : "border-slate-700 ")
-);
+const dropdownItem =
+  'w-full h-10 flex p-2 border-t-2 hover:bg-slate-300 ' +
+  'border-slate-700 dark:border-slate-400 ';
 </script>
 
 <template>
@@ -72,6 +66,7 @@ const dropdownItem = computed(
         </li>
       </ul>
     </MyAnimations>
+
     <div :class="dropdownMenu">
       <button type="button" :class="select" @click="opened = !opened">
         <div class="flex">

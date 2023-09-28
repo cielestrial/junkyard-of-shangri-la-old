@@ -4,31 +4,23 @@
 
 @font-face {
   font-family: Orbitron;
-  src: url("/fonts/Orbitron-VariableFont_wght.woff2") format("woff2"), 
-        url("/fonts/Orbitron-VariableFont_wght.woff") format("woff");
+  src: url("~/assets/fonts/Orbitron-VariableFont_wght.woff2") format("woff2"),
+    url("~/assets/fonts/Orbitron-VariableFont_wght.woff") format("woff");
   /* weight axis (400-900) */
-  font-display: swap;
 }
 
 @font-face {
   font-family: Lato;
-  src: url("/fonts/Lato-Regular.woff2") format("woff2"), 
-        url("/fonts/Lato-Regular.woff") format("woff");
-  font-display: swap;
+  src: url("~/assets/fonts/Lato-Regular.woff2") format("woff2"),
+    url("~/assets/fonts/Lato-Regular.woff") format("woff");
 }
 
 @font-face {
   font-family: Lato;
-  src: local("Lato Bold"), local("Lato-Bold"), 
-        url("/fonts/Lato-Bold.woff2") format("woff2"), 
-          url("/fonts/Lato-Bold.woff") format("woff"); 
+  src: local("Lato Bold"), local("Lato-Bold"),
+    url("~/assets/fonts/Lato-Bold.woff2") format("woff2"),
+    url("~/assets/fonts/Lato-Bold.woff") format("woff");
   font-display: swap;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 :root {
@@ -36,10 +28,10 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-  font-variation-settings: "wght" 400;
+  font-variation-settings: "wght"400;
   overflow-x: clip;
   touch-action: none;
- 
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,8 +44,9 @@
   .title {
     font-family: Orbitron, Tahoma, system-ui, sans-serif;
     font-weight: 600;
-    font-variation-settings: "wght" 600;
+    font-variation-settings: "wght"600;
   }
+
   /*
   blockquote.quote:before {
     content: "\201C";
@@ -70,25 +63,28 @@
   .view-width {
     width: 100vw;
   }
+
   .view-height {
     height: 100vh;
   }
+
   .min-view-height {
     min-height: 100vh;
   }
+
   @supports(height: 100dvh) {
     .view-width {
       width: 100dvw;
     }
+
     .view-height {
       height: 100dvh;
     }
+
     .min-view-height {
       min-height: 100dvh;
     }
   }
 }
 
-@layer utilities {  
-
-}
+@layer utilities {}

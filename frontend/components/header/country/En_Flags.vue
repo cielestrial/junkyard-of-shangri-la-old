@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { countryCodesT } from "./countryData";
-
-import AU from "./flags/AU.vue";
-import CA from "./flags/CA.vue";
-import EU from "./flags/EU.vue";
-import GB from "./flags/GB.vue";
-import US from "./flags/US.vue";
+import { countryCodesT } from './countryData';
+import AU from './flags/AU.vue';
+import CA from './flags/CA.vue';
+import EU from './flags/EU.vue';
+import GB from './flags/GB.vue';
+import US from './flags/US.vue';
 
 defineProps<{
   country: countryCodesT;

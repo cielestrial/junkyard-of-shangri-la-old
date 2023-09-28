@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from "vue";
-import MyAnimations from "~/components/MyAnimations.vue";
-import { theme } from "~/pages/index.vue";
-import Overlay from "../Overlay.vue";
-import BIcons from "../icons/BIcons.vue";
-import { optionsArrayT, optionsList } from "./optionsList";
-import { api } from "./MyMain.vue";
+import { theme } from '~/pages/index.vue';
+import MyAnimations from '../effects/MyAnimations.vue';
+import Overlay from '../effects/Overlay.vue';
+import BIcons from '../icons/BIcons.vue';
+import { optionsArrayT, optionsList } from './optionsList';
+import { api } from './schemas';
 
-const { darkTheme, colorScheme } = inject("theme") as theme;
-const { getSearchResults } = inject("api") as api;
+const { colorScheme } = inject('theme') as theme;
+const { getSearchResults } = inject('api') as api;
 
-const inputRef = ref<HTMLInputElement | null>(null);
-const searchItem = ref("");
+const searchItem = ref('');
 const allRef = ref<HTMLInputElement | null>(null);
 const allChecked = ref(false);
 const opened = ref(false);
@@ -28,48 +26,47 @@ watch(allRef, (val) => {
 });
 watch(selectedSearchOptions, handleAllOnChange);
 watch([searchItem, opened], ([newString, newValue]) => {
-  if (newValue === false) validate("option");
-  if (newString !== "") validate("search");
+  if (newValue === false) validate('option');
+  if (newString !== '') validate('search');
 });
 
 function checkForm(e: Event) {
-  validate("both");
-  if (errors.value.length !== 0) {
+  validate('both');
+  if (errors.value.length === 0)
     getSearchResults(searchItem.value, selectedSearchOptions.value);
-  }
   e.preventDefault();
 }
-function validate(form: "search" | "option" | "both") {
+function validate(form: 'search' | 'option' | 'both') {
   errors.value = [];
   searchError.value = false;
   optionsError.value = false;
 
-  if (form === "both" || form === "search") {
-    if (searchItem.value !== "") {
+  if (form === 'both' || form === 'search') {
+    if (searchItem.value !== '') {
       const re = /^(?:\w+[-\+']?\w* ?)+$/gi;
       const isValid = re.test(searchItem.value);
       if (!isValid) {
-        errors.value.push("Invalid product name.");
+        errors.value.push('Invalid product name.');
         searchError.value = true;
       }
     } else {
-      errors.value.push("Enter product to search for.");
+      errors.value.push('Enter product to search for.');
       searchError.value = true;
     }
   }
 
-  if (form === "both" || form === "option") {
+  if (form === 'both' || form === 'option') {
     if (selectedSearchOptions.value.length === 0) {
-      errors.value.push("Select at least one section to search.");
+      errors.value.push('Select at least one section to search.');
       optionsError.value = true;
     }
   }
 }
-
+/*
 function updateText() {
   if (inputRef.value !== null) searchItem.value = inputRef.value.value;
 }
-
+*/
 function handleAllOnClick() {
   if (allRef.value !== null) {
     if (allChecked.value) selectedSearchOptions.value = [];
@@ -98,59 +95,41 @@ function parallelScroll(e: WheelEvent) {
   }
 }
 
+const border = 'border-4 rounded transition ';
 const searchBar = computed(
   () =>
-    "w-[70vmin] h-14 px-[2vmin] shadow-md transition " +
-    border +
-    (darkTheme.value
-      ? "text-white/90 bg-slate-800 "
-      : "text-black/90 bg-white ") +
+    'w-[70vmin] h-14 px-[2vmin] shadow-md text-black/90 bg-white ' +
+    'dark:text-white/90 dark:bg-slate-800 ' +
     (searchError.value
-      ? "border-red-400 "
-      : darkTheme.value
-      ? "border-slate-400 "
-      : "border-slate-700 ")
+      ? 'border-red-400 '
+      : 'border-slate-700 dark:border-slate-400 ') +
+    border
 );
-const _button = computed(
-  () =>
-    "w-fit h-14 shadow-md p-2 hover:bg-slate-300 " +
-    "active:scale-95 active:bg-slate-400 " +
-    border +
-    (darkTheme.value
-      ? "text-white/90 bg-slate-800 "
-      : "text-black/90 bg-white ")
-);
-const searchButton = computed(
-  () =>
-    _button.value +
-    (darkTheme.value ? "border-slate-400 " : "border-slate-700 ")
-);
+const _button =
+  'w-fit h-14 shadow-md p-2 hover:bg-slate-300 ' +
+  'active:scale-95 active:bg-slate-400 ' +
+  'text-black/90 bg-white dark:text-white/90 dark:bg-slate-800 ' +
+  border;
+
+const searchButton = _button + 'border-slate-700 dark:border-slate-400 ';
+
 const optionsButton = computed(
   () =>
-    _button.value +
+    _button +
     (optionsError.value
-      ? "border-red-400 "
-      : darkTheme.value
-      ? "border-slate-400 "
-      : "border-slate-700 ")
+      ? 'border-red-400 '
+      : 'border-slate-700 dark:border-slate-400 ')
 );
 
-const border = "border-4 rounded transition ";
-const checkboxOuterArea = computed(
-  () =>
-    "z-20 w-fit h-fit m-auto shadow-md select-none " +
-    border +
-    colorScheme.value
-);
-const checkboxInnerArea = computed(
-  () =>
-    "w-[80vmin] aspect-square m-[1.5vmin] px-[1.5vmin] " +
-    border +
-    colorScheme.value
-);
+const checkboxOuterArea =
+  'z-20 w-fit h-fit m-auto shadow-md select-none ' + border + colorScheme;
+
+const checkboxInnerArea =
+  'w-[80vmin] aspect-square m-[1.5vmin] px-[1.5vmin] ' + border + colorScheme;
+
 const checkboxGroup =
-  "flex flex-col flex-wrap w-full h-full list-outside pl-[1.5vmin] " +
-  "gap-x-2 gap-y-0.5 overflow-auto scroll-smooth overscroll-none ";
+  'flex flex-col flex-wrap w-full h-full list-outside pl-[1.5vmin] ' +
+  'gap-x-2 gap-y-0.5 overflow-auto scroll-smooth overscroll-none ';
 </script>
 
 <template>
@@ -160,7 +139,6 @@ const checkboxGroup =
         <!-- v-model doesn't work with IME languages like Japanese -->
         <!--  incase:     @compositionupdate="updateText" -->
         <input
-          ref="inputRef"
           :class="searchBar"
           type="search"
           id="q"
@@ -182,64 +160,65 @@ const checkboxGroup =
             size="1.5rem"
           />
         </button>
-
-        <MyAnimations name="fade">
-          <Overlay z="z-20" v-if="opened" />
-        </MyAnimations>
-        <MyAnimations name="scale">
-          <Overlay z="z-20" v-if="opened" invisible>
-            <Overlay z="z-20" invisible @click="opened = false" />
-            <div :class="checkboxOuterArea">
-              <div :class="checkboxInnerArea">
-                <div class="w-full h-fit flex justify-between pt-2 pb-1">
-                  <div class="w-fit h-fit flex gap-x-1 pt-2">
-                    <input
-                      ref="allRef"
-                      type="checkbox"
-                      id="all"
-                      class="cursor-pointer"
-                      :checked="allChecked"
-                      @change="handleAllOnClick"
-                    />
-                    <label for="all" class="cursor-pointer">All</label>
-                  </div>
-                  <button
-                    type="button"
-                    @click="opened = false"
-                    class="w-fit h-fit text-red-500 bg-white rounded"
-                  >
-                    <BIcons icon="x-square-fill" size="1.5rem" />
-                  </button>
-                </div>
-
-                <ul
-                  ref="scrollRef"
-                  :class="checkboxGroup"
-                  @wheel="parallelScroll"
-                >
-                  <li v-for="(option, key) in searchOptions" :key="key">
-                    <div class="flex gap-x-1">
+        <Teleport to="body">
+          <MyAnimations name="fade">
+            <Overlay z="z-20" v-if="opened" />
+          </MyAnimations>
+          <MyAnimations name="scale">
+            <Overlay z="z-20" v-if="opened" invisible>
+              <Overlay z="z-20" invisible @click="opened = false" />
+              <div :class="checkboxOuterArea">
+                <div :class="checkboxInnerArea">
+                  <div class="w-full h-fit flex justify-between pt-2 pb-1">
+                    <div class="w-fit h-fit flex gap-x-1 pt-2">
                       <input
+                        ref="allRef"
                         type="checkbox"
-                        name="websites"
-                        :id="option"
-                        :value="option"
-                        v-model="selectedSearchOptions"
+                        id="all"
                         class="cursor-pointer"
+                        :checked="allChecked"
+                        @change="handleAllOnClick"
                       />
-                      <label
-                        :for="option"
-                        class="cursor-pointer whitespace-nowrap"
-                      >
-                        {{ option }}
-                      </label>
+                      <label for="all" class="cursor-pointer">All</label>
                     </div>
-                  </li>
-                </ul>
+                    <button
+                      type="button"
+                      @click="opened = false"
+                      class="w-fit h-fit text-red-500 bg-white rounded"
+                    >
+                      <BIcons icon="x-square-fill" size="1.5rem" />
+                    </button>
+                  </div>
+
+                  <ul
+                    ref="scrollRef"
+                    :class="checkboxGroup"
+                    @wheel="parallelScroll"
+                  >
+                    <li v-for="(option, key) in searchOptions" :key="key">
+                      <div class="flex gap-x-1">
+                        <input
+                          type="checkbox"
+                          name="websites"
+                          :id="option"
+                          :value="option"
+                          v-model="selectedSearchOptions"
+                          class="cursor-pointer"
+                        />
+                        <label
+                          :for="option"
+                          class="cursor-pointer whitespace-nowrap"
+                        >
+                          {{ option }}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-          </Overlay>
-        </MyAnimations>
+            </Overlay>
+          </MyAnimations>
+        </Teleport>
       </div>
 
       <div class="w-full flex h-14 mt-1 mb-2.5 text-red-400 relative z-0">

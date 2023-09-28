@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type animationList = ["fade", "slide", "scale", "switch"];
+type animationList = ['fade', 'slide', 'scale', 'switch'];
 defineProps<{
   name: animationList[number];
 }>();
