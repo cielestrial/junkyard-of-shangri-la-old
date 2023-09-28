@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import Members from "./members/Members.vue";
-import MySwitch from "./MySwitch.vue";
-import Country from "./country/Country.vue";
-import { theme } from "~/pages/index.vue";
-import { inject, computed } from "vue";
+import Members from './members/Members.vue';
+import MySwitch from './MySwitch.vue';
+import Country from './country/Country.vue';
 
-const { darkTheme } = inject("theme") as theme;
-const nav = computed(
-  () =>
-    "w-full h-fit flex justify-end px-10 py-2.5 select-none " +
-    "transition shadow-md border-b-2 z-10 " +
-    (darkTheme.value ? "border-slate-700 " : "border-slate-200 ")
-);
+const nav =
+  'w-full h-fit flex justify-end px-10 py-2.5 select-none ' +
+  'transition shadow-md border-b-2 z-10 border-slate-200 ' +
+  'dark:border-slate-700 ';
+
 const title =
-  "title w-fit h-fit text-center text-[15vmin] my-10 " +
-  "cursor-default box-shadow-md mx-auto z-0 ";
+  'title w-fit h-fit text-center text-8xl my-10 ' +
+  'cursor-default box-shadow-md mx-auto z-0 ';
 </script>
 
 <template>

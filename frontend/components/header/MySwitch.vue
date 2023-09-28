@@ -1,28 +1,21 @@
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
-import MyAnimations from "~/components/MyAnimations.vue";
-import { theme } from "~/pages/index.vue";
-import BIcons from "../icons/BIcons.vue";
+import MyAnimations from '../effects/MyAnimations.vue';
+import { theme } from '~/pages/index.vue';
+import BIcons from '../icons/BIcons.vue';
 
-const { darkTheme, changeTheme } = inject("theme") as theme;
+const { darkTheme, changeTheme } = inject('theme') as theme;
 const switchRef = ref<HTMLDivElement | null>(null);
-const outer = computed(
-  () =>
-    "relative flex border-4 rounded-full w-16 h-9 shadow-md " +
-    "transition " +
-    (darkTheme.value
-      ? "bg-slate-900 border-slate-400 "
-      : "bg-sky-300 border-slate-600 ")
-);
+const outer =
+  'relative flex border-4 rounded-full w-16 h-9 shadow-md ' +
+  'transition bg-sky-300 border-slate-600 ' +
+  'dark:bg-slate-900 dark:border-slate-400 ';
+
 // Trasnslation: 0rem is the left, side 1rem is the center, and 2rem if the right side.
-const inner = computed(
-  () =>
-    "absolute rounded-full w-6 aspect-[1] flex mt-[0.1875rem] shadow-md " +
-    "border-2 transition " +
-    (darkTheme.value
-      ? "bg-sky-700 border-slate-300 translate-x-[1.9rem] "
-      : "bg-white border-slate-700 translate-x-[0.1rem] ")
-);
+const inner =
+  'absolute rounded-full w-6 aspect-[1] flex mt-[0.1875rem] shadow-md ' +
+  'border-2 transition bg-white border-slate-700 translate-x-[0.1rem] ' +
+  'dark:bg-sky-700 dark:border-slate-300 dark:translate-x-[1.9rem] ';
+
 function toggle() {
   if (switchRef.value !== null) {
     //switchRef.value.blur();
