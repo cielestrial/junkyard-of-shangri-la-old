@@ -1,104 +1,86 @@
-import os
+import asyncio
+from urllib.parse import urljoin
 
-import requests
-from bs4 import BeautifulSoup, Tag
-from dotenv import load_dotenv
-from src.schemas import scrapedProductSchema
-
-load_dotenv()
-
-SPM_APIKEY = os.getenv("SPM_APIKEY")
+from selectolax.lexbor import LexborHTMLParser, LexborNode
+from src.schemas import *
 
 
-def getHtmlContent(url: str):
-    response = requests.get(url)
-    return BeautifulSoup(response.content, "lxml")
+async def bookParser(name: str, url: str, parsed_HTML: LexborHTMLParser):
+    results: list[scrapedProductSchema] = []
+    products = parsed_HTML.css("article.product_pod")
+    parse_tasks = [scrapeProduct(product, name, url) for product in products]
+    for parse_future in asyncio.as_completed(parse_tasks):
+        parsed_product = await parse_future
+        if parsed_product is not None:
+            results.append(parsed_product)
+    return results
 
 
-def getImage(product: Tag):
-    image = product.findChild("img", attrs={"src": True}, recursive=True)
-    if isinstance(image, Tag):
-        src = image["src"]
-        if isinstance(src, str):
-            return src.strip()
-        else:
-            raise TypeError("src must be of type(str)")
-    else:
-        raise TypeError("image must be of type(Tag)")
+async def scrapeProduct(product: LexborNode, name: str, url: str):
+    scrapedProduct = scrapedProductSchema(
+        image="", name="", price="", status="", link=""
+    )
+    productName = getName(product)
+    if name.casefold() in productName.casefold():
+        status = getStatus(product)
+        if "In" in status.title():
+            scrapedProduct.name = productName
+            scrapedProduct.status = status
+            async with asyncio.TaskGroup() as tg:
+                tg.create_task(getPrice(product, scrapedProduct))
+                tg.create_task(getImage(product, scrapedProduct, url))
+                tg.create_task(getLink(product, scrapedProduct, url))
+            # print(f"product: {scrapedProduct}")
+            return scrapedProduct
 
 
-def getName(product: Tag):
-    name = product.findChild("a", attrs={"title": True}, recursive=True)
-    if isinstance(name, Tag):
-        title = name["title"]
+def getName(product: LexborNode):
+    name = product.css_first("h3 a[title]")
+    if name is not None:
+        title = name.attributes["title"]
         if isinstance(title, str):
             return title.strip()
         else:
             raise TypeError("title must be of type(str)")
     else:
-        raise TypeError("name must be of type(Tag)")
+        return ""
 
 
-def getPrice(product: Tag):
-    price = product.findChild("p", attrs={"class": "price_color"}, recursive=True)
-    if isinstance(price, Tag):
-        return price.text.strip()
+def getStatus(product: LexborNode):
+    status = product.css_first("p.availability")
+    if status is not None:
+        return status.text(deep=True, strip=True)
     else:
-        raise TypeError("price must be of type(Tag)")
+        return ""
 
 
-def getStatus(product: Tag):
-    status = product.findChild("p", attrs={"class": "availability"}, recursive=True)
-    if isinstance(status, Tag):
-        return status.text.strip()
+async def getPrice(product: LexborNode, scrapedProduct: scrapedProductSchema):
+    price = product.css_first("p.price_color")
+    if price is not None:
+        scrapedProduct.price = price.text(deep=True, strip=True)
     else:
-        raise TypeError("status must be of type(Tag)")
+        return ""
 
 
-def getLink(product: Tag):
-    link = product.findChild("a", attrs={"href": True}, recursive=True)
-    if isinstance(link, Tag):
-        href = link["href"]
+async def getImage(product: LexborNode, scrapedProduct: scrapedProductSchema, url: str):
+    image = product.css_first("img[src]")
+    if image is not None:
+        src = image.attributes["src"]
+        if isinstance(src, str):
+            scrapedProduct.image = urljoin(url, src)
+        else:
+            raise TypeError("src must be of type(str)")
+    else:
+        return ""
+
+
+async def getLink(product: LexborNode, scrapedProduct: scrapedProductSchema, url: str):
+    link = product.css_first("a[href]")
+    if link is not None:
+        href = link.attributes["href"]
         if isinstance(href, str):
-            return href.strip()
+            scrapedProduct.link = urljoin(url, href)
         else:
             raise TypeError("href must be of type(str)")
     else:
-        raise TypeError("link must be of type(Tag)")
-
-
-def scraper(name: str, url: str):
-    soup = getHtmlContent(url)
-    products: list[Tag] = soup.find_all("article", attrs={"class": "product_pod"})
-    results: list[scrapedProductSchema] = []
-
-    for product in products:
-        scrapedProduct = scrapedProductSchema(
-            image="", name="", price="", status="", link=""
-        )
-        productName = getName(product)
-        if name not in productName.casefold():
-            # print(productName.casefold())
-            continue
-        status = getStatus(product)
-        if "In" not in status.title():
-            continue
-        else:
-            scrapedProduct.name = productName
-            scrapedProduct.image = url + getImage(product)
-            scrapedProduct.price = getPrice(product)
-            scrapedProduct.status = status
-            scrapedProduct.link = url + getLink(product)
-            results.append(scrapedProduct)
-
-    return results
-
-
-def bookScraperTester():
-    testCase = "T"
-    tester = scraper(testCase, "http://books.toscrape.com/")
-    for x in tester:
-        print(x)
-
-
-# going to display data on our html page
+        return ""

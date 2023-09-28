@@ -1,49 +1,98 @@
-import asyncio
+from fastapi import Body, FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from src.utils import *
 
-from fastapi import FastAPI, Request  # ,Depends, Form, status
-from src.bookScraper import scraper
-from src.helperFunctions import *
-from src.schemas import MessageSchema, scrapedProductSchema, scrapedProductsSchema
-from starlette.templating import Jinja2Templates
-
-# from starlette.responses import RedirectResponse
-
-templates = Jinja2Templates(directory="templates")
+ENV = os.getenv("ENV")
+frontend = "" if ENV == "production" else "http://localhost:3000"
+backend = "" if ENV == "production" else "http://127.0.0.1:8000"
 
 app = FastAPI()
 
+origins = [frontend, backend]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
-async def root(request: Request):
-    return templates.TemplateResponse("base.html", {"request": request})
+async def redirect_frontend():
+    return RedirectResponse(frontend)
+
+
+@app.get("/api")
+@app.get("/docs")
+async def redirect_docs():
+    return RedirectResponse(backend + "/docs")
 
 
 @app.get("/ping")
 async def ping() -> MessageSchema:
-    await asyncio.sleep(5)
-    message = MessageSchema(message="pong")
-    return message
+    try:
+        redis_instance = await createRedisInstance(True)
+        if isinstance(redis_instance, Redis):
+            await redis_instance.close()
+    except Exception as err:
+        return MessageSchema(status_code=500, details=f"{err}")
+    else:
+        return MessageSchema(status_code=200, details="pong")
+
+
+@app.get("/clear")
+async def clear_cache() -> MessageSchema:
+    try:
+        filter_key = "http"
+        redis_instance = await createRedisInstance(True)
+        if isinstance(redis_instance, Redis):
+            allKeys: list[str] = (await redis_instance.scan(0))[1]
+            junkyardKeys: list[str] = [key for key in allKeys if filter_key in key]
+            print(f"All Keys:{junkyardKeys}")
+
+            while len(junkyardKeys) > 0:
+                await redis_instance.delete(*junkyardKeys)
+                allKeys = (await redis_instance.scan(0))[1]
+                junkyardKeys = [key for key in allKeys if filter_key in key]
+
+            await redis_instance.close()
+            print(f"All Keys:{junkyardKeys}")
+            message = "Cache cleared"
+        else:
+            message = "Error clearing cache"
+        print(message)
+    except Exception as err:
+        return MessageSchema(status_code=500, details=f"{err}")
+    else:
+        return MessageSchema(status_code=200, details=message)
 
 
 @app.post("/search")
-async def scrape(request: Request) -> scrapedProductsSchema:
-    url = ""
-    results: list[scrapedProductSchema] = []
-    requestStr = (await request.body()).decode("utf-8")
-    print(requestStr)
-    targets = cleanupFormInput(requestStr)
+async def scrape(
+    searchRequest: searchSchema = Body(...),
+) -> scrapedProductsSchema | MessageSchema:
+    try:
+        # print(f"\nSearch:\n{searchRequest}\n")
+        searchString = searchRequest.searchString
+        searchParams = searchRequest.searchParams
+        paramsLength = len(searchParams)
+        results: list[scrapedProductSchema] = []
 
-    if len(targets) > 1:
-        for x in range(len(targets) - 1):
-            # will need to open multiple browsers
-            url = getWebsiteUrl(targets[x + 1])
-            if url == "":
-                continue
-            else:
-                results += scraper(targets[0], url)
-    total = len(results)
-    print("\nResults:\n")
-    for y in results:
-        print(y)
-    message = scrapedProductsSchema(total=total, results=results)
-    return message
+        if searchString != "" and paramsLength > 0:
+            batches = splitIntoBatches(searchParams, paramsLength)
+            headers = {"Content-Type": "text/html"}
+            async with ClientSession(headers=headers) as client:
+                for batch in batches:
+                    batch_results = await batchScrape(searchString, batch, client)
+                    results.extend(batch_results)
+            await client.close()
+
+        # print(f"\nResults:\n{results}\n")
+        total = len(results)
+    except Exception as err:
+        return MessageSchema(status_code=500, details=f"{err}")
+    else:
+        return scrapedProductsSchema(status_code=200, total=total, results=results)
