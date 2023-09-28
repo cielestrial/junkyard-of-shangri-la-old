@@ -1,0 +1,10 @@
+#All#
+Aria
+Accessible Navigation
+Responsiveness
+Apply Web Design Tips
+
+Functionality: submit & display search results
+
+Box shadow color
+#Footer#

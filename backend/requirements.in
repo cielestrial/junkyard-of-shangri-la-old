@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+selectolax
+redis[hiredis]
+aiohttp[speedups]
