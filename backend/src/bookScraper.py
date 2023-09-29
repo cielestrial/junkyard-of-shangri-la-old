@@ -5,10 +5,10 @@ from selectolax.lexbor import LexborHTMLParser, LexborNode
 from src.schemas import *
 
 
-async def bookParser(name: str, url: str, parsed_HTML: LexborHTMLParser):
+async def bookParser(name: str, category: str, url: str, parsed_HTML: LexborHTMLParser):
     results: list[scrapedProductSchema] = []
     products = parsed_HTML.css("article.product_pod")
-    parse_tasks = [scrapeProduct(product, name, url) for product in products]
+    parse_tasks = [scrapeProduct(product, name, category, url) for product in products]
     for parse_future in asyncio.as_completed(parse_tasks):
         parsed_product = await parse_future
         if parsed_product is not None:
@@ -16,16 +16,14 @@ async def bookParser(name: str, url: str, parsed_HTML: LexborHTMLParser):
     return results
 
 
-async def scrapeProduct(product: LexborNode, name: str, url: str):
+async def scrapeProduct(product: LexborNode, name: str, category: str, url: str):
     scrapedProduct = scrapedProductSchema(
-        image="", name="", price="", status="", link=""
+        image="", name="", price="", status="", category=category, link=""
     )
-    productName = getName(product)
-    if name.casefold() in productName.casefold():
-        status = getStatus(product)
-        if "In" in status.title():
-            scrapedProduct.name = productName
-            scrapedProduct.status = status
+    scrapedProduct.name = getName(product)
+    if name.casefold() in scrapedProduct.name.casefold():
+        scrapedProduct.status = getStatus(product)
+        if "In" in scrapedProduct.status.title():
             async with asyncio.TaskGroup() as tg:
                 tg.create_task(getPrice(product, scrapedProduct))
                 tg.create_task(getImage(product, scrapedProduct, url))

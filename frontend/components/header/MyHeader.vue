@@ -10,7 +10,7 @@ const nav =
 
 const title =
   'title w-fit h-fit text-center text-8xl my-10 ' +
-  'cursor-default box-shadow-md mx-auto z-0 ';
+  'cursor-default mx-auto z-0 ';
 </script>
 
 <template>

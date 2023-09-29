@@ -6,6 +6,7 @@ Responsiveness
 
 
 #Extra#
+Search window sort-by & display-#-of-results # options?
 Footer
 Box-shadow colors
 Apply Web Design Tips

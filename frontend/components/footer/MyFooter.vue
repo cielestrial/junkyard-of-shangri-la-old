@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { theme } from '~/pages/index.vue';
 // const { colorScheme } = inject('theme') as theme;
 </script>
 

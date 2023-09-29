@@ -57,11 +57,7 @@ const _optionsList = [
 function getOptionsList() {
   let optionsList: optionsArrayT = [];
   _optionsList.forEach((option) => optionsList.push(option));
-  return optionsList.sort(compare);
-}
-
-function compare(a: optionT, b: optionT) {
-  return a.localeCompare(b);
+  return optionsList.sort((a, b) => a.localeCompare(b));
 }
 
 export const optionsList = getOptionsList();
