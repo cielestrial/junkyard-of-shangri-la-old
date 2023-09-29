@@ -2,7 +2,7 @@
 import Loader from '../effects/Loader.vue';
 import ResultWindow from './ResultWindow.vue';
 import Search from './Search.vue';
-import { messageT, resultTemplate } from './schemas';
+import { messageT, resultTemplate, orderByT, orderFromT } from './schemas';
 import { optionsArrayT } from './optionsList';
 
 const server =
@@ -60,12 +60,30 @@ async function getSearchResults(
     if (results.value !== null) {
       if (results.value.status_code !== 200)
         console.error((results.value as messageT).details);
-      else _searchResults.value = results.value as resultTemplate;
+      else {
+        _searchResults.value = results.value as resultTemplate;
+        if (_searchResults.value.total > 1) sortBy('price', 'least');
+      }
     }
     pendingResults.value = false;
   } catch (error) {
     console.error('Error when retrieving search results\n', { error });
   }
+}
+
+function sortBy(orderBy: orderByT, orderFrom: orderFromT) {
+  _searchResults.value.results.sort((a, b) => {
+    if (orderBy === 'price') {
+      const re = /[\D.]/g;
+      const aVal = +a.price.replace(re, '');
+      const bVal = +b.price.replace(re, '');
+      if (orderFrom === 'least') return aVal - bVal;
+      else return bVal - aVal;
+    } else {
+      if (orderFrom === 'least') return a.category.localeCompare(b.category);
+      else return b.category.localeCompare(a.category);
+    }
+  });
 }
 
 provide('api', { searchResults, getSearchResults });

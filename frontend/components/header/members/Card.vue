@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { theme } from '~/pages/index.vue';
 import Overlay from '~/components/effects/Overlay.vue';
+import { theme } from '~/components/main/schemas';
 import BIcons from '../../icons/BIcons.vue';
 
 defineEmits<{ (e: 'close'): void }>();

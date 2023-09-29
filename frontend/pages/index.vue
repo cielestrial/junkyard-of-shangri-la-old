@@ -3,12 +3,6 @@ import MyFooter from '~/components/footer/MyFooter.vue';
 import MyHeader from '~/components/header/MyHeader.vue';
 import MyMain from '~/components/main/MyMain.vue';
 
-export type theme = {
-  darkTheme: Readonly<Ref<boolean>>;
-  changeTheme: () => void;
-  colorScheme: typeof colorScheme;
-};
-
 const _darkTheme = ref(false);
 function changeTheme() {
   _darkTheme.value = !_darkTheme.value;
@@ -21,7 +15,7 @@ provide('theme', { darkTheme, changeTheme, colorScheme });
 
 const container =
   'view-width min-view-height flex flex-col ' +
-  'text-2xl leading-none ' +
+  'text-2xl leading-tight ' +
   colorScheme;
 
 onMounted(() => {

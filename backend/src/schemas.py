@@ -20,6 +20,7 @@ class scrapedProductSchema(BaseModel):
     name: str = Field(examples=["A Light in the Attic"])
     price: str = Field(examples=["£51.77"])
     status: str = Field(examples=["In stock"])
+    category: str = Field(examples=["Poetry"])
     link: str = Field(
         examples=[
             "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
@@ -27,7 +28,7 @@ class scrapedProductSchema(BaseModel):
     )
 
     def __str__(self):
-        return f"{self.name}, {self.status}, {self.price}"
+        return f"{self.name}, {self.status}, {self.price}, {self.category}"
 
 
 class scrapedProductsSchema(BaseModel):

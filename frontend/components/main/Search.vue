@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { theme } from '~/pages/index.vue';
 import MyAnimations from '../effects/MyAnimations.vue';
 import Overlay from '../effects/Overlay.vue';
 import BIcons from '../icons/BIcons.vue';
 import { optionsArrayT, optionsList } from './optionsList';
-import { api } from './schemas';
+import { api, theme } from './schemas';
 
 const { colorScheme } = inject('theme') as theme;
 const { getSearchResults } = inject('api') as api;
@@ -50,14 +49,14 @@ function validate(form: 'search' | 'option' | 'both') {
         searchError.value = true;
       }
     } else {
-      errors.value.push('Enter product to search for.');
+      errors.value.push('Enter product name.');
       searchError.value = true;
     }
   }
 
   if (form === 'both' || form === 'option') {
     if (selectedSearchOptions.value.length === 0) {
-      errors.value.push('Select at least one section to search.');
+      errors.value.push('At least one category must be selected.');
       optionsError.value = true;
     }
   }
@@ -99,7 +98,7 @@ const border = 'border-4 rounded transition ';
 const searchBar = computed(
   () =>
     'w-[70vmin] h-14 px-[2vmin] shadow-md text-black/90 bg-white ' +
-    'dark:text-white/90 dark:bg-slate-800 ' +
+    'dark:text-white/90 dark:bg-slate-800 font-bold ' +
     (searchError.value
       ? 'border-red-400 '
       : 'border-slate-700 dark:border-slate-400 ') +
@@ -111,7 +110,8 @@ const _button =
   'text-black/90 bg-white dark:text-white/90 dark:bg-slate-800 ' +
   border;
 
-const searchButton = _button + 'border-slate-700 dark:border-slate-400 ';
+const searchButton =
+  _button + 'font-bold border-slate-700 dark:border-slate-400 ';
 
 const optionsButton = computed(
   () =>
@@ -144,7 +144,7 @@ const checkboxGroup =
           id="q"
           name="q"
           v-model.lazy.trim="searchItem"
-          placeholder="Search"
+          placeholder="Product"
           aria-required="true"
           required
           maxlength="100"
@@ -179,7 +179,9 @@ const checkboxGroup =
                         :checked="allChecked"
                         @change="handleAllOnClick"
                       />
-                      <label for="all" class="cursor-pointer">All</label>
+                      <label for="all" class="cursor-pointer font-bold">
+                        All
+                      </label>
                     </div>
                     <button
                       type="button"
@@ -222,7 +224,7 @@ const checkboxGroup =
       </div>
 
       <div class="w-full flex h-14 mt-1 mb-2.5 text-red-400 relative z-0">
-        <div v-if="errors.length !== 0" class="w-96 mx-auto">
+        <div v-if="errors.length !== 0" class="w-[30rem] mx-auto">
           <ul class="flex flex-col list-outside list-disc">
             <li class="mt-1.5" v-for="error in errors">
               {{ error }}

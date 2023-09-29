@@ -3,6 +3,8 @@ type animationList = ['fade', 'slide', 'scale', 'switch'];
 defineProps<{
   name: animationList[number];
 }>();
+
+const custom_ease_in_out = 'cubic-bezier(0.38, 0, 0.64, 1)';
 </script>
 
 <template>
@@ -20,24 +22,24 @@ defineProps<{
 }
 
 .scale-enter-active {
-  animation: scale-down 300ms cubic-bezier(0.38, 0, 0.64, 1) reverse both;
+  animation: scale-down 300ms v-bind(custom_ease_in_out) reverse both;
 }
 .scale-leave-active {
-  animation: scale-down 300ms cubic-bezier(0.38, 0, 0.64, 1) both;
+  animation: scale-down 300ms v-bind(custom_ease_in_out) both;
 }
 
 .fade-enter-active {
-  animation: fade-in 250ms cubic-bezier(0.38, 0, 0.64, 1) both;
+  animation: fade-in 250ms v-bind(custom_ease_in_out) both;
 }
 .fade-leave-active {
-  animation: fade-in 250ms cubic-bezier(0.38, 0, 0.64, 1) reverse both;
+  animation: fade-in 250ms v-bind(custom_ease_in_out) reverse both;
 }
 
 .switch-enter-active {
-  animation: fade-in 50ms cubic-bezier(0.38, 0, 0.64, 1) both;
+  animation: fade-in 50ms v-bind(custom_ease_in_out) both;
 }
 .switch-leave-active {
-  animation: fade-in 50ms cubic-bezier(0.38, 0, 0.64, 1) reverse both;
+  animation: fade-in 50ms v-bind(custom_ease_in_out) reverse both;
 }
 
 @keyframes slide-up {

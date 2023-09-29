@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MyAnimations from '../effects/MyAnimations.vue';
-import { theme } from '~/pages/index.vue';
 import BIcons from '../icons/BIcons.vue';
+import { theme } from '../main/schemas';
 
 const { darkTheme, changeTheme } = inject('theme') as theme;
 const switchRef = ref<HTMLDivElement | null>(null);
@@ -29,9 +29,9 @@ function toggle() {
     <div ref="switchRef" :class="outer" @click="toggle">
       <div :class="inner">
         <MyAnimations name="switch">
-          <div v-if="darkTheme" class="m-auto text-white">
+          <span v-if="darkTheme" class="m-auto text-white">
             <BIcons icon="moon-stars-fill" size="0.8rem" />
-          </div>
+          </span>
           <span v-else class="m-auto text-black">
             <BIcons icon="cloud-sun" size="1.1rem" />
           </span>

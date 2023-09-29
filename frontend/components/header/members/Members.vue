@@ -8,7 +8,7 @@ import Card from './Card.vue';
 const opened = ref(false);
 
 const styling =
-  'w-fit h-fit mb-[0.3rem] flex text-yellow-500 box-shadow-md transition ' +
+  'w-fit h-fit mb-[0.3rem] flex text-yellow-500 transition ' +
   'active:scale-95 active:text-amber-500 active:underline ' +
   'hover:text-amber-400 hover:underline hover:animate-pulse ' +
   'focus-visible:text-amber-400 focus-visible:underline ';
@@ -30,7 +30,7 @@ const styling =
         size="1rem"
         class="align-middle -rotate-12 self-end"
       />
-      <h3 class="px-0.5 self-center">Members</h3>
+      <h3 class="px-0.5 self-center font-bold">Members</h3>
       <BIcons
         icon="stars"
         size="1rem"

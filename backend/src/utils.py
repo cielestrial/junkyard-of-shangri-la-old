@@ -68,7 +68,7 @@ async def getHTMLContentwithCache(
                     except:
                         raise ParsingError(f"Error parsing HTML from {url}")
                     else:
-                        return await bookParser(searchString, url, parsed)
+                        return await bookParser(searchString, searchParam, url, parsed)
                 else:
                     # print("Retrieved from website")
                     try:
@@ -87,7 +87,9 @@ async def getHTMLContentwithCache(
                             except:
                                 raise ParsingError(f"Error parsing HTML from {url}")
                             else:
-                                return await bookParser(searchString, url, parsed)
+                                return await bookParser(
+                                    searchString, searchParam, url, parsed
+                                )
 
     emptyList: list[scrapedProductSchema] = []
     await asyncio.sleep(0)
@@ -113,7 +115,7 @@ async def getHTMLContentnoCache(
                 except:
                     raise ParsingError(f"Error parsing HTML from {url}")
                 else:
-                    return await bookParser(searchString, url, parsed)
+                    return await bookParser(searchString, searchParam, url, parsed)
 
     await asyncio.sleep(0)
     emptyList: list[scrapedProductSchema] = []
