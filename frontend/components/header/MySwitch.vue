@@ -1,32 +1,30 @@
 <script setup lang="ts">
+import { theme } from '~/pages/index.vue';
 import MyAnimations from '../effects/MyAnimations.vue';
 import BIcons from '../icons/BIcons.vue';
-import { theme } from '../main/schemas';
 
 const { darkTheme, changeTheme } = inject('theme') as theme;
-const switchRef = ref<HTMLDivElement | null>(null);
 const outer =
-  'relative flex border-4 rounded-full w-16 h-9 shadow-md ' +
-  'transition bg-sky-300 border-slate-600 ' +
-  'dark:bg-slate-900 dark:border-slate-400 ';
+  'relative flex border-4 box-content rounded-full w-14 h-8 ' +
+  'transition bg-sky-300 border-gray-600 ' +
+  'dark:bg-gray-900 dark:border-gray-400 ';
 
-// Trasnslation: 0rem is the left, side 1rem is the center, and 2rem if the right side.
 const inner =
-  'absolute rounded-full w-6 aspect-[1] flex mt-[0.1875rem] shadow-md ' +
-  'border-2 transition bg-white border-slate-700 translate-x-[0.1rem] ' +
-  'dark:bg-sky-700 dark:border-slate-300 dark:translate-x-[1.9rem] ';
-
-function toggle() {
-  if (switchRef.value !== null) {
-    //switchRef.value.blur();
-    changeTheme();
-  }
-}
+  'rounded-full box-content w-6 aspect-[1] flex my-auto ' +
+  'border-2 transition bg-white border-gray-700 translate-x-[0.1rem] ' +
+  'dark:bg-sky-700 dark:border-gray-300 dark:translate-x-[1.65rem] ';
 </script>
 
 <template>
-  <button type="button" class="w-fit h-fit">
-    <div ref="switchRef" :class="outer" @click="toggle">
+  <div class="w-fit h-fit">
+    <button
+      role="switch"
+      aria-label="Dark Theme"
+      :aria-checked="darkTheme"
+      type="button"
+      :class="outer"
+      @click="changeTheme"
+    >
       <div :class="inner">
         <MyAnimations name="switch">
           <span v-if="darkTheme" class="m-auto text-white">
@@ -37,6 +35,6 @@ function toggle() {
           </span>
         </MyAnimations>
       </div>
-    </div>
-  </button>
+    </button>
+  </div>
 </template>

@@ -1,32 +1,38 @@
 <script setup lang="ts">
-import Members from './members/Members.vue';
+import CollapsedNav from './CollapsedNav.vue';
 import MySwitch from './MySwitch.vue';
 import Country from './country/Country.vue';
+import Members from './members/Members.vue';
 
 const nav =
-  'w-full h-fit flex justify-end px-10 py-2.5 select-none ' +
-  'transition shadow-md border-b-2 z-10 border-slate-200 ' +
-  'dark:border-slate-700 ';
+  'w-full h-16 flex py-3 justify-end select-none z-10 ' +
+  'transition shadow-md dark:shadow-gray-900/50 ';
 
 const title =
-  'title w-fit h-fit text-center text-8xl my-10 ' +
-  'cursor-default mx-auto z-0 ';
+  'title w-fit h-fit text-center cursor-default mx-auto z-0 my-10 ' +
+  'text-4xl/tight sm:text-6xl/none md:text-8xl/none ';
 </script>
 
 <template>
-  <header class="flex flex-col w-full h-fit self-start">
-    <!--title, members, switch, country-->
-    <div :class="nav">
-      <div class="flex items-end justify-between min-w-[28rem]">
+  <div class="flex flex-col w-full h-fit self-start">
+    <!-- or <section role="region"> -->
+    <aside role="complementary" aria-label="Settings" :class="nav">
+      <div
+        id="settingsBar"
+        class="hidden sm:flex gap-x-8 mx-10 justify-center items-end"
+      >
         <Members />
         <MySwitch />
         <Country />
       </div>
-    </div>
-    <h1 :class="title">
-      Junkyard of
-      <br />
-      Shangri-La
-    </h1>
-  </header>
+      <CollapsedNav class="block sm:hidden" />
+    </aside>
+    <header role="banner">
+      <h1 :class="title">
+        Junkyard of
+        <br />
+        Shangri-La
+      </h1>
+    </header>
+  </div>
 </template>

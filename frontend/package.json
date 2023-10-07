@@ -1,12 +1,12 @@
 {
   "name": "junkyard-of-shagri-la",
-  "version": "3.0.0",
-  "homepage": "http://localhost:3000/",
+  "version": "4.0.0",
+  "homepage": "http://localhost:3000",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",

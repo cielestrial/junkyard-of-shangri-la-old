@@ -1,36 +1,51 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MyAnimations from '~/components/effects/MyAnimations.vue';
-import Overlay from '~/components/effects/Overlay.vue';
+import MyOverlay from '~/components/effects/MyOverlay.vue';
 import BIcons from '../../icons/BIcons.vue';
 import Card from './Card.vue';
 
+const membersRef = ref<HTMLButtonElement | null>(null);
 const opened = ref(false);
 
 const styling =
-  'w-fit h-fit mb-[0.3rem] flex text-yellow-500 transition ' +
+  'w-fit h-fit py-1.5 flex text-yellow-500 transition rounded ' +
   'active:scale-95 active:text-amber-500 active:underline ' +
   'hover:text-amber-400 hover:underline hover:animate-pulse ' +
-  'focus-visible:text-amber-400 focus-visible:underline ';
+  'focus-visible:text-amber-400 focus-visible:underline focus:-visible:animate-pulse ' +
+  'focus-visible:border-gray-700 dark:focus-visible:border-gray-400 ';
 </script>
 <template>
   <div>
     <Teleport to="body">
       <MyAnimations name="fade">
-        <Overlay z="z-20" v-if="opened" />
+        <MyOverlay z="z-20" v-if="opened" />
       </MyAnimations>
       <MyAnimations name="scale">
-        <Card v-if="opened" @close="opened = false" />
+        <Card
+          v-if="opened"
+          @close="
+            () => {
+              opened = false;
+              membersRef?.focus();
+            }
+          "
+        />
       </MyAnimations>
     </Teleport>
 
-    <button type="button" :class="styling" @click="opened = !opened">
+    <button
+      ref="membersRef"
+      type="button"
+      :class="styling"
+      @click="opened = !opened"
+    >
       <BIcons
         icon="stars"
         size="1rem"
         class="align-middle -rotate-12 self-end"
       />
-      <h3 class="px-0.5 self-center font-bold">Members</h3>
+      <p class="px-0.5 self-center font-bold">Members</p>
       <BIcons
         icon="stars"
         size="1rem"

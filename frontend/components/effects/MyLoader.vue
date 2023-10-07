@@ -14,7 +14,7 @@ onMounted(() => {
 
 onUnmounted(() => clearInterval(timer.value));
 
-const loader = 'title text-3xl mx-auto cursor-default ';
+const loader = 'title text-3xl/none mx-auto mb-14 cursor-default ';
 </script>
 
 <template>

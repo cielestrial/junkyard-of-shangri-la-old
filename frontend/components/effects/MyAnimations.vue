@@ -18,7 +18,7 @@ const custom_ease_in_out = 'cubic-bezier(0.38, 0, 0.64, 1)';
   animation: slide-down 300ms ease-out both;
 }
 .slide-leave-active {
-  animation: slide-up 300ms ease-out both;
+  animation: slide-down 300ms ease-out reverse both;
 }
 
 .scale-enter-active {
@@ -42,16 +42,6 @@ const custom_ease_in_out = 'cubic-bezier(0.38, 0, 0.64, 1)';
   animation: fade-in 50ms v-bind(custom_ease_in_out) reverse both;
 }
 
-@keyframes slide-up {
-  0% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(0, -20%, 0);
-  }
-}
 @keyframes slide-down {
   0% {
     opacity: 0;

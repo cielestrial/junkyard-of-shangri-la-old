@@ -9,12 +9,6 @@ export interface productTemplate {
   link: string;
 }
 
-export interface theme {
-  darkTheme: Readonly<Ref<boolean>>;
-  changeTheme: () => void;
-  colorScheme: 'transition text-black/90 bg-white border-slate-700 dark:text-white/90 dark:bg-slate-800 dark:border-slate-400 ';
-}
-
 export interface api {
   searchResults: Readonly<
     Ref<{
@@ -33,6 +27,12 @@ export interface pages {
   pageIndex: Ref<number>;
   totalPages: ComputedRef<number>;
   setPageIndex: (newIndex: number) => void;
+}
+
+export interface options {
+  selectedOptions: Readonly<Ref<Readonly<optionsArrayT> | readonly []>>;
+  setSelectedOptions: (selected: optionsArrayT | []) => void;
+  errorList: Readonly<Ref<readonly string[]>>;
 }
 
 export interface messageT {
