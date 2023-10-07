@@ -54,10 +54,6 @@ const _optionsList = [
   'Crime',
 ] as const;
 
-function getOptionsList() {
-  let optionsList: optionsArrayT = [];
-  _optionsList.forEach((option) => optionsList.push(option));
-  return optionsList.sort((a, b) => a.localeCompare(b));
-}
-
-export const optionsList = getOptionsList();
+export const optionsList: optionsArrayT = _optionsList
+  .slice(0)
+  .sort((a, b) => a.localeCompare(b));

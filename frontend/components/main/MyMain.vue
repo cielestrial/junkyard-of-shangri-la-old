@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Loader from '../effects/Loader.vue';
+import MyLoader from '../effects/MyLoader.vue';
 import ResultWindow from './ResultWindow.vue';
-import Search from './Search.vue';
-import { messageT, resultTemplate, orderByT, orderFromT } from './schemas';
 import { optionsArrayT } from './optionsList';
+import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
+import Search from './search/Search.vue';
 
 const server =
   process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:8000';
@@ -42,6 +42,7 @@ async function getSearchResults(
 ) {
   try {
     let x = 0;
+    clearInterval(timer.value);
     timer.value = setInterval(() => console.log('Elapsed Time: ' + ++x), 1000);
     pendingResults.value = true;
     const { data: results } = await useLazyFetch<resultTemplate | messageT>(
@@ -71,6 +72,10 @@ async function getSearchResults(
   }
 }
 
+onBeforeUnmount(() => {
+  clearInterval(timer.value);
+});
+
 function sortBy(orderBy: orderByT, orderFrom: orderFromT) {
   _searchResults.value.results.sort((a, b) => {
     if (orderBy === 'price') {
@@ -89,15 +94,15 @@ function sortBy(orderBy: orderByT, orderFrom: orderFromT) {
 provide('api', { searchResults, getSearchResults });
 
 const mainContainer =
-  'flex flex-col w-full h-fit self-center grow border-b-2 relative shadow-md ' +
-  'transition border-slate-200 dark:border-slate-700 ';
+  'flex flex-col w-full h-fit self-center grow relative shadow-md ' +
+  'transition dark:shadow-gray-900/50 ';
 </script>
 
 <template>
-  <main :class="mainContainer">
+  <main id="main" role="main" :class="mainContainer">
     <Search />
     <ResultWindow v-if="awake && !pendingResults" />
-    <Loader v-else-if="awake && pendingResults" loaderText="Loading" />
-    <Loader v-else loaderText="Connecting" />
+    <MyLoader v-else-if="awake && pendingResults" loaderText="Loading" />
+    <MyLoader v-else loaderText="Connecting" />
   </main>
 </template>

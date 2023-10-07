@@ -1,65 +1,211 @@
 <script setup lang="ts">
+import { theme } from '~/pages/index.vue';
+import BIcons from '../icons/BIcons.vue';
 import { pages } from './schemas';
 
+defineProps<{ pos: 'Top' | 'Bottom' }>();
+
+const { colorScheme } = inject('theme') as theme;
 const { pageIndex, totalPages, setPageIndex } = inject('pages') as pages;
-console.log('total=' + totalPages.value);
-watch(pageIndex, (newVal) =>
-  console.log('page=' + (newVal === totalPages.value - 1))
+
+const prevButtonRef = ref<HTMLButtonElement | null>();
+const nextButtonRef = ref<HTMLButtonElement | null>();
+
+const totalRotatingButtons = computed(() => Math.min(totalPages.value - 2, 3));
+const rotatingButtons = ref<number[]>([-1]);
+
+watch(
+  totalPages,
+  () => {
+    rotatingButtons.value = [-1];
+    for (let i = 1; i <= totalRotatingButtons.value; i++)
+      rotatingButtons.value.push(indexRange(i));
+  },
+  { immediate: true }
+);
+
+watch(
+  pageIndex,
+  () => {
+    for (let i = 1; i <= totalRotatingButtons.value; i++)
+      rotatingButtons.value[i] = indexRange(i);
+  },
+  { immediate: false }
 );
 
 function indexRange(position: number) {
-  if (pageIndex.value <= 1) return position + 1;
-  else if (pageIndex.value > 1 && pageIndex.value + 2 < totalPages.value) {
-    if (position === 1) return pageIndex.value;
-    else if (position === 2) return pageIndex.value + 1;
-    else return pageIndex.value + 2;
-  } else return position + totalPages.value - 4;
+  let result: number, lowerbound: number, upperbound: number;
+  // lowerbound off of index + 1, index + 1 + position
+  // upperbound off of total, total - 4 + position
+  lowerbound = pageIndex.value - 1 + position;
+  upperbound = totalPages.value - 4 + position;
+  // if index=1, total=6, total-1=5, total-4=2, pos=1
+  // lower=2 , upper=3
+  // lower=2 , upper=3
+  // returns 2
+  // pi+1 - 2 = 4 - 2 , pi-1 = 2
+
+  // if index=2, total=6, total-1=5, total-4=2, pos=1
+  // lower=3 , upper=3
+  // lower=3 , upper=3
+  // returns 3
+
+  lowerbound = bind(lowerbound, position);
+  upperbound = bind(upperbound, position);
+  if (lowerbound < upperbound) result = lowerbound;
+  else result = upperbound;
+  return result;
 }
 
+function bind(bound: number, pos: number) {
+  const lowestbound = 1 + pos;
+  const uppestbound = totalPages.value - 1;
+  if (bound < lowestbound) return lowestbound;
+  else if (bound > uppestbound) return uppestbound;
+  else return bound;
+}
+
+function paginationNavigation(event: KeyboardEvent) {
+  if (event.key === 'ArrowLeft') {
+    prevButtonRef.value?.focus();
+    prevButtonRef.value?.click();
+  } else if (event.key === 'ArrowRight') {
+    nextButtonRef.value?.focus();
+    nextButtonRef.value?.click();
+  }
+  event.stopImmediatePropagation();
+}
+
+const pagination =
+  'flex flex-wrap justify-center mb-4 text-xl/none select-none ';
+const cell = 'w-9 aspect-[1] rounded ';
+const ellipsisCell = 'flex -mx-1 items-end ' + cell;
+const ellipsis = 'h-fit mx-auto mb-1 bg-transparent rounded ';
 const button =
-  'w-10 rounded border-4 transition shadow-md ' +
-  'active:scale-95 hover:bg-slate-300 ' +
-  'text-black/90 bg-white border-slate-700 ' +
-  'dark:text-white/90 dark:bg-slate-800 dark:border-slate-400 ';
-const ellipsis = 'w-10 text-center pt-1.5 -mx-2';
+  'border-2 shadow active:scale-95 hover:bg-gray-300 ' + cell + colorScheme;
+const chevron = 'm-auto';
 </script>
 
 <template>
-  <div class="flex flex-nowrap w-fit mx-auto gap-2 mb-2">
-    <button
-      type="button"
-      :class="[button, { myActive: pageIndex + 1 === 1 }]"
-      @click="setPageIndex(1)"
-    >
-      1
-    </button>
+  <nav
+    role="navigation"
+    :aria-label="`${pos} Pagination`"
+    :class="pagination"
+    @keydown="paginationNavigation"
+  >
+    <span class="flex flex-nowrap justify-center">
+      <button
+        aria-label="Goto Previous Page"
+        ref="prevButtonRef"
+        type="button"
+        class="rounded m-1"
+        :aria-disabled="pageIndex + 1 === 1 || totalPages === 1"
+        @click="
+          () => {
+            if (prevButtonRef?.ariaDisabled === 'false')
+              setPageIndex(pageIndex - 1);
+          }
+        "
+      >
+        <span
+          :class="[
+            button,
+            'flex',
+            { 'my-disabled': pageIndex + 1 === 1 || totalPages === 1 },
+          ]"
+        >
+          <BIcons :class="chevron" icon="chevron-left" size="1rem" />
+        </span>
+      </button>
 
-    <span :class="ellipsis" v-if="totalPages > 5 && pageIndex > 2">
-      &hellip;
+      <button
+        :aria-label="(pageIndex + 1 === 1 ? '' : 'Goto ') + 'Page 1'"
+        :aria-current="pageIndex + 1 === 1"
+        type="button"
+        :class="[button, 'm-1', { 'my-active': pageIndex + 1 === 1 }]"
+        @click="setPageIndex(0)"
+      >
+        1
+      </button>
+
+      <div
+        v-if="totalPages > 5 && pageIndex > 2"
+        aria-label="ellipsis"
+        tabindex="-1"
+        :class="ellipsisCell"
+      >
+        <BIcons :class="ellipsis" icon="three-dots" size="1rem" />
+      </div>
     </span>
 
-    <button
-      v-if="totalPages > 2"
-      v-for="i in Math.min(totalPages - 2, 3)"
-      :key="i"
-      type="button"
-      :class="[button, { myActive: pageIndex + 1 === indexRange(i) }]"
-      @click="setPageIndex(indexRange(i))"
-    >
-      {{ indexRange(i) }}
-    </button>
-
-    <span :class="ellipsis" v-if="totalPages > 5 && totalPages - pageIndex > 3">
-      &hellip;
+    <span class="flex flex-nowrap justify-center">
+      <button
+        v-if="totalPages > 2"
+        v-for="i in totalRotatingButtons"
+        :key="i"
+        type="button"
+        :aria-label="
+          (pageIndex + 1 === rotatingButtons[i] ? '' : 'Goto ') +
+          `Page ${rotatingButtons[i]}`
+        "
+        :aria-current="pageIndex + 1 === rotatingButtons[i]"
+        :class="[
+          button,
+          'm-1',
+          { 'my-active': pageIndex + 1 === rotatingButtons[i] },
+        ]"
+        @click="setPageIndex(rotatingButtons[i] - 1)"
+      >
+        {{ rotatingButtons[i] }}
+      </button>
     </span>
 
-    <button
-      v-if="totalPages > 1"
-      type="button"
-      :class="[button, { myActive: pageIndex + 1 === totalPages }]"
-      @click="setPageIndex(totalPages)"
-    >
-      {{ totalPages }}
-    </button>
-  </div>
+    <span class="flex flex-nowrap justify-center">
+      <div
+        v-if="totalPages > 5 && totalPages - pageIndex > 3"
+        aria-label="ellipsis"
+        tabindex="-1"
+        :class="ellipsisCell"
+      >
+        <BIcons :class="ellipsis" icon="three-dots" size="1rem" />
+      </div>
+
+      <button
+        v-if="totalPages > 1"
+        :aria-label="
+          (pageIndex + 1 === totalPages ? '' : 'Goto ') + `Page ${totalPages}`
+        "
+        :aria-current="pageIndex + 1 === totalPages"
+        type="button"
+        :class="[button, 'm-1', { 'my-active': pageIndex + 1 === totalPages }]"
+        @click="setPageIndex(totalPages - 1)"
+      >
+        {{ totalPages }}
+      </button>
+
+      <button
+        aria-label="Goto Next Page"
+        ref="nextButtonRef"
+        type="button"
+        :aria-disabled="pageIndex + 1 === totalPages || totalPages === 1"
+        class="rounded m-1"
+        @click="
+          () => {
+            if (nextButtonRef?.ariaDisabled === 'false')
+              setPageIndex(pageIndex + 1);
+          }
+        "
+      >
+        <span
+          :class="[
+            button,
+            'flex',
+            { 'my-disabled': pageIndex + 1 === totalPages || totalPages === 1 },
+          ]"
+        >
+          <BIcons :class="chevron" icon="chevron-right" size="1rem" />
+        </span>
+      </button>
+    </span>
+  </nav>
 </template>

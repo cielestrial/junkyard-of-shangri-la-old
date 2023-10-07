@@ -1,27 +1,69 @@
 <script setup lang="ts">
-import Overlay from '~/components/effects/Overlay.vue';
-import { theme } from '~/components/main/schemas';
+import MyOverlay from '~/components/effects/MyOverlay.vue';
+import { trapFocus } from '~/components/effects/effectUtils';
+import { theme } from '~/pages/index.vue';
 import BIcons from '../../icons/BIcons.vue';
 
 defineEmits<{ (e: 'close'): void }>();
 
 const { colorScheme } = inject('theme') as theme;
 
+const modalRef = ref<HTMLDivElement | null>(null);
+
+const tabList = ref<NodeListOf<Element>>();
+const tabLength = ref(-1);
+const tabIndex = ref(-1);
+
+onMounted(() => {
+  if (modalRef.value !== null) {
+    modalRef.value.focus();
+    tabIndex.value = 0;
+    tabList.value = modalRef.value.querySelectorAll(
+      'button, input, [tabindex = "0"]'
+    );
+    tabLength.value = tabList.value.length;
+    if (tabLength.value > 0)
+      (tabList.value[tabIndex.value] as HTMLInputElement).focus();
+  }
+});
+
 const border = 'border-4 rounded ';
-const outer = 'h-fit w-fit shadow-md m-auto z-20 ' + border + colorScheme;
+const outer = 'h-fit w-fit shadow m-auto z-20 ' + border + colorScheme;
 const inner =
-  'w-[40vmin] aspect-[3/4] m-[1.5vmin] relative ' + border + colorScheme;
+  'w-60 sm:w-72 aspect-[3/4] m-2.5 relative ' + border + colorScheme;
 </script>
 
 <template>
-  <Overlay z="z-20" invisible>
-    <Overlay z="z-20" invisible @click="$emit('close')" />
-    <div :class="outer">
+  <MyOverlay z="z-20" invisible>
+    <MyOverlay z="z-20" invisible @click="$emit('close')" />
+    <div
+      ref="modalRef"
+      role="alertdialog"
+      aria-modal="true"
+      aria-label="Members"
+      aria-describedby="ComingSoon"
+      @keydown.esc="
+        (event) => {
+          $emit('close');
+          event.stopImmediatePropagation();
+        }
+      "
+      @keydown.tab="
+        (event) => {
+          tabIndex = trapFocus(event, tabLength, tabIndex);
+          (tabList?.[tabIndex] as HTMLInputElement)?.focus();
+        }
+      "
+      :class="outer"
+    >
       <div :class="inner">
         <div class="absolute top-0 left-0 h-full w-full flex">
-          <h2 class="text-center text-2xl w-fit h-fit m-auto">
+          <p
+            id="ComingSoon"
+            class="text-center text-2xl/tight w-fit h-fit m-auto font-bold"
+          >
             Coming Soon! <span class="text-xs absolute">TM</span>
-          </h2>
+          </p>
         </div>
         <div class="h-9 text-amber-400">
           <BIcons
@@ -31,8 +73,9 @@ const inner =
           />
           <button
             type="button"
-            class="w-fit h-fit text-red-500 absolute top-0 right-0 m-[1vmin]"
+            class="w-fit h-fit rounded-full text-red-500 absolute top-0 right-0 m-[1vmin]"
             @click="$emit('close')"
+            aria-label="Close"
           >
             <BIcons
               icon="star-fill"
@@ -55,5 +98,5 @@ const inner =
         </div>
       </div>
     </div>
-  </Overlay>
+  </MyOverlay>
 </template>
