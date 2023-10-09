@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  size: string;
-}>();
+  defineProps<{
+    size: string;
+  }>();
 </script>
 
 <template>
@@ -10,8 +10,7 @@ defineProps<{
     :width="size"
     viewBox="0 0 600 300"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+    xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_210_14)">
       <mask
         id="mask0_210_14"
@@ -20,8 +19,7 @@ defineProps<{
         x="0"
         y="0"
         width="600"
-        height="300"
-      >
+        height="300">
         <path d="M600 0H0V300H600V0Z" fill="white" />
       </mask>
       <g mask="url(#mask0_210_14)">

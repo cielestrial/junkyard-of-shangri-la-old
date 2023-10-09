@@ -5,16 +5,16 @@ export default defineNuxtConfig({
       title: 'Junkyard of Shangri-La',
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
-      ],
-    },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
+      ]
+    }
   },
   devtools: { enabled: false },
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
       tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
+      autoprefixer: {}
+    }
+  }
 });

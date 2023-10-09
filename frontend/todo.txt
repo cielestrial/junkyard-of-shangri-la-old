@@ -1,10 +1,15 @@
 #Tomorrow#
 cookies
+clear all currently stored cookies
+set cookie options
+clear all currently stored cookies
 Host backend
+
+#Monday#
+Mobile compatibility testing
 Host frontend
 
 #Extra#
-Mobile compatibility testing
 Apply Web Design Tips
 'back to top' button?
 Footer

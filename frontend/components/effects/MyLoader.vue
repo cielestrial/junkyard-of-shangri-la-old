@@ -1,20 +1,20 @@
 <script setup lang="ts">
-defineProps<{ loaderText: string }>();
+  defineProps<{ loaderText: string }>();
 
-const timer = ref<NodeJS.Timeout>();
-const dot = ref(1);
-const dotPresets = ref(['.', '..', '...', '..']);
+  const timer = ref<NodeJS.Timeout>();
+  const dot = ref(1);
+  const dotPresets = ref(['.', '..', '...', '..']);
 
-onMounted(() => {
-  timer.value = setInterval(() => {
-    dot.value %= 4;
-    dot.value++;
-  }, 500);
-});
+  onMounted(() => {
+    timer.value = setInterval(() => {
+      dot.value %= 4;
+      dot.value++;
+    }, 500);
+  });
 
-onUnmounted(() => clearInterval(timer.value));
+  onUnmounted(() => clearInterval(timer.value));
 
-const loader = 'title text-3xl/none mx-auto mb-14 cursor-default ';
+  const loader = 'title text-3xl/none mx-auto mb-14 cursor-default ';
 </script>
 
 <template>

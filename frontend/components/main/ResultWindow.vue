@@ -1,68 +1,68 @@
 <script setup lang="ts">
-import { theme } from '~/pages/index.vue';
-import MyAnimations from '../effects/MyAnimations.vue';
-import MyPagination from './MyPagination.vue';
-import { api, productTemplate } from './schemas';
+  import { theme } from '~/pages/index.vue';
+  import MyAnimations from '../effects/MyAnimations.vue';
+  import MyPagination from './MyPagination.vue';
+  import { api, productTemplate } from './schemas';
 
-const { colorScheme } = inject('theme') as theme;
-const { searchResults } = inject('api') as api;
+  const { colorScheme } = inject('theme') as theme;
+  const { searchResults } = inject('api') as api;
 
-const resultWindowRef = ref<HTMLDivElement | null>(null);
+  const resultWindowRef = ref<HTMLDivElement | null>(null);
 
-const batchSize = ref(20);
-const pageIndex = ref(0);
-const resultList = computed<productTemplate[][]>(() => {
-  let temp: productTemplate[][] = [];
-  for (
-    let i = 0, len = searchResults.value.total;
-    i < len;
-    i += batchSize.value
-  )
-    temp.push(searchResults.value.results.slice(i, i + batchSize.value));
-  return temp;
-});
+  const batchSize = ref(20);
+  const pageIndex = ref(0);
+  const resultList = computed<productTemplate[][]>(() => {
+    let temp: productTemplate[][] = [];
+    for (
+      let i = 0, len = searchResults.value.total;
+      i < len;
+      i += batchSize.value
+    )
+      temp.push(searchResults.value.results.slice(i, i + batchSize.value));
+    return temp;
+  });
 
-const totalPages = computed(() => resultList.value.length);
+  const totalPages = computed(() => resultList.value.length);
 
-onMounted(() => {
-  if (resultWindowRef.value !== null && totalPages.value > 1)
-    resultWindowRef.value.focus();
-});
+  onMounted(() => {
+    if (resultWindowRef.value !== null && totalPages.value > 1)
+      resultWindowRef.value.focus();
+  });
 
-function setPageIndex(newIndex: number) {
-  if (newIndex === pageIndex.value || totalPages.value < 2) return;
-  else if (newIndex >= 0 && newIndex <= totalPages.value - 1) {
-    if (resultWindowRef.value !== null) {
-      pageIndex.value = newIndex;
-      resultWindowRef.value.scrollIntoView(true);
+  function setPageIndex(newIndex: number) {
+    if (newIndex === pageIndex.value || totalPages.value < 2) return;
+    else if (newIndex >= 0 && newIndex <= totalPages.value - 1) {
+      if (resultWindowRef.value !== null) {
+        pageIndex.value = newIndex;
+        resultWindowRef.value.scrollIntoView(true);
+      }
     }
   }
-}
 
-function getItemAriaLabel(item: productTemplate) {
-  const ariaLabel = [
-    `Graphic of ${item.name},`,
-    `Title ${item.name},`,
-    `Price ${item.price},`,
-    `Category ${item.category}.`,
-  ];
-  return ariaLabel.join(' ');
-}
+  function getItemAriaLabel(item: productTemplate) {
+    const ariaLabel = [
+      `Graphic of ${item.name},`,
+      `Title ${item.name},`,
+      `Price ${item.price},`,
+      `Category ${item.category}.`
+    ];
+    return ariaLabel.join(' ');
+  }
 
-provide('pages', { pageIndex, totalPages, setPageIndex });
+  provide('pages', { pageIndex, totalPages, setPageIndex });
 
-const resultWindow =
-  'flex flex-col rounded w-[80vw] min-w-min min-h-[35vh] h-fit mb-14 mx-auto ' +
-  'border-4 shadow scroll-my-36 relative text-xl/none ' +
-  colorScheme;
-const not_button =
-  'flex border-2 rounded transition shadow dark:shadow-gray-900/50 ' +
-  'mx-auto px-2 py-1 w-11/12 sm:w-full ' +
-  'text-black/90 bg-sky-300 border-gray-600 ' +
-  'dark:text-white/90 dark:bg-gray-900 dark:border-gray-400 ';
-const resultPage =
-  'w-fit mx-auto px-2 sm:px-8 pb-8 grow flex flex-wrap gap-8 ' +
-  'justify-evenly list-outside scroll-my-36 ';
+  const resultWindow =
+    'flex flex-col rounded w-[80vw] min-w-min min-h-[35vh] h-fit mb-14 mx-auto ' +
+    'border-4 shadow scroll-my-36 relative text-xl/none ' +
+    colorScheme;
+  const not_button =
+    'flex border-2 rounded transition shadow dark:shadow-gray-900/50 ' +
+    'mx-auto px-2 py-1 w-11/12 sm:w-full ' +
+    'text-black/90 bg-sky-300 border-gray-600 ' +
+    'dark:text-white/90 dark:bg-gray-900 dark:border-gray-400 ';
+  const resultPage =
+    'w-fit mx-auto px-2 sm:px-8 pb-8 grow flex flex-wrap gap-8 ' +
+    'justify-evenly list-outside scroll-my-36 ';
 </script>
 
 <template>
@@ -73,16 +73,14 @@ const resultPage =
     aria-labelledby="resultWindowLabel totalResults"
     :class="resultWindow"
     @keydown.arrow-left="setPageIndex(pageIndex - 1)"
-    @keydown.arrow-right="setPageIndex(pageIndex + 1)"
-  >
+    @keydown.arrow-right="setPageIndex(pageIndex + 1)">
     <label id="resultWindowLabel" class="hidden-visually">
       Search results
     </label>
     <h2
       v-if="searchResults.total >= 0"
       id="totalResults"
-      class="mx-auto text-center text-2xl/none my-4 font-bold"
-    >
+      class="mx-auto my-4 text-center text-2xl/none font-bold">
       {{ searchResults.total }} items
       <span class="text-emerald-400"> In Stock </span>
     </h2>
@@ -94,29 +92,26 @@ const resultPage =
         id="searchResults"
         :class="resultPage"
         v-if="searchResults.total > 0"
-        :key="pageIndex"
-      >
+        :key="pageIndex">
         <li v-for="(result, key) in resultList[pageIndex]" :key="key">
           <a
             :aria-label="getItemAriaLabel(result)"
-            class="w-44 rounded flex flex-col p-2 h-fit gap-4"
+            class="flex h-fit w-44 flex-col gap-4 rounded p-2"
             :href="result.link"
             target="_blank"
-            rel="noreferrer noopener"
-          >
-            <span class="h-40 flex">
+            rel="noreferrer noopener">
+            <span class="flex h-40">
               <img
-                class="border border-gray-400 shadow m-auto"
+                class="m-auto border border-gray-400 shadow"
                 :src="result.image"
-                :alt="'Image of ' + result.name"
-              />
+                :alt="'Image of ' + result.name" />
             </span>
-            <span class="h-12 flex items-center">
-              <p class="mx-auto text-xl/tight text-center line-clamp-2">
+            <span class="flex h-12 items-center">
+              <p class="mx-auto line-clamp-2 text-center text-xl/tight">
                 {{ result.name }}
               </p>
             </span>
-            <p class="text-center text-emerald-400 mx-auto">
+            <p class="mx-auto text-center text-emerald-400">
               {{ result.price }}
             </p>
             <span :class="not_button">

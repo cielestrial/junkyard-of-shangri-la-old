@@ -17,14 +17,14 @@ const all_countries = Object.freeze({
   RO: 'Romania',
   SE: 'Sweden',
   US: 'United States',
-  ZA: 'South Africa',
+  ZA: 'South Africa'
 });
 export const en_countries = Object.freeze({
   AU: 'Australia',
   CA: 'Canada',
   EU: 'Europe',
   GB: 'United Kingdom',
-  US: 'United States',
+  US: 'United States'
 });
 
 export const countryCodes = Object.keys(en_countries) as Array<countryCodesT>;

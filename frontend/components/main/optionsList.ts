@@ -51,7 +51,7 @@ const _optionsList = [
   'Politics',
   'Cultural',
   'Erotica',
-  'Crime',
+  'Crime'
 ] as const;
 
 export const optionsList: optionsArrayT = _optionsList

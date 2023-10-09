@@ -4,22 +4,25 @@
 
 @font-face {
   font-family: Orbitron;
-  src: url("~/assets/fonts/Orbitron-VariableFont_wght.woff2") format("woff2"),
-    url("~/assets/fonts/Orbitron-VariableFont_wght.woff") format("woff");
+  src:
+    url('~/assets/fonts/Orbitron-VariableFont_wght.woff2') format('woff2'),
+    url('~/assets/fonts/Orbitron-VariableFont_wght.woff') format('woff');
   /* weight axis (400-900) */
 }
 
 @font-face {
   font-family: Lato;
-  src: url("~/assets/fonts/Lato-Regular.woff2") format("woff2"),
-    url("~/assets/fonts/Lato-Regular.woff") format("woff");
-    font-weight: 400;
+  src:
+    url('~/assets/fonts/Lato-Regular.woff2') format('woff2'),
+    url('~/assets/fonts/Lato-Regular.woff') format('woff');
+  font-weight: 400;
 }
 
 @font-face {
   font-family: Lato;
-  src: url("~/assets/fonts/Lato-Bold.woff2") format("woff2"),
-    url("~/assets/fonts/Lato-Bold.woff") format("woff");
+  src:
+    url('~/assets/fonts/Lato-Bold.woff2') format('woff2'),
+    url('~/assets/fonts/Lato-Bold.woff') format('woff');
   font-weight: 700;
   font-display: swap;
 }
@@ -29,7 +32,7 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-  font-variation-settings: "wght" 400;
+  font-variation-settings: 'wght' 400;
   overflow-x: clip;
   touch-action: none;
 
@@ -45,7 +48,7 @@
   .title {
     font-family: Orbitron, Tahoma, system-ui, sans-serif;
     font-weight: 600;
-    font-variation-settings: "wght" 600;
+    font-variation-settings: 'wght' 600;
   }
 
   input[type='search']::-webkit-search-cancel-button {
@@ -67,7 +70,7 @@
     min-height: 100vh;
   }
 
-  @supports(height: 100dvh) {
+  @supports (height: 100dvh) {
     .view-width {
       width: 100dvw;
     }
