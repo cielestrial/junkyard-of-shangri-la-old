@@ -3,7 +3,7 @@
   import ResultWindow from './ResultWindow.vue';
   import { optionsArrayT } from './optionsList';
   import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
-  import Search from './search/Search.vue';
+  import SearchForm from './search/SearchForm.vue';
 
   const server =
     process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:8000';
@@ -87,10 +87,9 @@
         const bVal = +b.price.replace(re, '');
         if (orderFrom === 'least') return aVal - bVal;
         else return bVal - aVal;
-      } else {
-        if (orderFrom === 'least') return a.category.localeCompare(b.category);
-        else return b.category.localeCompare(a.category);
-      }
+      } else if (orderFrom === 'least')
+        return a.category.localeCompare(b.category);
+      else return b.category.localeCompare(a.category);
     });
   }
 
@@ -103,9 +102,9 @@
 
 <template>
   <main id="main" role="main" :class="mainContainer">
-    <Search />
+    <SearchForm />
     <ResultWindow v-if="awake && !pendingResults" />
-    <MyLoader v-else-if="awake && pendingResults" loaderText="Loading" />
-    <MyLoader v-else loaderText="Connecting" />
+    <MyLoader v-else-if="awake && pendingResults" loader-text="Loading" />
+    <MyLoader v-else loader-text="Connecting" />
   </main>
 </template>

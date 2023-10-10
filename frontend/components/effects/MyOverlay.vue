@@ -9,7 +9,7 @@
   defineEmits<{ (e: 'close'): void }>();
 
   const overlay =
-    'fixed flex grow view-width view-height top-0 left-0 ' +
+    'fixed flex grow w-full h-full top-0 left-0 ' +
     (props.invisible ? 'bg-transparent cursor-default ' : 'bg-gray-800/50 ') +
     props.z;
 </script>

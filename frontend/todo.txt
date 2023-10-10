@@ -1,8 +1,4 @@
 #Tomorrow#
-cookies
-clear all currently stored cookies
-set cookie options
-clear all currently stored cookies
 Host backend
 
 #Monday#

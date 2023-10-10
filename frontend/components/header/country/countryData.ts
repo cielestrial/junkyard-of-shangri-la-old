@@ -1,8 +1,4 @@
-type countriesT = typeof en_countries;
-export type countryCodesT = keyof countriesT;
-// type countryNames = countriesT[keyof countriesT];
-
-const all_countries = Object.freeze({
+export const allCountries = Object.freeze({
   AU: 'Australia',
   BE: 'Belgium',
   CA: 'Canada',
@@ -19,7 +15,8 @@ const all_countries = Object.freeze({
   US: 'United States',
   ZA: 'South Africa'
 });
-export const en_countries = Object.freeze({
+
+const enCountries = Object.freeze({
   AU: 'Australia',
   CA: 'Canada',
   EU: 'Europe',
@@ -27,4 +24,8 @@ export const en_countries = Object.freeze({
   US: 'United States'
 });
 
-export const countryCodes = Object.keys(en_countries) as Array<countryCodesT>;
+type countriesT = typeof enCountries;
+export type countryCodesT = keyof countriesT;
+// type countryNames = countriesT[keyof countriesT];
+
+export const countryCodes = Object.keys(enCountries) as Array<countryCodesT>;

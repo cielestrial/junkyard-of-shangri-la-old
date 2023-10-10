@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { theme } from '~/pages/index.vue';
   import MyAnimations from '../effects/MyAnimations.vue';
   import MyPagination from './MyPagination.vue';
   import { api, productTemplate } from './schemas';
+  import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
   const { searchResults } = inject('api') as api;
@@ -12,7 +12,7 @@
   const batchSize = ref(20);
   const pageIndex = ref(0);
   const resultList = computed<productTemplate[][]>(() => {
-    let temp: productTemplate[][] = [];
+    const temp: productTemplate[][] = [];
     for (
       let i = 0, len = searchResults.value.total;
       i < len;
@@ -31,7 +31,7 @@
 
   function setPageIndex(newIndex: number) {
     if (newIndex === pageIndex.value || totalPages.value < 2) return;
-    else if (newIndex >= 0 && newIndex <= totalPages.value - 1) {
+    if (newIndex >= 0 && newIndex <= totalPages.value - 1) {
       if (resultWindowRef.value !== null) {
         pageIndex.value = newIndex;
         resultWindowRef.value.scrollIntoView(true);
@@ -53,9 +53,9 @@
 
   const resultWindow =
     'flex flex-col rounded w-[80vw] min-w-min min-h-[35vh] h-fit mb-14 mx-auto ' +
-    'border-4 shadow scroll-my-36 relative text-xl/none ' +
+    'border-4 shadow scroll-my-36 relative text-xl leading-none ' +
     colorScheme;
-  const not_button =
+  const notButton =
     'flex border-2 rounded transition shadow dark:shadow-gray-900/50 ' +
     'mx-auto px-2 py-1 w-11/12 sm:w-full ' +
     'text-black/90 bg-sky-300 border-gray-600 ' +
@@ -67,54 +67,59 @@
 
 <template>
   <section
-    role="region"
-    ref="resultWindowRef"
     id="resultWindow"
+    ref="resultWindowRef"
+    role="region"
     aria-labelledby="resultWindowLabel totalResults"
     :class="resultWindow"
     @keydown.arrow-left="setPageIndex(pageIndex - 1)"
-    @keydown.arrow-right="setPageIndex(pageIndex + 1)">
+    @keydown.arrow-right="setPageIndex(pageIndex + 1)"
+  >
     <label id="resultWindowLabel" class="hidden-visually">
       Search results
     </label>
     <h2
       v-if="searchResults.total >= 0"
       id="totalResults"
-      class="mx-auto my-4 text-center text-2xl/none font-bold">
+      class="mx-auto my-4 text-center text-2xl font-bold leading-none"
+    >
       {{ searchResults.total }} items
       <span class="text-emerald-400"> In Stock </span>
     </h2>
     <MyPagination v-if="searchResults.total > 0" pos="Top" />
     <MyAnimations name="fade">
       <ol
+        v-if="searchResults.total > 0"
+        id="searchResults"
+        :key="pageIndex"
         :aria-label="`Page ${pageIndex + 1} of Search Results`"
         tabindex="-1"
-        id="searchResults"
         :class="resultPage"
-        v-if="searchResults.total > 0"
-        :key="pageIndex">
+      >
         <li v-for="(result, key) in resultList[pageIndex]" :key="key">
           <a
             :aria-label="getItemAriaLabel(result)"
             class="flex h-fit w-44 flex-col gap-4 rounded p-2"
             :href="result.link"
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             <span class="flex h-40">
               <img
                 class="m-auto border border-gray-400 shadow"
                 :src="result.image"
-                :alt="'Image of ' + result.name" />
+                :alt="'Image of ' + result.name"
+              />
             </span>
             <span class="flex h-12 items-center">
-              <p class="mx-auto line-clamp-2 text-center text-xl/tight">
+              <p class="mx-auto line-clamp-2 text-center text-xl leading-tight">
                 {{ result.name }}
               </p>
             </span>
             <p class="mx-auto text-center text-emerald-400">
               {{ result.price }}
             </p>
-            <span :class="not_button">
+            <span :class="notButton">
               <p class="m-auto truncate text-center">
                 {{ result.category }}
               </p>

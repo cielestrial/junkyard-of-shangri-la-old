@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { theme } from '~/pages/index.vue';
   import MyAnimations from '../effects/MyAnimations.vue';
+  import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 
@@ -31,8 +31,9 @@
       :class="skipLinks"
       @focus="focused = true"
       @blur="focused = false"
-      @click="focusSearchBar">
-      <MyAnimations name="slide">
+      @click="focusSearchBar"
+    >
+      <MyAnimations name="slide-down">
         <p v-if="focused" :class="skipLink">Skip to main content</p>
       </MyAnimations>
     </a>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import CollapsedNav from './CollapsedNav.vue';
   import MySwitch from './MySwitch.vue';
-  import Country from './country/Country.vue';
-  import Members from './members/Members.vue';
+  import CountrySelect from './country/CountrySelect.vue';
+  import MembersButton from './members/MembersButton.vue';
 
   const nav =
     'w-full h-16 flex py-3 justify-end select-none z-10 ' +
@@ -10,7 +10,7 @@
 
   const title =
     'title w-fit h-fit text-center cursor-default mx-auto z-0 my-10 ' +
-    'text-4xl/tight sm:text-6xl/none md:text-8xl/none ';
+    'text-4xl leading-tight sm:text-6xl sm:leading-none md:text-8xl md:leading-none ';
 </script>
 
 <template>
@@ -19,10 +19,11 @@
     <aside role="complementary" aria-label="Settings" :class="nav">
       <div
         id="settingsBar"
-        class="mx-10 hidden items-end justify-center gap-x-8 sm:flex">
-        <Members />
+        class="mx-10 hidden items-end justify-center gap-x-8 sm:flex"
+      >
+        <MembersButton />
         <MySwitch />
-        <Country />
+        <CountrySelect />
       </div>
       <CollapsedNav class="block sm:hidden" />
     </aside>

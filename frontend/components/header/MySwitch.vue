@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { theme } from '~/pages/index.vue';
   import MyAnimations from '../effects/MyAnimations.vue';
   import BIcons from '../icons/BIcons.vue';
+  import { theme } from '~/pages/index.vue';
 
   const { darkTheme, changeTheme } = inject('theme') as theme;
   const outer =
@@ -23,7 +23,8 @@
       :aria-checked="darkTheme"
       type="button"
       :class="outer"
-      @click="changeTheme">
+      @click="changeTheme"
+    >
       <div :class="inner">
         <MyAnimations name="switch">
           <span v-if="darkTheme" class="m-auto text-white">

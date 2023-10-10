@@ -75,7 +75,8 @@
   <div
     @touchStart.passive="trackTouch"
     @touchEnd.passive="calculateSwipe"
-    @touchCancel.passive="reset">
+    @touchCancel.passive="reset"
+  >
     <slot></slot>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+  import BIcons from '../../icons/BIcons.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import { trapFocus } from '~/components/effects/effectUtils';
   import { theme } from '~/pages/index.vue';
-  import BIcons from '../../icons/BIcons.vue';
 
   defineEmits<{ (e: 'close'): void }>();
 
@@ -42,6 +42,7 @@
       aria-modal="true"
       aria-label="Members"
       aria-describedby="ComingSoon"
+      :class="outer"
       @keydown.esc="
         (event) => {
           $emit('close');
@@ -54,12 +55,13 @@
           (tabList?.[tabIndex] as HTMLInputElement)?.focus();
         }
       "
-      :class="outer">
+    >
       <div :class="inner">
         <div class="absolute left-0 top-0 flex h-full w-full">
           <p
             id="ComingSoon"
-            class="m-auto h-fit w-fit text-center text-2xl/tight font-bold">
+            class="m-auto h-fit w-fit text-center text-2xl leading-tight font-bold"
+          >
             Coming Soon! <span class="absolute text-xs">TM</span>
           </p>
         </div>
@@ -67,27 +69,32 @@
           <BIcons
             icon="star-fill"
             size="2rem"
-            class="absolute left-0 top-0 m-[1vmin] rotate-12 scale-y-[-1] animate-[pulse_2s_ease-in-out_1.5s_infinite]" />
+            class="absolute left-0 top-0 m-[1vmin] rotate-12 scale-y-[-1] animate-[pulse_2s_ease-in-out_1.5s_infinite]"
+          />
           <button
             type="button"
             class="absolute right-0 top-0 m-[1vmin] h-fit w-fit rounded-full text-red-500"
+            aria-label="Close"
             @click="$emit('close')"
-            aria-label="Close">
+          >
             <BIcons
               icon="star-fill"
               size="2rem"
-              class="-rotate-12 scale-[-1] animate-[pulse_2s_ease-in-out_0.25s_infinite]" />
+              class="-rotate-12 scale-[-1] animate-[pulse_2s_ease-in-out_0.25s_infinite]"
+            />
           </button>
         </div>
         <div class="h-9 text-amber-400">
           <BIcons
             icon="star-fill"
             size="2rem"
-            class="absolute bottom-0 left-0 m-[1vmin] -rotate-12 animate-[pulse_2s_ease-in-out_0.5s_infinite]" />
+            class="absolute bottom-0 left-0 m-[1vmin] -rotate-12 animate-[pulse_2s_ease-in-out_0.5s_infinite]"
+          />
           <BIcons
             icon="star-fill"
             size="2rem"
-            class="absolute bottom-0 right-0 m-[1vmin] rotate-12 scale-x-[-1] animate-[pulse_2s_ease-in-out_1s_infinite]" />
+            class="absolute bottom-0 right-0 m-[1vmin] rotate-12 scale-x-[-1] animate-[pulse_2s_ease-in-out_1s_infinite]"
+          />
         </div>
       </div>
     </div>

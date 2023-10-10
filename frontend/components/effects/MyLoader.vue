@@ -14,9 +14,11 @@
 
   onUnmounted(() => clearInterval(timer.value));
 
-  const loader = 'title text-3xl/none mx-auto mb-14 cursor-default ';
+  const loader = 'title text-3xl leading-none mx-auto mb-14 cursor-default ';
 </script>
 
 <template>
-  <span :class="loader">{{ loaderText }}{{ dotPresets[dot - 1] }}</span>
+  <span :aria-label="loaderText" :class="loader"
+    >{{ loaderText }}{{ dotPresets[dot - 1] }}</span
+  >
 </template>

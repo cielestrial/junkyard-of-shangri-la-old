@@ -10,7 +10,8 @@
     :width="size"
     viewBox="0 0 3 2"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg">
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <g clip-path="url(#clip0_210_35)">
       <path d="M1 0H0V2H1V0Z" fill="#002B7F" />
       <path d="M2 0H1V2H2V0Z" fill="#FCD116" />

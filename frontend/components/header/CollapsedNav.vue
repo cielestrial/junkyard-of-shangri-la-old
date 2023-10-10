@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import { theme } from '~/pages/index.vue';
   import MyAnimations from '../effects/MyAnimations.vue';
   import MyOverlay from '../effects/MyOverlay.vue';
   import { trapFocus } from '../effects/effectUtils';
   import BIcons from '../icons/BIcons.vue';
   import MySwitch from './MySwitch.vue';
-  import Country from './country/Country.vue';
-  import Members from './members/Members.vue';
+  import CountrySelect from './country/CountrySelect.vue';
+  import MembersButton from './members/MembersButton.vue';
+  import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 
@@ -49,14 +49,14 @@
 <template>
   <div>
     <MyAnimations name="fade">
-      <MyOverlay z="z-10" v-if="opened" @click="close" />
+      <MyOverlay v-if="opened" z="z-10" @click="close" />
     </MyAnimations>
 
     <button
+      ref="hamburgerRef"
       aria-label="Menu"
       aria-haspopup="dialog"
       aria-controls="drawer"
-      ref="hamburgerRef"
       type="button"
       :class="menuButton"
       @click="
@@ -64,18 +64,19 @@
           opened = true;
           hamburgerRef?.focus();
         }
-      ">
+      "
+    >
       <BIcons class="rounded-full" icon="list" size="1.5rem" />
     </button>
 
-    <MyAnimations name="slide">
+    <MyAnimations name="slide-left">
       <div
+        v-if="opened"
         id="drawer"
+        ref="modalRef"
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        ref="modalRef"
-        v-if="opened"
         :class="drawer"
         @keydown.esc="
           (event) => {
@@ -88,18 +89,20 @@
             tabIndex = trapFocus(event, tabLength, tabIndex);
             (tabList?.[tabIndex] as HTMLInputElement)?.focus();
           }
-        ">
+        "
+      >
         <button
           aria-label="Close"
           type="button"
+          :class="exitButton"
           @click="close"
-          :class="exitButton">
+        >
           <BIcons icon="x-square-fill" size="1.5rem" />
         </button>
         <div class="mb-2 mt-4 flex flex-col items-center gap-y-8 p-8">
-          <Members />
+          <MembersButton />
           <MySwitch />
-          <Country />
+          <CountrySelect />
         </div>
       </div>
     </MyAnimations>

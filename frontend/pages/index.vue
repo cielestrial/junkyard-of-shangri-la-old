@@ -1,81 +1,145 @@
 <script setup lang="ts">
-import TouchContainer from '~/components/effects/TouchContainer.vue';
-import MyFooter from '~/components/footer/MyFooter.vue';
-import MyHeader from '~/components/header/MyHeader.vue';
-import MyMain from '~/components/main/MyMain.vue';
-import SkipLinks from '~/components/header/SkipLinks.vue';
+  import TouchContainer from '~/components/effects/TouchContainer.vue';
+  import { cookieOptions } from '~/components/effects/effectUtils';
+  import MyFooter from '~/components/footer/MyFooter.vue';
+  import MyHeader from '~/components/header/MyHeader.vue';
+  import MyMain from '~/components/main/MyMain.vue';
+  import CookieBanner from '~/components/body/CookieBanner.vue';
+  import SkipLinks from '~/components/body/SkipLinks.vue';
 
-export interface theme {
-  darkTheme: Readonly<Ref<boolean>>;
-  changeTheme: () => void;
-  colorScheme: string;
-}
+  export interface theme {
+    darkTheme: Readonly<Ref<boolean>>;
+    changeTheme: () => void;
+    colorScheme: string;
+  }
 
-const colorScheme =
-  'transition text-black/90 bg-white border-gray-700 ' +
-  'dark:text-white/90 dark:bg-gray-800 dark:border-gray-400 dark:shadow-gray-900/50 ';
+  export interface consent {
+    setConsentCookie: (newVal: boolean) => void;
+    hasConsent: Readonly<Ref<boolean>>;
+  }
 
-const _darkTheme = ref(false);
-const darkTheme = readonly(_darkTheme);
+  const consentCookie = useCookie<any>('consent', cookieOptions);
+  const _hasConsent = computed(
+    () => consentCookie.value !== null && consentCookie.value === true
+  );
+  function setConsentCookie(newVal: boolean) {
+    consentCookie.value = newVal;
+  }
+  const hasConsent = readonly(_hasConsent);
+  provide('consent', { setConsentCookie, hasConsent });
 
-const focusColor = computed(() => (_darkTheme.value ? '#9ca3af' : '#374151'));
-const activeColor = computed(() => (_darkTheme.value ? '#9ca3af' : '#9ca3af'));
+  const _darkTheme = ref(false);
+  const themeCookie = useCookie<any>('theme', cookieOptions);
 
-const client =
-  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000';
-
-onMounted(() => {
-  if (window.location.hash !== '') window.history.pushState(null, '', client);
-  const local = window.localStorage.getItem('theme');
   if (
-    local === 'dark' ||
-    (local === null &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches)
+    hasConsent.value &&
+    themeCookie.value !== null &&
+    themeCookie.value === 'dark'
   )
     _darkTheme.value = true;
-  else _darkTheme.value = false;
 
-  checkLocalStorageSize();
-});
+  useHead({
+    script: [
+      {
+        children: `
+      if (${_darkTheme.value}) 
+        document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+        `,
+        type: 'module'
+      }
+    ]
+  });
 
-watch(_darkTheme, (newVal) => {
-  if (newVal) document.documentElement.classList.add('dark');
-  else document.documentElement.classList.remove('dark');
-  window.localStorage.setItem('theme', newVal ? 'dark' : 'light');
-});
+  const colorScheme =
+    'transition text-black/90 bg-white border-gray-700 ' +
+    'dark:text-white/90 dark:bg-gray-800 dark:border-gray-400 dark:shadow-gray-900/50 ';
+  const darkTheme = readonly(_darkTheme);
+  const focusColor = computed(() => (_darkTheme.value ? '#9ca3af' : '#374151'));
+  const activeColor = computed(() =>
+    _darkTheme.value ? '#374151' : '#9ca3af'
+  );
 
-function changeTheme() {
-  _darkTheme.value = !_darkTheme.value;
-}
+  const client =
+    process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000';
 
-function checkLocalStorageSize() {
-  let _lsTotal = 0;
-  let _xLen = 0;
-  const keys = ['theme', 'country', 'selectedOptions'];
-  const output: string[] = ['\n'];
-  for (let _x in localStorage) {
-    if (!localStorage.hasOwnProperty(_x) || !keys.includes(_x)) {
-      continue;
+  onMounted(() => {
+    if (window.location.hash !== '') window.history.pushState(null, '', client);
+    const systemThemePref = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    if (!hasConsent.value || themeCookie.value === null)
+      _darkTheme.value = systemThemePref;
+    checkCookieSize();
+    checkLocalStorageSize();
+  });
+
+  watch(_darkTheme, (newVal) => {
+    if (newVal) {
+      document.documentElement.classList.add('dark');
+      if (hasConsent.value) themeCookie.value = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      if (hasConsent.value) themeCookie.value = 'light';
     }
-    _xLen = (localStorage[_x].length + _x.length) * 2;
-    _lsTotal += _xLen;
-    output.push(_x.substring(0, 50) + '=' + (_xLen / 1024).toFixed(3) + 'KB\n');
+  });
+
+  function changeTheme() {
+    _darkTheme.value = !_darkTheme.value;
   }
-  output.push('Total=' + (_lsTotal / 1024).toFixed(3) + '/4.096KB');
-  // total local storage size capacity is 5000 KB
-  // cookie storage size capacity is 4.096 KB
-  console.warn(output.join(''));
-}
 
-provide('theme', { darkTheme, changeTheme, colorScheme });
+  provide('theme', { darkTheme, changeTheme, colorScheme });
 
-const container =
-  'view-width min-view-height flex flex-col text-2xl/none ' + colorScheme;
+  function checkLocalStorageSize() {
+    const keys = ['theme', 'country', 'selectedOptions', 'consent'];
+    const output: string[] = ['LocalStorage:\n'];
+    let total = 0;
+    for (let i = 0, l = localStorage.length, key, len; i < l; i++) {
+      key = localStorage.key(i);
+      if (key === null || !keys.includes(key)) continue;
+      len = (localStorage[key].length + key.length) * 2;
+      total += len;
+      output.push(
+        key.substring(0, 50) + '=' + (len / 1024).toFixed(3) + 'KB\n'
+      );
+    }
+    // total local storage size capacity is 5000 KB
+    output.push('Total=' + (total / 1024).toFixed(3) + '/5000KB');
+    console.info(output.join(''));
+  }
+
+  function checkCookieSize() {
+    // const keys = ['darkTheme', 'country', 'selectedOptions'];
+    const output: string[] = ['Cookie:\n'];
+    const cookie = document.cookie;
+    const splitCookie = cookie.split(/=|; ?/);
+    let total = 0;
+    const splitLen = splitCookie.length;
+    if (splitLen % 2 === 0) {
+      for (let i = 0, key, len; i < splitLen; i += 2) {
+        key = splitCookie[i];
+        // The 1 is the '='.length
+        len = (key.length + 1 + splitCookie[i + 1].length) * 2;
+        total += len;
+        output.push(
+          key.substring(0, 50) + '=' + (len / 1024).toFixed(3) + 'KB\n'
+        );
+      }
+    }
+    // cookie storage size capacity is 4.096 KB
+    output.push('Total=' + (total / 1024).toFixed(3) + '/4.096KB');
+    console.info(output.join(''));
+  }
+
+  const container =
+    'w-screen min-h-screen h-max flex flex-col text-2xl leading-none ' +
+    colorScheme;
 </script>
 
 <template>
   <TouchContainer :class="container">
     <SkipLinks />
+    <CookieBanner />
     <MyHeader />
     <MyMain />
     <MyFooter />
@@ -83,23 +147,23 @@ const container =
 </template>
 
 <style>
-:focus-visible {
-  outline: v-bind(focusColor) outset 4px;
-  outline-offset: 0.5px;
-}
+  :focus-visible {
+    outline: v-bind(focusColor) outset 4px;
+    outline-offset: 2px;
+  }
 
-.my-focus {
-  outline: v-bind(focusColor) inset 3px;
-  outline-offset: 1px;
-}
+  .my-focus {
+    outline: v-bind(focusColor) solid 4px;
+    outline-offset: -4px;
+  }
 
-.my-active {
-  background-color: v-bind(activeColor) !important;
-  pointer-events: none !important;
-}
+  .my-active {
+    background-color: v-bind(activeColor);
+    pointer-events: none;
+  }
 
-.my-disabled {
-  opacity: 0.33 !important;
-  pointer-events: none !important;
-}
+  .my-disabled {
+    opacity: 0.33;
+    pointer-events: none;
+  }
 </style>

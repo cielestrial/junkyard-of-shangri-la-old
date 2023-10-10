@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { theme } from '~/pages/index.vue';
   import BIcons from '../icons/BIcons.vue';
   import { pages } from './schemas';
+  import { theme } from '~/pages/index.vue';
 
   defineProps<{ pos: 'Top' | 'Bottom' }>();
 
@@ -79,7 +79,7 @@
   }
 
   const pagination =
-    'flex flex-wrap justify-center mb-4 text-xl/none select-none ';
+    'flex flex-wrap justify-center mb-4 text-xl leading-none select-none ';
   const cell = 'w-9 aspect-[1] rounded ';
   const ellipsisCell = 'flex -mx-1 items-end ' + cell;
   const ellipsis = 'h-fit mx-auto mb-1 bg-transparent rounded ';
@@ -93,11 +93,12 @@
     role="navigation"
     :aria-label="`${pos} Pagination`"
     :class="pagination"
-    @keydown="paginationNavigation">
+    @keydown="paginationNavigation"
+  >
     <span class="flex flex-nowrap justify-center">
       <button
-        aria-label="Goto Previous Page"
         ref="prevButtonRef"
+        aria-label="Goto Previous Page"
         type="button"
         class="m-1 rounded"
         :aria-disabled="pageIndex + 1 === 1 || totalPages === 1"
@@ -106,13 +107,15 @@
             if (prevButtonRef?.ariaDisabled === 'false')
               setPageIndex(pageIndex - 1);
           }
-        ">
+        "
+      >
         <span
           :class="[
             button,
             'flex',
             { 'my-disabled': pageIndex + 1 === 1 || totalPages === 1 }
-          ]">
+          ]"
+        >
           <BIcons :class="chevron" icon="chevron-left" size="1rem" />
         </span>
       </button>
@@ -122,7 +125,8 @@
         :aria-current="pageIndex + 1 === 1"
         type="button"
         :class="[button, 'm-1', { 'my-active': pageIndex + 1 === 1 }]"
-        @click="setPageIndex(0)">
+        @click="setPageIndex(0)"
+      >
         1
       </button>
 
@@ -130,14 +134,14 @@
         v-if="totalPages > 5 && pageIndex > 2"
         aria-label="ellipsis"
         tabindex="-1"
-        :class="ellipsisCell">
+        :class="ellipsisCell"
+      >
         <BIcons :class="ellipsis" icon="three-dots" size="1rem" />
       </div>
     </span>
 
-    <span class="flex flex-nowrap justify-center">
+    <span v-if="totalPages > 2" class="flex flex-nowrap justify-center">
       <button
-        v-if="totalPages > 2"
         v-for="i in totalRotatingButtons"
         :key="i"
         type="button"
@@ -151,7 +155,8 @@
           'm-1',
           { 'my-active': pageIndex + 1 === rotatingButtons[i] }
         ]"
-        @click="setPageIndex(rotatingButtons[i] - 1)">
+        @click="setPageIndex(rotatingButtons[i] - 1)"
+      >
         {{ rotatingButtons[i] }}
       </button>
     </span>
@@ -161,7 +166,8 @@
         v-if="totalPages > 5 && totalPages - pageIndex > 3"
         aria-label="ellipsis"
         tabindex="-1"
-        :class="ellipsisCell">
+        :class="ellipsisCell"
+      >
         <BIcons :class="ellipsis" icon="three-dots" size="1rem" />
       </div>
 
@@ -173,13 +179,14 @@
         :aria-current="pageIndex + 1 === totalPages"
         type="button"
         :class="[button, 'm-1', { 'my-active': pageIndex + 1 === totalPages }]"
-        @click="setPageIndex(totalPages - 1)">
+        @click="setPageIndex(totalPages - 1)"
+      >
         {{ totalPages }}
       </button>
 
       <button
-        aria-label="Goto Next Page"
         ref="nextButtonRef"
+        aria-label="Goto Next Page"
         type="button"
         :aria-disabled="pageIndex + 1 === totalPages || totalPages === 1"
         class="m-1 rounded"
@@ -188,13 +195,15 @@
             if (nextButtonRef?.ariaDisabled === 'false')
               setPageIndex(pageIndex + 1);
           }
-        ">
+        "
+      >
         <span
           :class="[
             button,
             'flex',
             { 'my-disabled': pageIndex + 1 === totalPages || totalPages === 1 }
-          ]">
+          ]"
+        >
           <BIcons :class="chevron" icon="chevron-right" size="1rem" />
         </span>
       </button>
