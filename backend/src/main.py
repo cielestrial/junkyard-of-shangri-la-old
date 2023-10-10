@@ -14,13 +14,16 @@ origins = [frontend, backend]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["GET", "POST"],
     allow_headers=[
+        "Accept",
+        "Accept-Language",
         "Access-Control-Allow-Headers",
-        "Content-Type",
         "Authorization",
         "Access-Control-Allow-Origin",
+        "Content-Language",
+        "Content-Type",
     ],
 )
 

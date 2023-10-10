@@ -1,6 +1,3 @@
-export type optionsArrayT = optionT[];
-type optionT = (typeof _optionsList)[number];
-
 const _optionsList = [
   'Travel',
   'Mystery',
@@ -51,8 +48,11 @@ const _optionsList = [
   'Politics',
   'Cultural',
   'Erotica',
-  'Crime',
+  'Crime'
 ] as const;
+
+type optionT = (typeof _optionsList)[number];
+export type optionsArrayT = optionT[];
 
 export const optionsList: optionsArrayT = _optionsList
   .slice(0)

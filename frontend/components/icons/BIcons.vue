@@ -1,18 +1,18 @@
 <script setup lang="ts">
-type icons = [
-  'cloud-sun',
-  'moon-stars-fill',
-  'star-fill',
-  'stars',
-  'caret-down-fill',
-  'x-square-fill',
-  'gear-fill',
-  'list',
-  'chevron-left',
-  'chevron-right',
-  'three-dots',
-];
-defineProps<{ icon: icons[number]; size: string }>();
+  type icons = [
+    'cloud-sun',
+    'moon-stars-fill',
+    'star-fill',
+    'stars',
+    'caret-down-fill',
+    'x-square-fill',
+    'gear-fill',
+    'list',
+    'chevron-left',
+    'chevron-right',
+    'three-dots'
+  ];
+  defineProps<{ icon: icons[number]; size: string }>();
 </script>
 
 <template>

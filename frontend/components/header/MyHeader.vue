@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import CollapsedNav from './CollapsedNav.vue';
-import MySwitch from './MySwitch.vue';
-import Country from './country/Country.vue';
-import Members from './members/Members.vue';
+  import CollapsedNav from './CollapsedNav.vue';
+  import MySwitch from './MySwitch.vue';
+  import CountrySelect from './country/CountrySelect.vue';
+  import MembersButton from './members/MembersButton.vue';
 
-const nav =
-  'w-full h-16 flex py-3 justify-end select-none z-10 ' +
-  'transition shadow-md dark:shadow-gray-900/50 ';
+  const nav =
+    'w-full h-16 flex py-3 justify-end select-none z-10 ' +
+    'transition shadow-md dark:shadow-gray-900/50 ';
 
-const title =
-  'title w-fit h-fit text-center cursor-default mx-auto z-0 my-10 ' +
-  'text-4xl/tight sm:text-6xl/none md:text-8xl/none ';
+  const title =
+    'title w-fit h-fit text-center cursor-default mx-auto z-0 my-10 ' +
+    'text-4xl leading-tight sm:text-6xl sm:leading-none md:text-8xl md:leading-none ';
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-fit self-start">
+  <div class="flex h-fit w-full flex-col self-start">
     <!-- or <section role="region"> -->
     <aside role="complementary" aria-label="Settings" :class="nav">
       <div
         id="settingsBar"
-        class="hidden sm:flex gap-x-8 mx-10 justify-center items-end"
+        class="mx-10 hidden items-end justify-center gap-x-8 sm:flex"
       >
-        <Members />
+        <MembersButton />
         <MySwitch />
-        <Country />
+        <CountrySelect />
       </div>
       <CollapsedNav class="block sm:hidden" />
     </aside>

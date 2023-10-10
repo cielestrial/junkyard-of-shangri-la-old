@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// const { colorScheme } = inject('theme') as theme;
+  // const { colorScheme } = inject('theme') as theme;
 </script>
 
 <template>
   <footer
     role="contentinfo"
-    class="w-full h-fit flex self-end px-5 sm:px-10 pt-6 pb-3 select-none relative z-0"
+    class="relative z-0 flex h-fit w-full select-none self-end px-5 pb-3 pt-6 sm:px-10"
   >
-    <div class="w-full h-8 my-auto text-lg/tight text-center">
+    <div class="my-auto h-8 w-full text-center text-lg leading-tight">
       Copyright &copy; 2023 &#124; cielestrial
     </div>
   </footer>
