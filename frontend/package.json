@@ -1,7 +1,7 @@
 {
   "name": "junkyard-of-shagri-la",
   "version": "4.1.1",
-  "homepage": "http://localhost:3000",
+  "homepage": "https://junkyard-of-shangri-la.onrender.com",
   "private": true,
   "type": "module",
   "scripts": {

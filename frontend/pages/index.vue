@@ -61,7 +61,9 @@
   );
 
   const client =
-    process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000';
+    process.env.NODE_ENV === 'production'
+      ? 'https://junkyard-of-shangri-la.onrender.com'
+      : 'http://localhost:3000';
 
   onMounted(() => {
     if (window.location.hash !== '') window.history.pushState(null, '', client);

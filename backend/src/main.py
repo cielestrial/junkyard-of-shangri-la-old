@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 from src.utils import *
 
 ENV = os.getenv("ENV")
-frontend = "" if ENV == "production" else "http://localhost:3000"
+frontend = "https://junkyard-of-shangri-la.onrender.com" if ENV == "production" else "http://localhost:3000"
 backend = "https://scraper-of-shangri-la.onrender.com" if ENV == "production" else "http://127.0.0.1:8000"
 
 app = FastAPI()
