@@ -6,7 +6,9 @@
   import SearchForm from './search/SearchForm.vue';
 
   const server =
-    process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:8000';
+    process.env.NODE_ENV === 'production'
+      ? 'https://scraper-of-shangri-la.onrender.com'
+      : 'http://127.0.0.1:8000';
 
   const _searchResults = ref<resultTemplate>({} as resultTemplate);
   const searchResults = readonly(_searchResults);

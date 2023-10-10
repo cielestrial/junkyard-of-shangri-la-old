@@ -19,23 +19,15 @@
     "no-console": [
       "warn",
       {
-        "allow": [
-          "info",
-          "warn",
-          "error"
-        ]
+        "allow": ["info", "warn", "error"]
       }
     ]
   },
   "overrides": [
     {
-      "files": [
-        "components/**/*.vue"
-      ],
+      "files": ["components/**/*.vue"],
       "rules": {
-        "vue/multi-word-component-names": [
-          "error"
-        ]
+        "vue/multi-word-component-names": ["error"]
       }
     }
   ]

@@ -5,7 +5,7 @@ from src.utils import *
 
 ENV = os.getenv("ENV")
 frontend = "" if ENV == "production" else "http://localhost:3000"
-backend = "" if ENV == "production" else "http://127.0.0.1:8000"
+backend = "https://scraper-of-shangri-la.onrender.com" if ENV == "production" else "http://127.0.0.1:8000"
 
 app = FastAPI()
 
