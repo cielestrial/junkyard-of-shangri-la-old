@@ -95,11 +95,13 @@ async def bookParser(
         parsed_product = await parse_future
         if parsed_product is not None:
             results.append(parsed_product)
-
-    next_page = getNextPage(url, parsed_HTML)
-    if next_page != "":
-        # print(getNextPage.__name__ + " " + next_page)
-        result = await getHTMLContent(name, category, next_page, client, redis_instance)
-        if isinstance(result, list):
-            results.extend(result)
+    if name != "":
+        next_page = getNextPage(url, parsed_HTML)
+        if next_page != "":
+            # print(getNextPage.__name__ + " " + next_page)
+            result = await getHTMLContent(
+                name, category, next_page, client, redis_instance
+            )
+            if isinstance(result, list):
+                results.extend(result)
     return results
