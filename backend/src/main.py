@@ -1,11 +1,19 @@
 from fastapi import Body, FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from src.utils import *
+from src.myUtils import *
 
 ENV = os.getenv("ENV")
-frontend = "https://junkyard-of-shangri-la.onrender.com" if ENV == "production" else "http://localhost:3000"
-backend = "https://scraper-of-shangri-la.onrender.com" if ENV == "production" else "http://127.0.0.1:8000"
+frontend = (
+    "https://junkyard-of-shangri-la.onrender.com"
+    if ENV == "production"
+    else "http://localhost:3000"
+)
+backend = (
+    "https://scraper-of-shangri-la.onrender.com"
+    if ENV == "production"
+    else "http://127.0.0.1:8000"
+)
 
 app = FastAPI()
 
@@ -83,7 +91,7 @@ async def clear_cache(response: Response) -> MessageSchema:
 
 
 @app.post("/search")
-async def scrape(
+async def searchScrape(
     response: Response,
     searchRequest: searchSchema = Body(...),
 ) -> scrapedProductsSchema | MessageSchema:
@@ -100,6 +108,36 @@ async def scrape(
             async with ClientSession(headers=headers) as client:
                 for batch in batches:
                     batch_results = await batchScrape(searchString, batch, client)
+                    results.extend(batch_results)
+            await client.close()
+
+        # print(f"\nResults:\n{results}\n")
+        total = len(results)
+    except Exception as err:
+        response.status_code = 500
+        return MessageSchema(status_code=500, details=f"{err}")
+    else:
+        response.status_code = 200
+        return scrapedProductsSchema(status_code=200, total=total, results=results)
+
+
+@app.post("/promo")
+async def promoScrape(
+    response: Response,
+    promoRequest: promoSchema = Body(...),
+) -> scrapedProductsSchema | MessageSchema:
+    try:
+        # print(f"\nSearch:\n{searchRequest}\n")
+        promoParams = promoRequest.promoParams
+        paramsLength = len(promoParams)
+        results: list[scrapedProductSchema] = []
+
+        if paramsLength > 0:
+            batches = splitIntoBatches(promoParams, paramsLength)
+            headers = {"Content-Type": "text/html"}
+            async with ClientSession(headers=headers) as client:
+                for batch in batches:
+                    batch_results = await batchScrape("", batch, client)
                     results.extend(batch_results)
             await client.close()
 

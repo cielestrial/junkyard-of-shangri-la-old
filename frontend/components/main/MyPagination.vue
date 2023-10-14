@@ -100,7 +100,7 @@
         ref="prevButtonRef"
         aria-label="Goto Previous Page"
         type="button"
-        class="m-1 rounded"
+        class="m-1 rounded cursor-default"
         :aria-disabled="pageIndex + 1 === 1 || totalPages === 1"
         @click="
           () => {
@@ -112,7 +112,7 @@
         <span
           :class="[
             button,
-            'flex',
+            'flex cursor-pointer',
             { 'my-disabled': pageIndex + 1 === 1 || totalPages === 1 }
           ]"
         >
@@ -189,7 +189,7 @@
         aria-label="Goto Next Page"
         type="button"
         :aria-disabled="pageIndex + 1 === totalPages || totalPages === 1"
-        class="m-1 rounded"
+        class="m-1 rounded cursor-default"
         @click="
           () => {
             if (nextButtonRef?.ariaDisabled === 'false')
@@ -200,7 +200,7 @@
         <span
           :class="[
             button,
-            'flex',
+            'flex cursor-pointer',
             { 'my-disabled': pageIndex + 1 === totalPages || totalPages === 1 }
           ]"
         >

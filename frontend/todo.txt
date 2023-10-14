@@ -1,10 +1,3 @@
-#Tomorrow#
-Host backend
-
-#Monday#
-Mobile compatibility testing
-Host frontend
-
 #Extra#
 Apply Web Design Tips
 'back to top' button?

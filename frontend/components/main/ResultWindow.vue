@@ -5,7 +5,7 @@
   import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
-  const { searchResults } = inject('api') as api;
+  const { searchResults, resultType } = inject('api') as api;
 
   const resultWindowRef = ref<HTMLDivElement | null>(null);
 
@@ -84,7 +84,9 @@
       class="mx-auto my-4 text-center text-2xl font-bold leading-none"
     >
       {{ searchResults.total }} items
-      <span class="text-emerald-400"> In Stock </span>
+      <span class="text-emerald-400">
+        {{ resultType === 'promo' ? 'On Promo' : 'In Stock' }}
+      </span>
     </h2>
     <MyPagination v-if="searchResults.total > 0" pos="Top" />
     <MyAnimations name="fade">

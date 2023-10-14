@@ -150,22 +150,22 @@
 
 <style>
   :focus-visible {
-    outline: v-bind(focusColor) outset 4px;
-    outline-offset: 2px;
+    outline: v-bind(focusColor) outset 4px !important;
+    outline-offset: 2px !important;
   }
 
   .my-focus {
-    outline: v-bind(focusColor) solid 4px;
-    outline-offset: -4px;
+    outline: v-bind(focusColor) solid 4px !important;
+    outline-offset: -4px !important;
   }
 
   .my-active {
-    background-color: v-bind(activeColor);
-    pointer-events: none;
+    background-color: v-bind(activeColor) !important;
+    pointer-events: none !important;
   }
 
   .my-disabled {
-    opacity: 0.33;
-    pointer-events: none;
+    opacity: 0.33 !important;
+    pointer-events: none !important;
   }
 </style>

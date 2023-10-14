@@ -16,9 +16,13 @@ export interface api {
       readonly results: readonly productTemplate[];
     }>
   >;
-
+  resultType: Readonly<Ref<'promo' | 'search'>>;
   getSearchResults: (
     searchString: string,
+    searchParams: optionsArrayT
+  ) => Promise<void>;
+  getPromoResults: (
+    batchSize: number,
     searchParams: optionsArrayT
   ) => Promise<void>;
 }

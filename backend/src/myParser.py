@@ -2,25 +2,26 @@ import asyncio
 from urllib.parse import urljoin
 
 from selectolax.lexbor import LexborHTMLParser, LexborNode
-from src.schemas import *
+from src.mySchemas import *
 
 
-async def bookParser(name: str, category: str, url: str, parsed_HTML: LexborHTMLParser):
-    results: list[scrapedProductSchema] = []
-    products = parsed_HTML.css("article.product_pod")
-    parse_tasks = [scrapeProduct(product, name, category, url) for product in products]
-    for parse_future in asyncio.as_completed(parse_tasks):
-        parsed_product = await parse_future
-        if parsed_product is not None:
-            results.append(parsed_product)
-    return results
+def getWebsiteUrl(paramURL: str):
+    """Returns the url for the provided domain name."""
+    url = {
+        "baseURL": "https://books.toscrape.com/",
+        "subURL": "catalogue/",
+        "extendedURL": f"category/books/{paramURL}/index.html",
+    }
+    return url["baseURL"] + url["subURL"] + url["extendedURL"]
 
 
-async def scrapeProduct(product: LexborNode, name: str, category: str, url: str):
+async def getProduct(product: LexborNode, name: str, category: str, url: str):
     scrapedProduct = scrapedProductSchema(
         image="", name="", price="", status="", category=category, link=""
     )
     scrapedProduct.name = getName(product)
+    if name == "":
+        name = scrapedProduct.name
     if name.casefold() in scrapedProduct.name.casefold():
         scrapedProduct.status = getStatus(product)
         if "In" in scrapedProduct.status.title():
@@ -78,6 +79,18 @@ async def getLink(product: LexborNode, scrapedProduct: scrapedProductSchema, url
         href = link.attributes["href"]
         if isinstance(href, str):
             scrapedProduct.link = urljoin(url, href)
+        else:
+            raise TypeError("href must be of type(str)")
+    else:
+        return ""
+
+
+def getNextPage(url: str, parsed_HTML: LexborHTMLParser):
+    next_page = parsed_HTML.css_first("li.next a[href]")
+    if next_page is not None:
+        href = next_page.attributes["href"]
+        if isinstance(href, str):
+            return urljoin(url, href)
         else:
             raise TypeError("href must be of type(str)")
     else:

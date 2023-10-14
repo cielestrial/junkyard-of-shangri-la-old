@@ -37,6 +37,25 @@ class scrapedProductsSchema(BaseModel):
     results: list[scrapedProductSchema]
 
 
+class promoSchema(BaseModel):
+    promoParams: list[str] = Field(
+        examples=[
+            [
+                "Crime",
+                "Fantasy",
+                "Fiction",
+                "Mystery",
+                "Nonfiction",
+                "Philosophy",
+                "Romance",
+                "Science Fiction",
+                "Self Help",
+                "Short Stories",
+            ]
+        ]
+    )
+
+
 class searchSchema(BaseModel):
     searchString: str = Field(examples=["The Attic"])
     searchParams: list[str] = Field(

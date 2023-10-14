@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import MyLoader from '../effects/MyLoader.vue';
   import ResultWindow from './ResultWindow.vue';
-  import { optionsArrayT } from './optionsList';
+  import { optionsArrayT, optionsList } from './optionsList';
   import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
   import SearchForm from './search/SearchForm.vue';
 
@@ -12,7 +12,13 @@
 
   const _searchResults = ref<resultTemplate>({} as resultTemplate);
   const searchResults = readonly(_searchResults);
-  const pendingResults = ref(false);
+  const _resultType = ref<'promo' | 'search'>('promo');
+  const resultType = readonly(_resultType);
+  const pendingSearchResults = ref(false);
+  const pendingPromoResults = ref(false);
+  const pendingResults = computed(
+    () => pendingPromoResults.value || pendingSearchResults.value
+  );
   const awake = ref(false);
   const timer = ref<NodeJS.Timeout>();
 
@@ -29,7 +35,10 @@
   watch(ping, (newVal) => {
     if (newVal !== null) {
       if (newVal.status_code !== 200) console.error(newVal.details);
-      else if (!awake.value && newVal.details === 'pong') awake.value = true;
+      else if (!awake.value && newVal.details === 'pong') {
+        awake.value = true;
+        getPromoResults(optionsList);
+      }
     }
   });
 
@@ -38,10 +47,11 @@
       console.error('Error when pinging server:\n', { newVal });
   });
 
-  async function getSearchResults(
-    searchString: string,
-    searchParams: optionsArrayT
-  ) {
+  async function getPromoResults(promoParams: optionsArrayT) {
+    if (pendingResults.value) {
+      console.info('A request is already being processed.');
+      return;
+    }
     try {
       let x = 0;
       clearInterval(timer.value);
@@ -49,7 +59,50 @@
         () => console.log('Elapsed Time: ' + ++x),
         1000
       );
-      pendingResults.value = true;
+      pendingPromoResults.value = true;
+      const { data: results } = await useLazyFetch<resultTemplate | messageT>(
+        server + '/promo',
+        {
+          method: 'post',
+          watch: false,
+          server: false,
+          body: {
+            promoParams
+          }
+        }
+      );
+      clearInterval(timer.value);
+      if (results.value !== null) {
+        if (results.value.status_code !== 200)
+          console.error((results.value as messageT).details);
+        else {
+          _resultType.value = 'promo';
+          _searchResults.value = results.value as resultTemplate;
+          if (_searchResults.value.total > 1) sortBy('category', 'least');
+        }
+      }
+      pendingPromoResults.value = false;
+    } catch (error) {
+      console.error('Error when retrieving promo results\n', { error });
+    }
+  }
+
+  async function getSearchResults(
+    searchString: string,
+    searchParams: optionsArrayT
+  ) {
+    if (pendingResults.value) {
+      console.info('A request is already being processed.');
+      return;
+    }
+    try {
+      let x = 0;
+      clearInterval(timer.value);
+      timer.value = setInterval(
+        () => console.log('Elapsed Time: ' + ++x),
+        1000
+      );
+      pendingSearchResults.value = true;
       const { data: results } = await useLazyFetch<resultTemplate | messageT>(
         server + '/search',
         {
@@ -67,11 +120,12 @@
         if (results.value.status_code !== 200)
           console.error((results.value as messageT).details);
         else {
+          _resultType.value = 'search';
           _searchResults.value = results.value as resultTemplate;
           if (_searchResults.value.total > 1) sortBy('price', 'least');
         }
       }
-      pendingResults.value = false;
+      pendingSearchResults.value = false;
     } catch (error) {
       console.error('Error when retrieving search results\n', { error });
     }
@@ -95,7 +149,12 @@
     });
   }
 
-  provide('api', { searchResults, getSearchResults });
+  provide('api', {
+    searchResults,
+    resultType,
+    getSearchResults,
+    getPromoResults
+  });
 
   const mainContainer =
     'flex flex-col w-full h-fit self-center grow relative shadow-md ' +
