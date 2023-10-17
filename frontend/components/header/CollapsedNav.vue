@@ -38,11 +38,14 @@
   const _menu =
     'w-fit h-fit z-10 rounded border-2 transition shadow ' + colorScheme;
   const menuButton =
-    _menu + 'relative mx-5 p-2 active:scale-95 hover:bg-gray-300 ';
+    _menu +
+    'relative mx-5 p-2 ' +
+    'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +
+    'hover:animate-pulse hover:bg-gray-200 dark:hover:bg-gray-500 ';
   const drawer = _menu + 'absolute right-0.5 top-0.5 ';
   const exitButton =
     'w-fit h-fit text-red-500 bg-white/90 rounded active:scale-95 ' +
-    'shadow dark:shadow-gray-900/50 ' +
+    'shadow dark:shadow-gray-900/50 hover:animate-pulse ' +
     'absolute top-2 right-2';
 </script>
 

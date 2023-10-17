@@ -1,7 +1,7 @@
 from aiohttp import ClientSession
+from myErrors import *
+from myParser import *
 from redis.asyncio import Redis
-from src.myErrors import *
-from src.myParser import *
 
 
 async def getHTMLContent(

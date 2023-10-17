@@ -1,8 +1,8 @@
 import asyncio
 from urllib.parse import urljoin
 
+from mySchemas import *
 from selectolax.lexbor import LexborHTMLParser, LexborNode
-from src.mySchemas import *
 
 
 def getWebsiteUrl(paramURL: str):

@@ -139,8 +139,8 @@
 </script>
 
 <template>
-  <TouchContainer :class="container">
-    <SkipLinks />
+  <TouchContainer id="container" :class="container">
+    <SkipLinks to="Main" />
     <CookieBanner />
     <MyHeader />
     <MyMain />
@@ -161,6 +161,7 @@
 
   .my-active {
     background-color: v-bind(activeColor) !important;
+    opacity: 0.66 !important;
     pointer-events: none !important;
   }
 

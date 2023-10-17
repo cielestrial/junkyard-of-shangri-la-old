@@ -17,6 +17,7 @@ export interface api {
     }>
   >;
   resultType: Readonly<Ref<'promo' | 'search'>>;
+  batchSize: Readonly<Ref<number>>;
   getSearchResults: (
     searchString: string,
     searchParams: optionsArrayT

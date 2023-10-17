@@ -1,7 +1,8 @@
+import uvicorn
 from fastapi import Body, FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from src.myUtils import *
+from myUtils import *
 
 ENV = os.getenv("ENV")
 frontend = (
@@ -49,16 +50,8 @@ async def redirect_docs():
 
 @app.get("/ping")
 async def ping(response: Response) -> MessageSchema:
-    try:
-        redis_instance = await createRedisInstance(True)
-        if isinstance(redis_instance, Redis):
-            await redis_instance.close()
-    except Exception as err:
-        response.status_code = 500
-        return MessageSchema(status_code=500, details=f"{err}")
-    else:
-        response.status_code = 200
-        return MessageSchema(status_code=200, details="pong")
+    response.status_code = 200
+    return MessageSchema(status_code=200, details="pong")
 
 
 @app.get("/clear")
@@ -149,3 +142,8 @@ async def promoScrape(
     else:
         response.status_code = 200
         return scrapedProductsSchema(status_code=200, total=total, results=results)
+
+
+if ENV != "production":
+    if __name__ == "__main__":
+        uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("PORT", 8000)))

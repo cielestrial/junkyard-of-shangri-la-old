@@ -139,7 +139,8 @@
   const select = computed(
     () =>
       'w-28 h-10 rounded flex justify-between items-center px-2 border-2 ' +
-      'hover:bg-gray-300 relative z-20 shadow ' +
+      'relative z-20 shadow hover:bg-gray-200 dark:hover:bg-gray-500 ' +
+      'active:bg-gray-300 dark:active:bg-gray-600 ' +
       (opened.value ? 'border-b-0 rounded-bl-none rounded-br-none ' : '') +
       colorScheme
   );
@@ -156,8 +157,8 @@
     colorScheme;
 
   const dropdownItem =
-    'w-full h-10 flex px-2 border-t-2 hover:bg-gray-300 ' +
-    'border-gray-700 dark:border-gray-400 ';
+    'w-full h-10 flex px-2 border-t-2 hover:bg-gray-200 dark:hover:bg-gray-500 ' +
+    'active:bg-gray-300 dark:active:bg-gray-600 border-gray-700 dark:border-gray-400 ';
 </script>
 
 <template>

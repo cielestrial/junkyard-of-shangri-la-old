@@ -15,58 +15,16 @@ module.exports = {
         'search-dark': "url('~/assets/svg/search-dark.svg')"
       },
       animation: {
-        'float-up': 'float-up .55s cubic-bezier(.38,0,.64,1) both',
-
-        twinkle: 'twinkle 2s ease-in-out infinite both',
-
-        'rotate-cw': 'rotate-cw .2s cubic-bezier(0,0.7,1,1) both',
-        'rotate-ccw': 'rotate-ccw .2s cubic-bezier(0,0.7,1,1) both',
-
-        'fade-in-out': 'fade-in-out 5s cubic-bezier(.38,0,.64,1) infinite both'
+        'hue-rotate': 'hue-rotate 5s cubic-bezier(.38,0,.64,1) infinite both'
       },
 
       keyframes: {
-        'float-up': {
-          '0%': { opacity: 1, transform: 'translateY(-75%)' },
-          '100%': { opacity: 0, transform: 'translateY(-225%)' }
-        },
-
-        twinkle: {
-          '0%': { filter: 'saturate(0.5)' },
-          '100%': { filter: 'saturate(2)' }
-        },
-
-        'rotate-cw': {
-          '0%': {
-            transform: 'rotate3d(0, 0, 1, 0deg)'
-          },
-          '100%': {
-            transform: 'rotate3d(0, 0, 1, 45deg)'
-          }
-        },
-
-        'rotate-ccw': {
-          '0%': {
-            transform: 'rotate3d(0, 0, 1, 0deg)'
-          },
-          '100%': {
-            transform: 'rotate3d(0, 0, 1, -45deg)'
-          }
-        },
-
-        'fall-down': {
-          '0%': { transform: 'translateY(-200%)' },
-          '100%': { transform: 'translateY(100vh)' }
-        },
-
-        'fade-in-out': {
-          '0%': { opacity: 0 },
-          '51%': {
-            opacity: 1
-          },
-          '100%': {
-            opacity: 0
-          }
+        'hue-rotate': {
+          '0%': { filter: 'hue-rotate(0deg)' },
+          '25%': { filter: 'hue-rotate(90deg)' },
+          '50%': { filter: 'hue-rotate(180deg)' },
+          '75%': { filter: 'hue-rotate(270deg)' },
+          '100%': { filter: 'hue-rotate(360deg)' }
         }
       },
 

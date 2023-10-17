@@ -110,8 +110,8 @@
     () =>
       'w-64 sm:w-[20rem] lg:w-[35rem] h-14 font-bold text-black/90 bg-white ' +
       'dark:text-white/90 dark:bg-gray-800 shadow dark:shadow-gray-900/50 ' +
-      'bg-no-repeat bg-[0.5rem] pl-10 pr-2 ' +
-      'bg-search-light dark:bg-search-dark ' +
+      'bg-no-repeat bg-[0.5rem] pl-10 pr-2 bg-search-light dark:bg-search-dark ' +
+      'hover:animate-pulse focus:animate-none ' +
       (searchError.value
         ? 'border-red-400 '
         : 'border-gray-700 dark:border-gray-400 ') +
@@ -119,8 +119,8 @@
   );
   const _button =
     'w-fit h-14 shadow dark:shadow-gray-900/50 p-2 ' +
-    'active:scale-95 active:bg-gray-400 hover:bg-gray-300 ' +
-    //  'focus-visible:bg-gray-300 ' +
+    'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +
+    'hover:bg-gray-200 dark:hover:bg-gray-500 ' +
     'text-black/90 bg-white dark:text-white/90 dark:bg-gray-800 ' +
     border;
   const searchButton =
@@ -194,15 +194,14 @@
         </button>
       </span>
 
-      <Teleport to="body">
-        <MyAnimations name="fade">
-          <MyOverlay v-if="opened" z="z-20" />
-        </MyAnimations>
-        <MyAnimations name="scale">
-          <SearchOptions v-if="opened" @close="close" />
-        </MyAnimations>
-      </Teleport>
+      <MyAnimations name="fade">
+        <MyOverlay v-if="opened" z="z-20" />
+      </MyAnimations>
+      <MyAnimations name="scale">
+        <SearchOptions v-if="opened" @close="close" />
+      </MyAnimations>
     </div>
+
     <div class="flex h-fit w-full text-red-400">
       <span class="min-h-40 mx-auto w-40 sm:w-80 md:w-[30rem]">
         <ul class="flex list-outside list-disc flex-col gap-2">

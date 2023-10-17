@@ -72,11 +72,11 @@
     'w-[80vmin] aspect-[1] m-2.5 px-2.5 ' + border + colorScheme;
   const exitButton =
     'w-fit h-fit text-red-500 bg-white/90 rounded self-end absolute ' +
-    'shadow dark:shadow-gray-900/50 active:scale-95 ';
+    'shadow dark:shadow-gray-900/50 active:scale-95 hover:animate-pulse ';
   const checkboxGroup =
     'flex flex-col flex-wrap w-full h-full list-outside pl-2.5 ' +
     'gap-x-2 gap-y-0.5 overflow-auto overscroll-none text-xl/normal ';
-  const checkbox = 'cursor-pointer w-fit h-fit my-auto';
+  const checkbox = 'cursor-pointer w-fit h-fit my-auto transition ';
 </script>
 
 <template>
@@ -113,7 +113,9 @@
           >
             <BIcons icon="x-square-fill" size="1.5rem" />
           </button>
-          <div class="mt-2 flex h-fit w-fit gap-x-1 self-start">
+          <div
+            class="mt-2 flex h-fit w-fit gap-x-1 self-start hover:animate-pulse"
+          >
             <input
               id="all"
               ref="allRef"
@@ -142,7 +144,7 @@
           @wheel.passive="parallelScroll"
         >
           <li v-for="(option, key) in searchOptions" :key="key">
-            <div class="flex gap-x-1">
+            <div class="flex gap-x-1 hover:animate-pulse">
               <input
                 :id="option"
                 v-model="selectedSearchOptions"

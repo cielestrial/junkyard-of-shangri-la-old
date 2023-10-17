@@ -16,7 +16,7 @@
 <template>
   <div class="flex h-fit w-full flex-col self-start">
     <!-- or <section role="region"> -->
-    <aside role="complementary" aria-label="Settings" :class="nav">
+    <aside id="aside" role="complementary" aria-label="Settings" :class="nav">
       <div
         id="settingsBar"
         class="mx-10 hidden items-end justify-center gap-x-8 sm:flex"
@@ -27,7 +27,7 @@
       </div>
       <CollapsedNav class="block sm:hidden" />
     </aside>
-    <header role="banner">
+    <header id="header" role="banner">
       <h1 :class="title">
         Junkyard of
         <br />

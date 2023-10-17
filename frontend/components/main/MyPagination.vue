@@ -3,7 +3,7 @@
   import { pages } from './schemas';
   import { theme } from '~/pages/index.vue';
 
-  defineProps<{ pos: 'Top' | 'Bottom' }>();
+  defineProps<{ pos: 'top' | 'bottom' }>();
 
   const { colorScheme } = inject('theme') as theme;
   const { pageIndex, totalPages, setPageIndex } = inject('pages') as pages;
@@ -84,14 +84,17 @@
   const ellipsisCell = 'flex -mx-1 items-end ' + cell;
   const ellipsis = 'h-fit mx-auto mb-1 bg-transparent rounded ';
   const button =
-    'border-2 shadow active:scale-95 hover:bg-gray-300 ' + cell + colorScheme;
-  const chevron = 'm-auto';
+    'border-2 shadow transition active:scale-95 active:bg-gray-300 ' +
+    'dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 ' +
+    cell +
+    colorScheme;
 </script>
 
 <template>
   <nav
+    :id="`${pos}Pagination`"
     role="navigation"
-    :aria-label="`${pos} Pagination`"
+    :aria-label="`${pos} pagination`"
     :class="pagination"
     @keydown="paginationNavigation"
   >
@@ -116,7 +119,7 @@
             { 'my-disabled': pageIndex + 1 === 1 || totalPages === 1 }
           ]"
         >
-          <BIcons :class="chevron" icon="chevron-left" size="1rem" />
+          <BIcons class="m-auto -rotate-90" icon="chevron-up" size="1rem" />
         </span>
       </button>
 
@@ -204,7 +207,7 @@
             { 'my-disabled': pageIndex + 1 === totalPages || totalPages === 1 }
           ]"
         >
-          <BIcons :class="chevron" icon="chevron-right" size="1rem" />
+          <BIcons class="m-auto rotate-90" icon="chevron-up" size="1rem" />
         </span>
       </button>
     </span>

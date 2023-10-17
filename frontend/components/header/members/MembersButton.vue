@@ -10,29 +10,25 @@
 
   const styling =
     'w-fit h-fit py-1.5 flex text-yellow-500 transition rounded ' +
-    'active:scale-95 active:text-amber-500 active:underline ' +
-    'hover:text-amber-400 hover:underline hover:animate-pulse ' +
-    'focus-visible:text-amber-400 focus-visible:underline focus:-visible:animate-pulse ' +
-    'focus-visible:border-gray-700 dark:focus-visible:border-gray-400 ';
+    'active:scale-95 active:text-amber-500 ' +
+    'hover:text-amber-400 hover:animate-pulse ';
 </script>
 <template>
   <div>
-    <Teleport to="body">
-      <MyAnimations name="fade">
-        <MyOverlay v-if="opened" z="z-20" />
-      </MyAnimations>
-      <MyAnimations name="scale">
-        <MyCard
-          v-if="opened"
-          @close="
-            () => {
-              opened = false;
-              membersRef?.focus();
-            }
-          "
-        />
-      </MyAnimations>
-    </Teleport>
+    <MyAnimations name="fade">
+      <MyOverlay v-if="opened" z="z-20" />
+    </MyAnimations>
+    <MyAnimations name="scale">
+      <MyCard
+        v-if="opened"
+        @close="
+          () => {
+            opened = false;
+            membersRef?.focus();
+          }
+        "
+      />
+    </MyAnimations>
 
     <button
       ref="membersRef"

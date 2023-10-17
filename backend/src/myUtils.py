@@ -1,12 +1,12 @@
+import math
 import os
 
 import redis.asyncio as redis
 from dotenv import load_dotenv
-from src.myScraper import *
+from myScraper import *
 
 load_dotenv()
 REDIS_URL = os.getenv("REDIS_URL")
-REDIS_MAX_CLIENTS = os.getenv("REDIS_MAX_CLIENTS")
 
 
 async def createRedisInstance(single: bool):
@@ -24,14 +24,12 @@ async def createRedisInstance(single: bool):
 
 
 def splitIntoBatches(searchParams: list[str], paramsLength: int):
-    if REDIS_MAX_CLIENTS is not None:
-        batch_size = int(REDIS_MAX_CLIENTS)
-        print(f"Batch Size: {batch_size}")
-        batches: list[list[str]] = []
-        for i in range(0, paramsLength, batch_size):
-            batches.append(searchParams[i : i + batch_size])
-        return batches
-    return [searchParams]
+    batch_size = math.ceil(paramsLength / 3)
+    print(f"Batch Size: {batch_size}")
+    batches: list[list[str]] = []
+    for i in range(0, paramsLength, batch_size):
+        batches.append(searchParams[i : i + batch_size])
+    return batches
 
 
 async def batchScrape(searchString: str, paramBatch: list[str], client: ClientSession):

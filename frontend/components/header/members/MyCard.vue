@@ -73,14 +73,14 @@
           />
           <button
             type="button"
-            class="absolute right-0 top-0 m-[1vmin] h-fit w-fit rounded-full text-red-500"
+            class="absolute right-0 top-0 m-[1vmin] rounded-full text-red-500 transition active:scale-90"
             aria-label="Close"
             @click="$emit('close')"
           >
             <BIcons
               icon="star-fill"
               size="2rem"
-              class="-rotate-12 scale-[-1] animate-[pulse_2s_ease-in-out_0.25s_infinite]"
+              class="-rotate-12 scale-[-1] hover:animate-pulse"
             />
           </button>
         </div>

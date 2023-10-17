@@ -1,15 +1,16 @@
 <script setup lang="ts">
   import MyAnimations from '../effects/MyAnimations.vue';
+  import SkipLinks from '../body/SkipLinks.vue';
+  import BackToTop from '../body/BackToTop.vue';
   import MyPagination from './MyPagination.vue';
   import { api, productTemplate } from './schemas';
   import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
-  const { searchResults, resultType } = inject('api') as api;
+  const { searchResults, resultType, batchSize } = inject('api') as api;
 
   const resultWindowRef = ref<HTMLDivElement | null>(null);
 
-  const batchSize = ref(20);
   const pageIndex = ref(0);
   const resultList = computed<productTemplate[][]>(() => {
     const temp: productTemplate[][] = [];
@@ -62,7 +63,12 @@
     'dark:text-white/90 dark:bg-gray-900 dark:border-gray-400 ';
   const resultPage =
     'w-fit mx-auto px-2 sm:px-8 pb-8 grow flex flex-wrap gap-8 ' +
-    'justify-evenly list-outside scroll-my-36 ';
+    'justify-evenly list-outside scroll-my-36 relative ';
+  const link =
+    'flex h-fit w-44 flex-col gap-4 rounded p-2 transition ' +
+    'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +
+    'hover:bg-gray-200 dark:hover:bg-gray-500 ';
+  const value = 'transition text-emerald-500 dark:text-green-500';
 </script>
 
 <template>
@@ -84,11 +90,14 @@
       class="mx-auto my-4 text-center text-2xl font-bold leading-none"
     >
       {{ searchResults.total }} items
-      <span class="text-emerald-400">
+      <span :class="value">
         {{ resultType === 'promo' ? 'On Promo' : 'In Stock' }}
       </span>
     </h2>
-    <MyPagination v-if="searchResults.total > 0" pos="Top" />
+
+    <SkipLinks v-if="searchResults.total > 0" to="Footer" />
+    <MyPagination v-if="searchResults.total > 0" pos="top" />
+
     <MyAnimations name="fade">
       <ol
         v-if="searchResults.total > 0"
@@ -101,7 +110,7 @@
         <li v-for="(result, key) in resultList[pageIndex]" :key="key">
           <a
             :aria-label="getItemAriaLabel(result)"
-            class="flex h-fit w-44 flex-col gap-4 rounded p-2"
+            :class="link"
             :href="result.link"
             target="_blank"
             rel="noreferrer noopener"
@@ -118,7 +127,7 @@
                 {{ result.name }}
               </p>
             </span>
-            <p class="mx-auto text-center text-emerald-400">
+            <p :class="'mx-auto text-center ' + value">
               {{ result.price }}
             </p>
             <span :class="notButton">
@@ -130,6 +139,8 @@
         </li>
       </ol>
     </MyAnimations>
-    <MyPagination v-if="searchResults.total > 0" pos="Bottom" />
+
+    <MyPagination v-if="searchResults.total > 0" pos="bottom" />
+    <BackToTop v-if="searchResults.total > 0" />
   </section>
 </template>

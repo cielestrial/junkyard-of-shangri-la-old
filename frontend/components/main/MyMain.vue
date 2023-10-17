@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import MyLoader from '../effects/MyLoader.vue';
+  import { touch } from '../effects/effectUtils';
   import ResultWindow from './ResultWindow.vue';
   import { optionsArrayT, optionsList } from './optionsList';
   import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
@@ -10,6 +11,10 @@
       ? 'https://scraper-of-shangri-la.onrender.com'
       : 'http://127.0.0.1:8000';
 
+  const { touchDevice } = inject('touch') as touch;
+
+  const _batchSize = ref(60);
+  const batchSize = readonly(_batchSize);
   const _searchResults = ref<resultTemplate>({} as resultTemplate);
   const searchResults = readonly(_searchResults);
   const _resultType = ref<'promo' | 'search'>('promo');
@@ -31,6 +36,13 @@
       pick: ['status_code', 'details']
     }
   );
+
+  onMounted(() => {
+    const mediumScreen = window.matchMedia('(max-width: 767px)').matches;
+    const smallScreen = window.matchMedia('(max-width: 639px)').matches;
+    if (smallScreen || touchDevice.value) _batchSize.value = 15;
+    else if (mediumScreen) _batchSize.value = 30;
+  });
 
   watch(ping, (newVal) => {
     if (newVal !== null) {
@@ -152,6 +164,7 @@
   provide('api', {
     searchResults,
     resultType,
+    batchSize,
     getSearchResults,
     getPromoResults
   });

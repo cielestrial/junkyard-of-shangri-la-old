@@ -1,13 +1,13 @@
 {
   "name": "junkyard-of-shagri-la",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "homepage": "https://junkyard-of-shangri-la.onrender.com",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node .output/server/index.mjs",
     "build": "nuxi build",
-    "dev": "nuxi dev --host",
+    "dev": "nuxi dev",
     "generate": "nuxi generate",
     "preview": "nuxi preview",
     "postinstall": "nuxi prepare",
