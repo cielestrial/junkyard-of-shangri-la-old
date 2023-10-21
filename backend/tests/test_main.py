@@ -4,7 +4,7 @@ from unicodedata import category
 from api.mySchemas import MessageSchema, scrapedProductsSchema
 from fastapi.encoders import jsonable_encoder
 from fastapi.testclient import TestClient
-from main import app
+from app import app
 
 sys.path.append("api")
 
