@@ -16,7 +16,7 @@
 <template>
   <div>
     <MyAnimations name="fade">
-      <MyOverlay v-if="opened" z="z-20" />
+      <MyOverlay v-if="opened" z="z-30" />
     </MyAnimations>
     <MyAnimations name="scale">
       <MyCard

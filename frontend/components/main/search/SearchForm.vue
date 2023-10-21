@@ -108,14 +108,14 @@
     'w-fit h-fit flex flex-wrap justify-center gap-2 px-2 sm:px-5 mx-auto mb-4 ';
   const searchBar = computed(
     () =>
-      'w-64 sm:w-[20rem] lg:w-[35rem] h-14 font-bold text-black/90 bg-white ' +
-      'dark:text-white/90 dark:bg-gray-800 shadow dark:shadow-gray-900/50 ' +
-      'bg-no-repeat bg-[0.5rem] pl-10 pr-2 bg-search-light dark:bg-search-dark ' +
+      border +
+      'w-64 sm:w-[20rem] lg:w-[35rem] h-14 pl-10 pr-2 ' +
+      'font-bold text-black/90 bg-white shadow ' +
+      'dark:text-white/90 dark:bg-gray-800 dark:shadow-gray-900/50 ' +
       'hover:animate-pulse focus:animate-none ' +
       (searchError.value
         ? 'border-red-400 '
-        : 'border-gray-700 dark:border-gray-400 ') +
-      border
+        : 'border-gray-700 dark:border-gray-400 ')
   );
   const _button =
     'w-fit h-14 shadow dark:shadow-gray-900/50 p-2 ' +
@@ -147,21 +147,31 @@
     <div :class="searchGroup">
       <!-- v-model doesn't work with IME languages like Japanese -->
       <!--  incase:     @compositionupdate="updateText" -->
-      <input
-        id="searchBar"
-        ref="searchBarRef"
-        v-model.lazy.trim="searchItem"
-        name="searchBar"
-        type="search"
-        :class="searchBar"
-        maxlength="100"
-        autocomplete="off"
-        required
-        aria-autocomplete="none"
-        :aria-invalid="searchError !== null"
-        aria-describedby="searchError"
-        @keydown.enter="submitForm"
-      />
+      <span class="w-fit h-fit relative">
+        <input
+          id="searchBar"
+          ref="searchBarRef"
+          v-model.lazy.trim="searchItem"
+          name="searchBar"
+          type="search"
+          :class="searchBar"
+          maxlength="100"
+          autocomplete="off"
+          required
+          aria-autocomplete="none"
+          :aria-invalid="searchError !== null"
+          aria-describedby="searchError"
+          @keydown.enter="submitForm"
+        />
+        <span class="absolute h-full top-0 left-3 flex">
+          <BIcons
+            class="m-auto transition text-gray-700 dark:text-gray-400"
+            icon="search"
+            size="1.5rem"
+          />
+        </span>
+      </span>
+
       <span class="flex flex-nowrap gap-2">
         <button
           id="searchButton"

@@ -10,10 +10,6 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      backgroundImage: {
-        'search-light': "url('~/assets/svg/search-light.svg')",
-        'search-dark': "url('~/assets/svg/search-dark.svg')"
-      },
       animation: {
         'hue-rotate': 'hue-rotate 5s cubic-bezier(.38,0,.64,1) infinite both'
       },

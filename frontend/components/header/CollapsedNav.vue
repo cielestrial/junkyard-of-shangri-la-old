@@ -42,7 +42,7 @@
     'relative mx-5 p-2 ' +
     'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +
     'hover:animate-pulse hover:bg-gray-200 dark:hover:bg-gray-500 ';
-  const drawer = _menu + 'absolute right-0.5 top-0.5 ';
+  const drawer = _menu + 'absolute right-0.5 top-0.5 z-10 ';
   const exitButton =
     'w-fit h-fit text-red-500 bg-white/90 rounded active:scale-95 ' +
     'shadow dark:shadow-gray-900/50 hover:animate-pulse ' +
@@ -51,10 +51,6 @@
 
 <template>
   <div>
-    <MyAnimations name="fade">
-      <MyOverlay v-if="opened" z="z-10" @click="close" />
-    </MyAnimations>
-
     <button
       ref="hamburgerRef"
       aria-label="Menu"
@@ -72,6 +68,9 @@
       <BIcons class="rounded-full" icon="list" size="1.5rem" />
     </button>
 
+    <MyAnimations name="fade">
+      <MyOverlay v-if="opened" z="z-10" @click="close" />
+    </MyAnimations>
     <MyAnimations name="slide-left">
       <div
         v-if="opened"

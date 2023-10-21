@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import MyAnimations from '../effects/MyAnimations.vue';
-  import SkipLinks from '../body/SkipLinks.vue';
-  import BackToTop from '../body/BackToTop.vue';
+  import { api, productTemplate } from '../schemas';
+  import BackToTop from './BackToTop.vue';
   import MyPagination from './MyPagination.vue';
-  import { api, productTemplate } from './schemas';
+  import SkipLinks from '~/components/body/SkipLinks.vue';
+  import MyAnimations from '~/components/effects/MyAnimations.vue';
   import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
@@ -53,8 +53,8 @@
   provide('pages', { pageIndex, totalPages, setPageIndex });
 
   const resultWindow =
-    'flex flex-col rounded w-[80vw] min-w-min min-h-[35vh] h-fit mb-14 mx-auto ' +
-    'border-4 shadow scroll-my-36 relative text-xl leading-none ' +
+    'flex flex-col min-w-min min-h-[35vh] h-fit pt-10 pb-14 mb-14 mx-auto ' +
+    'rounded w-[80vw] border-4 shadow scroll-my-36 relative text-xl leading-none ' +
     colorScheme;
   const notButton =
     'flex border-2 rounded transition shadow dark:shadow-gray-900/50 ' +
@@ -63,7 +63,7 @@
     'dark:text-white/90 dark:bg-gray-900 dark:border-gray-400 ';
   const resultPage =
     'w-fit mx-auto px-2 sm:px-8 pb-8 grow flex flex-wrap gap-8 ' +
-    'justify-evenly list-outside scroll-my-36 relative ';
+    'justify-evenly list-outside scroll-my-36 relative z-10 ';
   const link =
     'flex h-fit w-44 flex-col gap-4 rounded p-2 transition ' +
     'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +

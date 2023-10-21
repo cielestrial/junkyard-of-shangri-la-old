@@ -25,59 +25,74 @@ async def getHTMLContent(
             if url == "":
                 url = getWebsiteUrl(searchParamURL[searchParam])
             try:
-                cachedPage: str | None
+                cachedPage: str | None = None
                 if redis_instance is not None:
                     cachedPage = await redis_instance.get(url)
-                else:
-                    cachedPage = None
-            except:
-                raise RedisRequestError(f"Error retrieving HTML for {url} from cache")
+                if cachedPage is None or not isinstance(cachedPage, str):
+                    raise RedisRequestError(
+                        f"Error retrieving HTML for {url} from cache"
+                    )
+            except Exception as err:
+                print(f"{err}")
+                return await requestHTMLContent(
+                    searchString, searchParam, url, client, redis_instance
+                )
             else:
-                if cachedPage is not None and isinstance(cachedPage, str):
-                    # print("Retrieved from cache")
-                    try:
-                        parsed = LexborHTMLParser(cachedPage)
-                    except:
-                        raise ParsingError(f"Error parsing HTML from {url}")
-                    else:
-                        return await bookParser(
-                            searchString,
-                            searchParam,
-                            url,
-                            parsed,
-                            client,
-                            redis_instance,
-                        )
-                else:
-                    # print("Retrieved from website")
-                    try:
-                        async with client.get(url) as response:
-                            html_text = await response.text()
-                    except:
-                        raise HTTPRequestError(f"Error retrieving HTML from {url}")
-                    else:
-                        try:
-                            if redis_instance is not None:
-                                await redis_instance.set(url, html_text, ex=7200)
-                        except:
-                            raise RedisRequestError(f"Error caching HTML for {url}")
-                        finally:
-                            try:
-                                parsed = LexborHTMLParser(html_text)
-                            except:
-                                raise ParsingError(f"Error parsing HTML from {url}")
-                            else:
-                                return await bookParser(
-                                    searchString,
-                                    searchParam,
-                                    url,
-                                    parsed,
-                                    client,
-                                    redis_instance,
-                                )
+                # print("Retrieved from cache")
+                return await parseHTMLContent(
+                    cachedPage, searchString, searchParam, url, client, redis_instance
+                )
 
     emptyList: list[scrapedProductSchema] = []
     return emptyList
+
+
+async def requestHTMLContent(
+    searchString: str,
+    searchParam: str,
+    url: str,
+    client: ClientSession,
+    redis_instance: StrictRedis | None = None,
+):
+    try:
+        async with client.get(url) as response:
+            html_text = await response.text()
+    except:
+        raise HTTPRequestError(f"Error retrieving HTML from {url}")
+    else:
+        # print("Retrieved from website")
+        try:
+            if redis_instance is not None:
+                await redis_instance.set(url, html_text, ex=7200)
+        except:
+            print(f"Error caching HTML for {url}")
+        finally:
+            return await parseHTMLContent(
+                html_text, searchString, searchParam, url, client, redis_instance
+            )
+
+
+async def parseHTMLContent(
+    content: str,
+    searchString: str,
+    searchParam: str,
+    url: str,
+    client: ClientSession,
+    redis_instance: StrictRedis | None = None,
+):
+    try:
+        parsed = LexborHTMLParser(content)
+    except:
+        raise ParsingError(f"Error parsing HTML from {url}")
+    else:
+        return await bookParser(
+            searchString,
+            searchParam,
+            url,
+            parsed,
+            client,
+            redis_instance,
+        )
 
 
 async def bookParser(

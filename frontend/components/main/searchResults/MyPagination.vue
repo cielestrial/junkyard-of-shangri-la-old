@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import BIcons from '../icons/BIcons.vue';
-  import { pages } from './schemas';
+  import { pages } from '../schemas';
+  import BIcons from '~/components/icons/BIcons.vue';
   import { theme } from '~/pages/index.vue';
 
   defineProps<{ pos: 'top' | 'bottom' }>();
@@ -79,10 +79,10 @@
   }
 
   const pagination =
-    'flex flex-wrap justify-center mb-4 text-xl leading-none select-none ';
+    'flex flex-wrap justify-center mb-4 text-xl leading-none select-none z-10 ';
   const cell = 'w-9 aspect-[1] rounded ';
   const ellipsisCell = 'flex -mx-1 items-end ' + cell;
-  const ellipsis = 'h-fit mx-auto mb-1 bg-transparent rounded ';
+  const ellipsis = 'h-fit mx-auto mb-1 rounded ';
   const button =
     'border-2 shadow transition active:scale-95 active:bg-gray-300 ' +
     'dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 ' +

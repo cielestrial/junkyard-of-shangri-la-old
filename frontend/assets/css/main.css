@@ -32,7 +32,7 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-  font-variation-settings: 'wght' 400;
+  font-variation-settings: 'wght'400;
   overflow-x: clip;
 
   font-synthesis: none;
@@ -40,19 +40,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
 }
 
 @layer base {
   .title {
     font-family: Orbitron, Tahoma, system-ui, sans-serif;
     font-weight: 600;
-    font-variation-settings: 'wght' 600;
+    font-variation-settings: 'wght'600;
   }
 
   input[type='search']::-webkit-search-cancel-button {
     appearance: none;
   }
+
   input[type='search']::-ms-clear {
     appearance: none;
   }
@@ -61,7 +61,7 @@
 @layer utilities {
   .hidden-visually {
     position: absolute;
-    overflow: hidden;
+    overflow: clip;
     white-space: nowrap;
     margin: 0;
     padding: 0;

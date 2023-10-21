@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import MyLoader from '../effects/MyLoader.vue';
   import { touch } from '../effects/effectUtils';
-  import ResultWindow from './ResultWindow.vue';
+  import ResultWindow from './searchResults/ResultWindow.vue';
   import { optionsArrayT, optionsList } from './optionsList';
   import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
   import SearchForm from './search/SearchForm.vue';

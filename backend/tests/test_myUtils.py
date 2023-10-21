@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 from api.mySchemas import MyTimeoutError
-from api.myUtils import monitor
+from api.myUtils import MAX_DURATION, monitor
 
 
 @pytest.mark.asyncio
@@ -14,9 +14,9 @@ async def test_monitor():
             await asyncio.sleep(1)
 
     with pytest.raises(MyTimeoutError) as error:
-        await monitor(_test_monitor(16))
+        await monitor(_test_monitor(MAX_DURATION))
     assert str(error.value) == "Time limit exceeded"
     try:
-        await monitor(_test_monitor(14))
+        await monitor(_test_monitor(1))
     except Exception as err:
         pytest.fail(f"Unexpected exception raised: {err}")

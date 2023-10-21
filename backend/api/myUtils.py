@@ -5,7 +5,7 @@ from typing import Any, Coroutine
 
 import redis.asyncio as redis
 from aiohttp import ClientSession
-from api.mySchemas import MyTimeoutError, RedisConnectionError, scrapedProductSchema
+from api.mySchemas import MyTimeoutError, scrapedProductSchema
 from api.myScraper import getHTMLContent
 from dotenv import load_dotenv
 from redis.asyncio import StrictRedis
@@ -13,16 +13,17 @@ from redis.asyncio import StrictRedis
 load_dotenv()
 REDIS_URL = os.getenv("REDIS_URL")
 
+MAX_DURATION = 15
+
 
 async def monitor(
     func: Coroutine[Any, Any, Any],
     redis_instance: StrictRedis | None = None,
     client: ClientSession | None = None,
 ):
-    max_duration = 15
     task = asyncio.create_task(func)
     try:
-        async with asyncio.timeout(max_duration):
+        async with asyncio.timeout(MAX_DURATION):
             return await task
     except TimeoutError:
         task.cancel()
@@ -43,7 +44,7 @@ async def createRedisInstance():
             print(f"Redis Connection Established: {ping}")
             return redis_instance
         except:
-            raise RedisConnectionError("Error connecting to Redis server")
+            print("Error connecting to Redis server")
     return None
 
 

@@ -5,7 +5,7 @@
   import MembersButton from './members/MembersButton.vue';
 
   const nav =
-    'w-full h-16 flex py-3 justify-end select-none z-10 ' +
+    'w-full h-16 flex py-3 justify-end select-none z-20 ' +
     'transition shadow-md dark:shadow-gray-900/50 ';
 
   const title =

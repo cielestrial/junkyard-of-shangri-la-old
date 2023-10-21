@@ -28,14 +28,14 @@
   });
 
   const border = 'border-4 rounded ';
-  const outer = 'h-fit w-fit shadow m-auto z-20 ' + border + colorScheme;
+  const outer = 'h-fit w-fit shadow m-auto z-30 ' + border + colorScheme;
   const inner =
     'w-60 sm:w-72 aspect-[3/4] m-2.5 relative ' + border + colorScheme;
 </script>
 
 <template>
-  <MyOverlay z="z-20" invisible>
-    <MyOverlay z="z-20" invisible @click="$emit('close')" />
+  <MyOverlay z="z-30" invisible>
+    <MyOverlay z="z-30" invisible @click="$emit('close')" />
     <div
       ref="modalRef"
       role="alertdialog"

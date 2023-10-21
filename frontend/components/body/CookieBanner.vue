@@ -17,7 +17,7 @@
   }
 
   const banner =
-    'w-full h-fit border-2 fixed bottom-0 left-0 z-10 shadow ' + colorScheme;
+    'w-full h-fit border-2 fixed bottom-0 left-0 z-20 shadow ' + colorScheme;
   const content =
     'w-full h-fit max-h-screen flex flex-col sm:flex-row flex-nowrap gap-3 p-4 ' +
     'text-lg leading-normal overflow-y-auto ';
