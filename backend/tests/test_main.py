@@ -1,10 +1,9 @@
 import sys
-from unicodedata import category
 
-from api.mySchemas import MessageSchema, scrapedProductsSchema
+from api.mySchemas import MessageSchema
 from fastapi.encoders import jsonable_encoder
 from fastapi.testclient import TestClient
-from app import app
+from main import app
 
 sys.path.append("api")
 
