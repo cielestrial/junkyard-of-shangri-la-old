@@ -30,13 +30,11 @@
   });
 
   function reset() {
-    console.log('touch canceled');
     touchStart.value = { x: -1, y: -1 };
     touchEnd.value = { x: -1, y: -1 };
   }
 
   function trackTouch(event: TouchEvent) {
-    console.log('touch started');
     if (!_touchDevice.value) _touchDevice.value = true;
     touchStart.value = {
       x: event.changedTouches[0].pageX,

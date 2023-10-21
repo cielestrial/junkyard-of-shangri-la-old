@@ -202,8 +202,8 @@
       </MyAnimations>
     </div>
 
-    <div class="flex h-fit w-full text-red-400">
-      <span class="min-h-40 mx-auto w-40 sm:w-80 md:w-[30rem]">
+    <div class="flex h-fit w-full text-red-400 leading-tight">
+      <span class="mx-auto w-40 sm:w-80 md:w-[30rem]">
         <ul class="flex list-outside list-disc flex-col gap-2">
           <li v-if="searchError">
             <p id="searchError">{{ searchError }}</p>

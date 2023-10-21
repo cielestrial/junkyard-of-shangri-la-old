@@ -1,7 +1,7 @@
 import asyncio
 from urllib.parse import urljoin
 
-from mySchemas import *
+from api.mySchemas import scrapedProductSchema
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 
 

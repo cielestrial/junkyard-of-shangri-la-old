@@ -1,8 +1,21 @@
+import os
+
 import uvicorn
+from aiohttp import ClientSession
+from api.mySchemas import (
+    MessageSchema,
+    MyTimeoutError,
+    RedisConnectionError,
+    promoSchema,
+    scrapedProductSchema,
+    scrapedProductsSchema,
+    searchSchema,
+)
+from api.myUtils import batchScrape, createRedisInstance, monitor, splitIntoBatches
 from fastapi import Body, FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from myUtils import *
+from redis.asyncio import StrictRedis
 
 ENV = os.getenv("ENV")
 frontend = (
@@ -19,6 +32,7 @@ backend = (
 app = FastAPI()
 
 origins = [frontend, backend]
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -50,16 +64,28 @@ async def redirect_docs():
 
 @app.get("/ping")
 async def ping(response: Response) -> MessageSchema:
-    response.status_code = 200
-    return MessageSchema(status_code=200, details="pong")
+    async def _ping():
+        response.status_code = 200
+        return MessageSchema(status_code=response.status_code, details="pong")
+
+    try:
+        return await monitor(_ping())
+    except Exception as err:
+        response.status_code = 504
+        return MessageSchema(status_code=response.status_code, details=f"{err}")
 
 
 @app.get("/clear")
 async def clear_cache(response: Response) -> MessageSchema:
     try:
         filter_key = "http"
-        redis_instance = await createRedisInstance(True)
-        if isinstance(redis_instance, Redis):
+        redis_instance = await createRedisInstance()
+        if not isinstance(redis_instance, StrictRedis):
+            message = "Error clearing cache"
+            print(message)
+            raise RedisConnectionError(message)
+
+        async def _clear_cache():
             allKeys: list[str] = (await redis_instance.scan(0))[1]
             junkyardKeys: list[str] = [key for key in allKeys if filter_key in key]
             print(f"All Keys:{junkyardKeys}")
@@ -72,19 +98,22 @@ async def clear_cache(response: Response) -> MessageSchema:
             await redis_instance.close()
             print(f"All Keys:{junkyardKeys}")
             message = "Cache cleared"
+            print(message)
+            response.status_code = 200
+            return MessageSchema(status_code=response.status_code, details=message)
+
+        return await monitor(_clear_cache(), redis_instance)
+
+    except (MyTimeoutError, Exception) as err:
+        if isinstance(err, MyTimeoutError):
+            response.status_code = 504
         else:
-            message = "Error clearing cache"
-        print(message)
-    except Exception as err:
-        response.status_code = 500
-        return MessageSchema(status_code=500, details=f"{err}")
-    else:
-        response.status_code = 200
-        return MessageSchema(status_code=200, details=message)
+            response.status_code = 500
+        return MessageSchema(status_code=response.status_code, details=f"{err}")
 
 
 @app.post("/search")
-async def searchScrape(
+async def search_scrape(
     response: Response,
     searchRequest: searchSchema = Body(...),
 ) -> scrapedProductsSchema | MessageSchema:
@@ -101,21 +130,28 @@ async def searchScrape(
             async with ClientSession(headers=headers) as client:
                 for batch in batches:
                     batch_results = await batchScrape(searchString, batch, client)
-                    results.extend(batch_results)
+                    if isinstance(batch_results, list):
+                        results.extend(batch_results)
             await client.close()
 
         # print(f"\nResults:\n{results}\n")
         total = len(results)
-    except Exception as err:
-        response.status_code = 500
-        return MessageSchema(status_code=500, details=f"{err}")
+
+    except (MyTimeoutError, Exception) as err:
+        if isinstance(err, MyTimeoutError):
+            response.status_code = 504
+        else:
+            response.status_code = 500
+        return MessageSchema(status_code=response.status_code, details=f"{err}")
     else:
         response.status_code = 200
-        return scrapedProductsSchema(status_code=200, total=total, results=results)
+        return scrapedProductsSchema(
+            status_code=response.status_code, total=total, results=results
+        )
 
 
 @app.post("/promo")
-async def promoScrape(
+async def promo_scrape(
     response: Response,
     promoRequest: promoSchema = Body(...),
 ) -> scrapedProductsSchema | MessageSchema:
@@ -131,19 +167,25 @@ async def promoScrape(
             async with ClientSession(headers=headers) as client:
                 for batch in batches:
                     batch_results = await batchScrape("", batch, client)
-                    results.extend(batch_results)
+                    if isinstance(batch_results, list):
+                        results.extend(batch_results)
             await client.close()
 
         # print(f"\nResults:\n{results}\n")
         total = len(results)
-    except Exception as err:
-        response.status_code = 500
-        return MessageSchema(status_code=500, details=f"{err}")
+
+    except (MyTimeoutError, Exception) as err:
+        if isinstance(err, MyTimeoutError):
+            response.status_code = 504
+        else:
+            response.status_code = 500
+        return MessageSchema(status_code=response.status_code, details=f"{err}")
     else:
         response.status_code = 200
-        return scrapedProductsSchema(status_code=200, total=total, results=results)
+        return scrapedProductsSchema(
+            status_code=response.status_code, total=total, results=results
+        )
 
 
-if ENV != "production":
-    if __name__ == "__main__":
-        uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("PORT", 8000)))
+if ENV != "production" and __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("PORT", 8000)))

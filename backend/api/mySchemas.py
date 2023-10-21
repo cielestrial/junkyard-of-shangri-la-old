@@ -1,6 +1,27 @@
 from pydantic import BaseModel, Field
 
 
+# Errors
+class HTTPRequestError(Exception):
+    pass
+
+
+class ParsingError(Exception):
+    pass
+
+
+class RedisRequestError(Exception):
+    pass
+
+
+class RedisConnectionError(Exception):
+    pass
+
+
+class MyTimeoutError(Exception):
+    pass
+
+
 class MessageSchema(BaseModel):
     status_code: int = Field(examples=[200])
     details: str = Field(examples=["Hello World!"])

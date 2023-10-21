@@ -1,7 +1,16 @@
+import asyncio
+
 from aiohttp import ClientSession
-from myErrors import *
-from myParser import *
-from redis.asyncio import Redis
+from api.myParser import getNextPage, getProduct, getWebsiteUrl
+from api.mySchemas import (
+    HTTPRequestError,
+    ParsingError,
+    RedisRequestError,
+    scrapedProductSchema,
+    searchParamURL,
+)
+from redis.asyncio import StrictRedis
+from selectolax.lexbor import LexborHTMLParser, LexborNode
 
 
 async def getHTMLContent(
@@ -9,7 +18,7 @@ async def getHTMLContent(
     searchParam: str,
     url: str,
     client: ClientSession,
-    redis_instance: Redis | None = None,
+    redis_instance: StrictRedis | None = None,
 ):
     if searchParam != "":
         if searchParam in searchParamURL:
@@ -68,7 +77,6 @@ async def getHTMLContent(
                                 )
 
     emptyList: list[scrapedProductSchema] = []
-    await asyncio.sleep(0)
     return emptyList
 
 
@@ -78,7 +86,7 @@ async def bookParser(
     url: str,
     parsed_HTML: LexborHTMLParser,
     client: ClientSession,
-    redis_instance: Redis | None = None,
+    redis_instance: StrictRedis | None = None,
 ):
     results: list[scrapedProductSchema] = []
     products: list[LexborNode] = []
