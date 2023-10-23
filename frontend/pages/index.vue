@@ -60,13 +60,9 @@
     _darkTheme.value ? '#374151' : '#9ca3af'
   );
 
-  const client =
-    process.env.NODE_ENV === 'production'
-      ? 'https://junkyard-of-shangri-la.onrender.com'
-      : 'http://localhost:3000';
-
   onMounted(() => {
-    if (window.location.hash !== '') window.history.pushState(null, '', client);
+    if (window.location.hash !== '')
+      window.history.pushState(null, '', window.location.origin);
     const systemThemePref = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
