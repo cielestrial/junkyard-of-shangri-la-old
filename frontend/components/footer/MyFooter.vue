@@ -24,7 +24,7 @@
     <a
       id="contactButton"
       aria-labelledby="contactText"
-      href="https://cielestrial.github.io"
+      href="https://cielestrial.github.io/Contact"
       target="_blank"
       rel="noreferrer noopener"
       :class="linkButton"
@@ -39,7 +39,7 @@
       <div class="flex my-auto gap-y-7 gap-x-10">
         <a
           aria-label="My porfolio website"
-          href="https://cielestrial.github.io"
+          href="https://cielestrial.github.io/Home"
           target="_blank"
           rel="noreferrer noopener"
           :class="link"
