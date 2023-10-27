@@ -20,7 +20,7 @@
 </script>
 
 <template>
-  <footer id="footer" role="contentinfo" :class="footer">
+  <footer id="footer" :class="footer">
     <!--Screen reader test this link button-->
     <a
       id="contactButton"
@@ -30,7 +30,7 @@
       rel="noreferrer noopener"
       :class="linkButton"
     >
-      <MyLogo class="rounded-full" :size="iconSize" />
+      <MyLogo class="rounded-full" :size="iconSize" filter-id="Contact" />
       <span id="contactText" class="my-auto text-2xl leading-none">
         Contact
       </span>
@@ -45,7 +45,7 @@
           rel="noreferrer noopener"
           :class="link"
         >
-          <MyLogo class="rounded-full" :size="iconSize" />
+          <MyLogo class="rounded-full" :size="iconSize" filter-id="Home" />
         </a>
         <a
           aria-label="My LinkedIn profile"

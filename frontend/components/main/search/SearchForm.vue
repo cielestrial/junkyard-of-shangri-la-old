@@ -217,7 +217,7 @@
     <div
       class="flex h-fit w-full transition text-red-600 dark:text-red-400 leading-tight"
     >
-      <span class="mx-auto w-40 sm:w-80 md:w-[30rem]">
+      <div class="mx-auto w-40 sm:w-80 md:w-[30rem]">
         <ul class="flex list-outside list-disc flex-col gap-2">
           <li v-show="searchError">
             <p id="searchError">{{ searchError }}</p>
@@ -226,7 +226,7 @@
             <p id="optionsError">{{ optionsError }}</p>
           </li>
         </ul>
-      </span>
+      </div>
     </div>
   </form>
 </template>

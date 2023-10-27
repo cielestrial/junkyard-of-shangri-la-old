@@ -164,9 +164,9 @@
 </script>
 
 <template>
-  <button
+  <div
     ref="comboboxRef"
-    type="button"
+    tabindex="0"
     role="combobox"
     aria-controls="myListbox"
     :aria-expanded="opened"
@@ -190,16 +190,17 @@
     <div :class="select" @click="toggle">
       <div class="flex">
         <FlagsEn class="my-auto mr-2" :country="selected" size="2rem" />
-        <span class="my-auto text-left" :aria-label="allCountries[selected]">
+        <span class="my-auto text-left">
           {{ selected }}
         </span>
+        <span class="hidden-visually"> {{ allCountries[selected] }}</span>
       </div>
       <BIcons :class="caret" icon="caret-down-fill" size="1rem" />
     </div>
 
     <MyAnimations name="slide-down">
       <ol
-        v-if="opened"
+        v-show="opened"
         id="myListbox"
         ref="listboxRef"
         role="listbox"
@@ -219,14 +220,13 @@
         >
           <div :class="dropdownItem">
             <FlagsEn class="my-auto mr-2" :country="option" size="2.5rem" />
-            <span
-              class="my-auto text-left"
-              :aria-label="allCountries[option]"
-              >{{ option }}</span
-            >
+            <span class="my-auto text-left">
+              {{ option }}
+            </span>
+            <span class="hidden-visually"> {{ allCountries[option] }}</span>
           </div>
         </li>
       </ol>
     </MyAnimations>
-  </button>
+  </div>
 </template>

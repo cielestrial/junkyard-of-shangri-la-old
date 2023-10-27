@@ -36,7 +36,7 @@
       @click="opened = !opened"
     >
       <BIcons icon="stars" size="1rem" class="-rotate-12 self-end" />
-      <p class="self-center px-0.5 font-bold">Members</p>
+      <span class="self-center px-0.5 font-bold">Members</span>
       <BIcons
         icon="stars"
         size="1rem"

@@ -17,25 +17,23 @@
 </script>
 
 <template>
-  <div class="h-fit w-fit">
-    <button
-      role="switch"
-      aria-label="Dark Theme"
-      :aria-checked="darkTheme"
-      type="button"
-      :class="outer"
-      @click="changeTheme"
-    >
-      <div :class="inner">
-        <MyAnimations name="switch">
-          <span v-if="darkTheme" class="m-auto text-white">
-            <BIcons icon="moon-stars-fill" size="0.8rem" />
-          </span>
-          <span v-else class="m-auto text-black">
-            <BIcons icon="cloud-sun" size="1.1rem" />
-          </span>
-        </MyAnimations>
-      </div>
-    </button>
+  <div
+    role="switch"
+    tabindex="0"
+    aria-label="Dark Theme"
+    :aria-checked="darkTheme"
+    :class="outer"
+    @click="changeTheme"
+  >
+    <div :class="inner">
+      <MyAnimations name="switch">
+        <span v-if="darkTheme" class="m-auto text-white">
+          <BIcons icon="moon-stars-fill" size="0.8rem" />
+        </span>
+        <span v-else class="m-auto text-black">
+          <BIcons icon="cloud-sun" size="1.1rem" />
+        </span>
+      </MyAnimations>
+    </div>
   </div>
 </template>

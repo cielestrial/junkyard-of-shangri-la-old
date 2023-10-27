@@ -6,7 +6,7 @@
 
 <template>
   <svg
-    class="flag-gb"
+    class="flag-uk"
     :width="size"
     viewBox="0 0 60 30"
     fill="none"

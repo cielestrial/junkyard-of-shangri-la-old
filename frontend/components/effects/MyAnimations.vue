@@ -99,11 +99,11 @@
   @keyframes scale-down {
     0% {
       opacity: 1;
-      transform: scale3d(100%, 100%, 100%);
+      transform: scale3d(1, 1, 1);
     }
     100% {
       opacity: 0;
-      transform: scale3d(50%, 50%, 100%);
+      transform: scale3d(0.5, 0.5, 1);
     }
   }
   @keyframes fade-in {

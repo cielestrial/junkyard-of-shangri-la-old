@@ -238,7 +238,7 @@
 </script>
 
 <template>
-  <main id="main" role="main" :class="mainContainer">
+  <main id="main" :class="mainContainer">
     <SearchForm />
     <div class="flex h-fit w-full transition text-red-600 dark:text-red-400">
       <p

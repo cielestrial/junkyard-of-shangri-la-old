@@ -5,13 +5,13 @@ export const allCountries = Object.freeze({
   DK: 'Denmark',
   EU: 'Europe',
   FR: 'France',
-  GB: 'United Kingdom',
   IE: 'Ireland',
   JP: 'Japan',
   LT: 'Lithuania',
   PL: 'Poland',
   RO: 'Romania',
   SE: 'Sweden',
+  UK: 'United Kingdom',
   US: 'United States',
   ZA: 'South Africa'
 });
@@ -20,7 +20,7 @@ const enCountries = Object.freeze({
   AU: 'Australia',
   CA: 'Canada',
   EU: 'Europe',
-  GB: 'United Kingdom',
+  UK: 'United Kingdom',
   US: 'United States'
 });
 
