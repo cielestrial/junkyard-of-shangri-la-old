@@ -106,12 +106,14 @@
     }
     requestError.value = null;
     try {
+      /*
       let x = 0;
       clearInterval(timer.value);
       timer.value = setInterval(
         () => console.log(`Elapsed Time: ${++x}`),
         1000
       );
+      */
       pendingPromoResults.value = true;
       const { data, error } = await useLazyFetch<resultTemplate | messageT>(
         server + '/promo',
@@ -159,12 +161,14 @@
     }
     requestError.value = null;
     try {
+      /*
       let x = 0;
       clearInterval(timer.value);
       timer.value = setInterval(
         () => console.log(`Elapsed Time: ${++x}`),
         1000
       );
+      */
       pendingSearchResults.value = true;
       const { data, error } = await useLazyFetch<resultTemplate | messageT>(
         server + '/search',
