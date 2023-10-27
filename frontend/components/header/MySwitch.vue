@@ -7,7 +7,7 @@
   const { darkTheme, changeTheme } = inject('theme') as theme;
   const outer =
     'relative flex border-4 box-content rounded-full w-14 h-8 ' +
-    'transition bg-sky-300 border-gray-600 ' +
+    'cursor-pointer transition bg-sky-300 border-gray-600 ' +
     'dark:bg-gray-900 dark:border-gray-400 ';
 
   const inner =

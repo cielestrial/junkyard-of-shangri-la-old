@@ -75,7 +75,7 @@
     @keydown.arrow-left="setPageIndex(pageIndex - 1)"
     @keydown.arrow-right="setPageIndex(pageIndex + 1)"
   >
-    <span id="resultWindowLabel" class="hidden-visually"> Search results </span>
+    <span id="resultWindowLabel" class="visually-hidden"> Search results </span>
     <h2
       v-if="searchResults.total >= 0"
       id="totalResults"
@@ -113,19 +113,23 @@
               :alt="result.name"
             />
 
-            <span class="flex h-12 items-end">
-              <p class="mx-auto line-clamp-2 text-center text-xl leading-tight">
+            <div class="flex h-12 items-end">
+              <span
+                class="mx-auto line-clamp-2 text-center text-xl leading-tight"
+              >
                 {{ result.name }}
-              </p>
-            </span>
-            <p :class="`mx-auto text-center ${value}`">
+              </span>
+            </div>
+
+            <div :class="`mx-auto text-center ${value}`">
               {{ result.price }}
-            </p>
-            <span :class="notButton">
-              <p class="m-auto truncate text-center">
+            </div>
+
+            <div :class="notButton">
+              <span class="m-auto truncate text-center">
                 {{ result.category }}
-              </p>
-            </span>
+              </span>
+            </div>
           </a>
         </li>
       </ol>

@@ -142,7 +142,7 @@
     () =>
       'w-28 h-10 rounded flex justify-between items-center px-2 border-2 ' +
       'relative z-20 shadow hover:bg-gray-200 dark:hover:bg-gray-500 ' +
-      'active:bg-gray-300 dark:active:bg-gray-600 ' +
+      'cursor-pointer active:bg-gray-300 dark:active:bg-gray-600 ' +
       (opened.value ? 'border-b-0 rounded-bl-none rounded-br-none ' : '') +
       colorScheme
   );
@@ -159,7 +159,7 @@
     colorScheme;
 
   const dropdownItem =
-    'w-full h-10 flex px-2 border-t-2 hover:bg-gray-200 dark:hover:bg-gray-500 ' +
+    'w-full h-10 flex px-2 border-t-2 hover:bg-gray-200 dark:hover:bg-gray-500 cursor-pointer ' +
     'active:bg-gray-300 dark:active:bg-gray-600 border-gray-700 dark:border-gray-400 ';
 </script>
 
@@ -188,13 +188,13 @@
       "
     />
     <div :class="select" @click="toggle">
-      <div class="flex">
+      <span class="flex">
         <FlagsEn class="my-auto mr-2" :country="selected" size="2rem" />
         <span class="my-auto text-left">
           {{ selected }}
         </span>
-        <span class="hidden-visually"> {{ allCountries[selected] }}</span>
-      </div>
+        <span class="visually-hidden"> {{ allCountries[selected] }}</span>
+      </span>
       <BIcons :class="caret" icon="caret-down-fill" size="1rem" />
     </div>
 
@@ -223,7 +223,7 @@
             <span class="my-auto text-left">
               {{ option }}
             </span>
-            <span class="hidden-visually"> {{ allCountries[option] }}</span>
+            <span class="visually-hidden"> {{ allCountries[option] }}</span>
           </div>
         </li>
       </ol>

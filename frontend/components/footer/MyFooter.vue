@@ -30,7 +30,7 @@
       rel="noreferrer noopener"
       :class="linkButton"
     >
-      <MyLogo class="rounded-full" :size="iconSize" filter-id="Contact" />
+      <MyLogo class="rounded-full" :size="iconSize" />
       <span id="contactText" class="my-auto text-2xl leading-none">
         Contact
       </span>
@@ -45,7 +45,9 @@
           rel="noreferrer noopener"
           :class="link"
         >
-          <MyLogo class="rounded-full" :size="iconSize" filter-id="Home" />
+          <div class="visually-hidden"><span class="flex">A</span></div>
+          <span class="visually-hidden"><p class="flex">B</p></span>
+          <MyLogo class="rounded-full" :size="iconSize" />
         </a>
         <a
           aria-label="My LinkedIn profile"

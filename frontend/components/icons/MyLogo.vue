@@ -1,5 +1,11 @@
 <script setup lang="ts">
-  defineProps<{ size: string; filterId: string }>();
+  import { computed } from 'vue-demi';
+
+  defineProps<{ size: string }>();
+
+  const randomId = computed(() =>
+    new Uint8Array(8).map(() => Math.floor(Math.random() * 256)).join('')
+  );
 </script>
 
 <template>
@@ -17,14 +23,14 @@
       transform="rotate(0.246218 255.847 255.847)"
       fill="#575D93"
     />
-    <g :filter="`url(#filter0_df_92_4_${filterId})`">
+    <g :filter="`url(#filter0_df_92_4_${randomId})`">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M159.265 54.8167C123.159 74.161 93.0398 103.092 72.2542 138.471C50.5292 175.449 39.921 217.904 41.6996 260.755C43.4781 303.605 57.5679 345.036 82.2825 380.086C106.997 415.137 141.289 442.322 181.054 458.389C220.818 474.455 264.371 478.721 306.497 470.677C348.623 462.632 387.539 442.618 418.585 413.029C434.068 398.273 447.267 381.448 457.857 363.116C456.242 363.98 454.613 364.827 452.968 365.656C342.926 421.13 208.748 376.895 153.273 266.853C118.132 197.146 123.002 117.753 159.265 54.8167Z"
         fill="black"
       />
-      <g :filter="`url(#filter1_f_92_4_${filterId})`">
+      <g :filter="`url(#filter1_f_92_4_${randomId})`">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -33,7 +39,7 @@
         />
       </g>
     </g>
-    <g :filter="`url(#filter2_f_92_4_${filterId})`">
+    <g :filter="`url(#filter2_f_92_4_${randomId})`">
       <path
         d="M354.209 90.4899L374.248 116.721L404.825 104.286L386.07 131.45L407.346 156.688L375.716 147.245L358.288 175.278L357.494 142.278L325.447 134.365L356.587 123.414L354.209 90.4899Z"
         fill="white"
@@ -44,7 +50,7 @@
         stroke-width="6"
       />
     </g>
-    <g :filter="`url(#filter3_df_92_4_${filterId})`">
+    <g :filter="`url(#filter3_df_92_4_${randomId})`">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
@@ -59,7 +65,7 @@
     />
     <defs>
       <filter
-        :id="`filter0_df_92_4_${filterId}`"
+        :id="`filter0_df_92_4_${randomId}`"
         x="37.5076"
         y="54.3167"
         width="424.349"
@@ -98,7 +104,7 @@
         />
       </filter>
       <filter
-        :id="`filter1_f_92_4_${filterId}`"
+        :id="`filter1_f_92_4_${randomId}`"
         x="55.5131"
         y="58.4829"
         width="397.369"
@@ -119,7 +125,7 @@
         />
       </filter>
       <filter
-        :id="`filter2_f_92_4_${filterId}`"
+        :id="`filter2_f_92_4_${randomId}`"
         x="324.447"
         y="89.4899"
         width="83.8985"
@@ -140,7 +146,7 @@
         />
       </filter>
       <filter
-        :id="`filter3_df_92_4_${filterId}`"
+        :id="`filter3_df_92_4_${randomId}`"
         x="187.112"
         y="202.501"
         width="132.817"
