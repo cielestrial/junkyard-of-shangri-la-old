@@ -20,10 +20,12 @@
 </script>
 
 <template>
-  <span :class="loader">
-    {{ loaderText }}
+  <div :class="loader">
+    <span>
+      {{ loaderText }}
+    </span>
     <span aria-hidden="true">
       {{ dotPresets[dot - 1] }}
     </span>
-  </span>
+  </div>
 </template>

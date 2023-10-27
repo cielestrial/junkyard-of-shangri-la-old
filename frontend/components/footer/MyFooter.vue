@@ -45,8 +45,6 @@
           rel="noreferrer noopener"
           :class="link"
         >
-          <div class="visually-hidden"><span class="flex">A</span></div>
-          <span class="visually-hidden"><p class="flex">B</p></span>
           <MyLogo class="rounded-full" :size="iconSize" />
         </a>
         <a

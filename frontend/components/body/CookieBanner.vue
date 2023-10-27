@@ -32,7 +32,7 @@
 <template>
   <MyAnimations name="slide-up" appear>
     <div v-if="showBanner" role="alert" :class="banner">
-      <span :class="content">
+      <div :class="content">
         <p class="m-auto">
           This website uses cookies to deliver a more personalized user
           experience.
@@ -44,7 +44,7 @@
         <button type="button" :class="acceptButton" @click="giveConsent">
           Accept
         </button>
-      </span>
+      </div>
     </div>
   </MyAnimations>
 </template>
