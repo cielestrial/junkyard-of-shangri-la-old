@@ -17,10 +17,9 @@
   import SearchForm from './search/SearchForm.vue';
   import ResultWindow from './searchResults/ResultWindow.vue';
 
-  const server =
-    import.meta.env.NODE_ENV === 'production'
-      ? 'https://scraper-of-shangri-la.onrender.com'
-      : 'http://127.0.0.1:8000';
+  const server = import.meta.env.PROD
+    ? 'https://scraper-of-shangri-la.onrender.com'
+    : 'http://127.0.0.1:8000';
 
   const { touchDevice } = inject('touch') as touch;
 
@@ -44,6 +43,13 @@
   const currentAttempt = ref(_currentAttempt);
   const requestError = ref<string | null>(null);
 
+  onMounted(() => {
+    const mediumScreen = window.matchMedia('(max-width: 767px)').matches;
+    const smallScreen = window.matchMedia('(max-width: 639px)').matches;
+    if (smallScreen || touchDevice.value) _batchSize.value = 15;
+    else if (mediumScreen) _batchSize.value = 30;
+  });
+
   const { data: ping, error: pingError } = useLazyFetch<messageT>(
     server + '/ping',
     {
@@ -56,13 +62,6 @@
       onResponseError: exponentialBackoff
     }
   );
-
-  onMounted(() => {
-    const mediumScreen = window.matchMedia('(max-width: 767px)').matches;
-    const smallScreen = window.matchMedia('(max-width: 639px)').matches;
-    if (smallScreen || touchDevice.value) _batchSize.value = 15;
-    else if (mediumScreen) _batchSize.value = 30;
-  });
 
   watch(ping, (newVal) => {
     if (newVal !== null) {
