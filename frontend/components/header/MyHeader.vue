@@ -15,7 +15,6 @@
 
 <template>
   <div class="flex h-fit w-full flex-col self-start">
-    <!-- or <section role="region"> -->
     <aside id="aside" aria-label="Settings" :class="nav">
       <div
         id="settingsBar"

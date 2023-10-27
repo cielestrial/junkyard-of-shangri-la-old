@@ -21,7 +21,6 @@
 
 <template>
   <footer id="footer" :class="footer">
-    <!--Screen reader test this link button-->
     <a
       id="contactButton"
       aria-labelledby="contactText"

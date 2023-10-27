@@ -147,8 +147,10 @@
     @sumbit.prevent
   >
     <div :class="searchGroup">
-      <!-- v-model doesn't work with IME languages like Japanese -->
-      <!--  incase:     @compositionupdate="updateText" -->
+      {{ /*
+        v-model doesn't work with IME languages like Japanese
+        incase: @compositionupdate="updateText"
+       */ }}
       <span class="w-fit h-fit relative">
         <input
           id="searchBar"
