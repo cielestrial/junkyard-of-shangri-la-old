@@ -33,15 +33,7 @@ export default defineNuxtConfig({
     },
     routeRules: {
       '/_nuxt/**': {
-        swr: 60 * 60,
-        cache: {
-          maxAge: 60 * 60
-        },
-        headers: {
-          'cache-control': `public,max-age=${60 * 60 * 24 * 365},s-maxage=${
-            60 * 60 * 24 * 365
-          }`
-        }
+        swr: 60 * 60
       }
     }
   }
