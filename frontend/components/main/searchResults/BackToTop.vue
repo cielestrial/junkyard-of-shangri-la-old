@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject, ref } from 'vue-demi';
   import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;

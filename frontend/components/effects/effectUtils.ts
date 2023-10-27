@@ -1,4 +1,5 @@
 import { CookieOptions } from 'nuxt/dist/app';
+import { Ref, computed } from 'vue-demi';
 
 export type touch = { touchDevice: Readonly<Ref<boolean>> };
 

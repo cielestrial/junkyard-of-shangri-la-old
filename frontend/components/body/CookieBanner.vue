@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject, ref, onMounted } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
   import { consent, theme } from '~/pages/index.vue';
 
@@ -23,10 +24,9 @@
     'text-lg leading-normal overflow-y-auto ';
   const acceptButton =
     'm-auto whitespace-nowrap rounded px-2 py-1.5 font-bold transition ' +
-    'text-black/90 border-2 border-gray-700 bg-emerald-400/90 ' +
-    'hover:bg-emerald-500/90 active:scale-95 ' +
-    'dark:border-gray-800 dark:bg-green-600/90 dark:hover:bg-green-500/90 ' +
-    'shadow dark:shadow-gray-900/50 ';
+    'text-black/90 border-2 border-gray-700 bg-green-500/90 hover:bg-green-600/90 ' +
+    'dark:border-gray-800 dark:bg-green-500/90 dark:hover:bg-green-400/90 ' +
+    'shadow active:scale-95 dark:shadow-gray-900/50 ';
 </script>
 
 <template>

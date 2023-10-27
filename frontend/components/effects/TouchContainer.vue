@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { computed, onMounted, provide, readonly, ref } from 'vue-demi';
+
   const _touchDevice = ref(false);
   const touchDevice = readonly(_touchDevice);
 

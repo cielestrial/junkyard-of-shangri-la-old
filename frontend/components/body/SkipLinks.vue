@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject, onMounted, ref } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
   import { theme } from '~/pages/index.vue';
 
@@ -35,24 +36,30 @@
       v-if="to === 'Main'"
       href="#main"
       :class="skipLinks"
+      :aria-labelledby="`${to}Text`"
       @focus="focused = true"
       @blur="focused = false"
       @click="(event) => focusElement(event, 'searchBar')"
     >
       <MyAnimations name="slide-down">
-        <p v-if="focused" :class="skipLink">Skip to main content</p>
+        <p v-show="focused" :id="`${to}Text`" :class="skipLink">
+          Skip to main content
+        </p>
       </MyAnimations>
     </a>
     <a
       v-else
       href="#footer"
       :class="skipLinks"
+      :aria-labelledby="`${to}Text`"
       @focus="focused = true"
       @blur="focused = false"
       @click="(event) => focusElement(event, 'contactButton')"
     >
       <MyAnimations name="slide-down">
-        <p v-if="focused" :class="skipLink">Skip to end of content</p>
+        <p v-show="focused" :id="`${to}Text`" :class="skipLink">
+          Skip to end of content
+        </p>
       </MyAnimations>
     </a>
   </div>

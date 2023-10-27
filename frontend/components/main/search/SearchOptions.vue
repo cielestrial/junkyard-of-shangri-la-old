@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject, onMounted, ref, watch } from 'vue-demi';
   import { optionsArrayT, optionsList } from '../optionsList';
   import { options } from '../schemas';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
@@ -65,14 +66,15 @@
     }
   }
 
-  const border = 'border-4 rounded transition ';
+  const border = 'border-4 rounded ';
   const checkboxOuterArea =
     'w-fit h-fit m-auto shadow select-none z-20 ' + border + colorScheme;
   const checkboxInnerArea =
-    'w-[80vmin] aspect-[1] m-2.5 px-2.5 ' + border + colorScheme;
+    'w-[80vmin] aspect-square m-2.5 px-2.5 ' + border + colorScheme;
   const exitButton =
-    'w-fit h-fit text-red-500 bg-white/90 rounded self-end absolute ' +
-    'shadow dark:shadow-gray-900/50 active:scale-95 hover:animate-pulse ';
+    'w-fit h-fit bg-white/90 rounded self-end absolute ' +
+    'shadow dark:shadow-gray-900/50 active:scale-95 hover:animate-pulse ' +
+    'transition text-red-600 dark:text-red-400 ';
   const checkboxGroup =
     'flex flex-col flex-wrap w-full h-full list-outside pl-2.5 ' +
     'gap-x-2 gap-y-0.5 overflow-auto overscroll-none text-xl/normal ';
@@ -137,26 +139,27 @@
         <ol
           id="checkboxGroup"
           ref="scrollRef"
-          role="group"
           aria-label="Book Categories"
           tabindex="-1"
           :class="checkboxGroup"
           @wheel.passive="parallelScroll"
         >
-          <li v-for="(option, key) in searchOptions" :key="key">
-            <div class="flex gap-x-1 hover:animate-pulse">
-              <input
-                :id="option"
-                v-model="selectedSearchOptions"
-                type="checkbox"
-                name="websites"
-                :value="option"
-                :class="checkbox"
-              />
-              <label :for="option" class="cursor-pointer whitespace-nowrap">
-                {{ option }}
-              </label>
-            </div>
+          <li
+            v-for="(option, key) in searchOptions"
+            :key="key"
+            class="flex gap-x-1 hover:animate-pulse"
+          >
+            <input
+              :id="option"
+              v-model="selectedSearchOptions"
+              type="checkbox"
+              name="websites"
+              :value="option"
+              :class="checkbox"
+            />
+            <label :for="option" class="cursor-pointer whitespace-nowrap">
+              {{ option }}
+            </label>
           </li>
         </ol>
       </div>

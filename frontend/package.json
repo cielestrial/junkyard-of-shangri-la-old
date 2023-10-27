@@ -1,6 +1,6 @@
 {
   "name": "junkyard-of-shagri-la",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "homepage": "https://junkyard-of-shangri-la.onrender.com",
   "private": true,
   "type": "module",
@@ -16,7 +16,9 @@
     "lint": "yarn lint:js && yarn lint:prettier",
     "lintfix": "prettier --write --list-different . && yarn lint:js --fix"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@nuxt/image": "^1.0.0"
+  },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
@@ -30,5 +32,9 @@
     "prettier": "^3.0.3",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2"
-  }
+  },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "maintained node versions"
+  ]
 }

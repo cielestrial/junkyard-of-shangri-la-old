@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject, ref, watch } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
   import MyOverlay from '../effects/MyOverlay.vue';
   import { trapFocus } from '../effects/effectUtils';
@@ -35,8 +36,7 @@
     if (hamburgerRef.value !== null) hamburgerRef.value.focus();
   }
 
-  const _menu =
-    'w-fit h-fit z-10 rounded border-2 transition shadow ' + colorScheme;
+  const _menu = 'w-fit h-fit z-10 rounded border-2 shadow ' + colorScheme;
   const menuButton =
     _menu +
     'relative mx-5 p-2 ' +
@@ -44,9 +44,10 @@
     'hover:animate-pulse hover:bg-gray-200 dark:hover:bg-gray-500 ';
   const drawer = _menu + 'absolute right-0.5 top-0.5 z-10 ';
   const exitButton =
-    'w-fit h-fit text-red-500 bg-white/90 rounded active:scale-95 ' +
+    'absolute top-2 right-2 ' +
+    'w-fit h-fit bg-white/90 rounded active:scale-95 ' +
     'shadow dark:shadow-gray-900/50 hover:animate-pulse ' +
-    'absolute top-2 right-2';
+    'transition text-red-600 dark:text-red-400 ';
 </script>
 
 <template>
@@ -54,8 +55,6 @@
     <button
       ref="hamburgerRef"
       aria-label="Menu"
-      aria-haspopup="dialog"
-      aria-controls="drawer"
       type="button"
       :class="menuButton"
       @click="

@@ -1,13 +1,24 @@
 <script setup lang="ts">
+  import { useLazyFetch } from 'nuxt/app';
+  import {
+    computed,
+    inject,
+    onBeforeUnmount,
+    onMounted,
+    provide,
+    readonly,
+    ref,
+    watch
+  } from 'vue-demi';
   import MyLoader from '../effects/MyLoader.vue';
   import { touch } from '../effects/effectUtils';
-  import ResultWindow from './searchResults/ResultWindow.vue';
   import { optionsArrayT, optionsList } from './optionsList';
   import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
   import SearchForm from './search/SearchForm.vue';
+  import ResultWindow from './searchResults/ResultWindow.vue';
 
   const server =
-    process.env.NODE_ENV === 'production'
+    import.meta.env.NODE_ENV === 'production'
       ? 'https://scraper-of-shangri-la.onrender.com'
       : 'http://127.0.0.1:8000';
 
@@ -230,7 +241,7 @@
 <template>
   <main id="main" role="main" :class="mainContainer">
     <SearchForm />
-    <div class="flex h-fit w-full text-red-400">
+    <div class="flex h-fit w-full transition text-red-600 dark:text-red-400">
       <p
         v-if="requestError"
         id="requestError"

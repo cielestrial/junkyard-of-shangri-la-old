@@ -1,3 +1,4 @@
+import { ComputedRef, Ref } from 'vue-demi';
 import { optionsArrayT } from './optionsList';
 
 export interface productTemplate {

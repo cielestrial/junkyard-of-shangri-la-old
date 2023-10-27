@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject, onMounted, ref } from 'vue-demi';
   import BIcons from '../../icons/BIcons.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import { trapFocus } from '~/components/effects/effectUtils';
@@ -65,7 +66,7 @@
             Coming Soon! <span class="absolute text-xs">TM</span>
           </p>
         </div>
-        <div class="h-9 text-amber-400">
+        <div class="h-9 transition text-yellow-700 dark:text-yellow-500">
           <BIcons
             icon="star-fill"
             size="2rem"
@@ -73,7 +74,7 @@
           />
           <button
             type="button"
-            class="absolute right-0 top-0 m-[1vmin] rounded-full text-red-500 transition active:scale-90"
+            class="absolute right-0 top-0 m-[1vmin] rounded-full text-red-600 dark:text-red-400 transition active:scale-90"
             aria-label="Close"
             @click="$emit('close')"
           >
@@ -84,7 +85,7 @@
             />
           </button>
         </div>
-        <div class="h-9 text-amber-400">
+        <div class="h-9 transition text-yellow-700 dark:text-yellow-500">
           <BIcons
             icon="star-fill"
             size="2rem"

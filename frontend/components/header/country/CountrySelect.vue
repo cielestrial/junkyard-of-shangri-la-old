@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { computed, inject, ref, watch } from 'vue-demi';
+  import { useCookie } from 'nuxt/app';
   import BIcons from '../../icons/BIcons.vue';
   import FlagsEn from './FlagsEn.vue';
   import { countryCodes, countryCodesT, allCountries } from './countryData';
@@ -188,11 +190,7 @@
     <div :class="select" @click="toggle">
       <div class="flex">
         <FlagsEn class="my-auto mr-2" :country="selected" size="2rem" />
-        <span
-          class="my-auto text-left"
-          aria-selected="true"
-          :aria-label="allCountries[selected]"
-        >
+        <span class="my-auto text-left" :aria-label="allCountries[selected]">
           {{ selected }}
         </span>
       </div>
@@ -213,11 +211,6 @@
           :key="key"
           role="option"
           :aria-selected="option === selected"
-          :aria-label="
-            tabList?.[tabIndex]?.id !== undefined
-              ? allCountries[tabList?.[tabIndex]?.id as countryCodesT]
-              : undefined
-          "
           :class="{
             'my-active': option === selected,
             'my-focus': option === tabList?.[tabIndex]?.id
@@ -226,7 +219,11 @@
         >
           <div :class="dropdownItem">
             <FlagsEn class="my-auto mr-2" :country="option" size="2.5rem" />
-            <span class="my-auto text-left">{{ option }}</span>
+            <span
+              class="my-auto text-left"
+              :aria-label="allCountries[option]"
+              >{{ option }}</span
+            >
           </div>
         </li>
       </ol>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject } from 'vue-demi';
   import BIcons from '../icons/BIcons.vue';
   import MyLogo from '../icons/MyLogo.vue';
   import { theme } from '~/pages/index.vue';
@@ -35,7 +36,7 @@
       </span>
     </a>
 
-    <span class="my-auto w-full flex flex-wrap gap-y-7 gap-x-10 justify-evenly">
+    <div class="my-auto w-full flex flex-wrap gap-y-7 gap-x-10 justify-evenly">
       <div class="flex my-auto gap-y-7 gap-x-10">
         <a
           aria-label="My porfolio website"
@@ -92,6 +93,6 @@
       </div>
 
       <div class="my-auto p-0.5">Copyright &copy; 2023 &#124; cielestrial</div>
-    </span>
+    </div>
   </footer>
 </template>

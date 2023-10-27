@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { onMounted, onUnmounted, ref } from 'vue-demi';
+
   defineProps<{ loaderText: string }>();
 
   const timer = ref<NodeJS.Timeout>();

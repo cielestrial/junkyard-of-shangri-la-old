@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { computed, inject, ref, watch } from 'vue-demi';
   import { pages } from '../schemas';
   import BIcons from '~/components/icons/BIcons.vue';
   import { theme } from '~/pages/index.vue';
@@ -80,11 +81,11 @@
 
   const pagination =
     'flex flex-wrap justify-center mb-4 text-xl leading-none select-none z-10 ';
-  const cell = 'w-9 aspect-[1] rounded ';
+  const cell = 'w-9 aspect-square rounded ';
   const ellipsisCell = 'flex -mx-1 items-end ' + cell;
   const ellipsis = 'h-fit mx-auto mb-1 rounded ';
   const button =
-    'border-2 shadow transition active:scale-95 active:bg-gray-300 ' +
+    'border-2 shadow active:scale-95 active:bg-gray-300 ' +
     'dark:active:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 ' +
     cell +
     colorScheme;

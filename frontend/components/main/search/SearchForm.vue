@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { computed, inject, provide, readonly, ref, watch } from 'vue-demi';
+  import { useCookie } from 'nuxt/app';
   import { optionsArrayT, optionsList } from '../optionsList';
   import { api } from '../schemas';
   import SearchOptions from './SearchOptions.vue';
@@ -114,7 +116,7 @@
       'dark:text-white/90 dark:bg-gray-800 dark:shadow-gray-900/50 ' +
       'hover:animate-pulse focus:animate-none ' +
       (searchError.value
-        ? 'border-red-400 '
+        ? 'border-red-600 dark:border-red-400 '
         : 'border-gray-700 dark:border-gray-400 ')
   );
   const _button =
@@ -129,7 +131,7 @@
     () =>
       _button +
       (optionsError.value
-        ? 'border-red-400 '
+        ? 'border-red-600 dark:border-red-400 '
         : 'border-gray-700 dark:border-gray-400 ')
   );
 </script>
@@ -158,6 +160,7 @@
           maxlength="100"
           autocomplete="off"
           required
+          aria-label="Search Bar"
           aria-autocomplete="none"
           :aria-invalid="searchError !== null"
           aria-describedby="searchError"
@@ -191,7 +194,6 @@
           type="button"
           :class="optionsButton"
           aria-label="Search Options"
-          aria-required="true"
           :aria-invalid="optionsError !== null"
           aria-describedby="optionsError"
           @click="opened = !opened"
@@ -212,13 +214,15 @@
       </MyAnimations>
     </div>
 
-    <div class="flex h-fit w-full text-red-400 leading-tight">
+    <div
+      class="flex h-fit w-full transition text-red-600 dark:text-red-400 leading-tight"
+    >
       <span class="mx-auto w-40 sm:w-80 md:w-[30rem]">
         <ul class="flex list-outside list-disc flex-col gap-2">
-          <li v-if="searchError">
+          <li v-show="searchError">
             <p id="searchError">{{ searchError }}</p>
           </li>
-          <li v-if="optionsError">
+          <li v-show="optionsError">
             <p id="optionsError">{{ optionsError }}</p>
           </li>
         </ul>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { computed, inject, onMounted, provide, ref } from 'vue-demi';
   import { api, productTemplate } from '../schemas';
   import BackToTop from './BackToTop.vue';
   import MyPagination from './MyPagination.vue';
@@ -40,22 +41,15 @@
     }
   }
 
-  function getItemAriaLabel(item: productTemplate) {
-    const ariaLabel = [
-      `Graphic of ${item.name},`,
-      `Title ${item.name},`,
-      `Price ${item.price},`,
-      `Category ${item.category}.`
-    ];
-    return ariaLabel.join(' ');
-  }
-
   provide('pages', { pageIndex, totalPages, setPageIndex });
 
   const resultWindow =
     'flex flex-col min-w-min min-h-[35vh] h-fit pt-10 pb-14 mb-14 mx-auto ' +
     'rounded w-[80vw] border-4 shadow scroll-my-36 relative text-xl leading-none ' +
     colorScheme;
+  const image =
+    'transition shadow dark:shadow-gray-900/50 box-content border border-gray-400 ' +
+    'm-auto h-40 w-fit object-cover object-center';
   const notButton =
     'flex border-2 rounded transition shadow dark:shadow-gray-900/50 ' +
     'mx-auto px-2 py-1 w-11/12 sm:w-full ' +
@@ -68,7 +62,7 @@
     'flex h-fit w-44 flex-col gap-4 rounded p-2 transition ' +
     'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +
     'hover:bg-gray-200 dark:hover:bg-gray-500 ';
-  const value = 'transition text-emerald-500 dark:text-green-500';
+  const value = 'transition text-green-700 dark:text-green-400';
 </script>
 
 <template>
@@ -81,9 +75,7 @@
     @keydown.arrow-left="setPageIndex(pageIndex - 1)"
     @keydown.arrow-right="setPageIndex(pageIndex + 1)"
   >
-    <label id="resultWindowLabel" class="hidden-visually">
-      Search results
-    </label>
+    <span id="resultWindowLabel" class="hidden-visually"> Search results </span>
     <h2
       v-if="searchResults.total >= 0"
       id="totalResults"
@@ -109,25 +101,24 @@
       >
         <li v-for="(result, key) in resultList[pageIndex]" :key="key">
           <a
-            :aria-label="getItemAriaLabel(result)"
             :class="link"
             :href="result.link"
             target="_blank"
             rel="noreferrer noopener"
           >
-            <span class="flex h-40">
-              <img
-                class="m-auto border border-gray-400 shadow"
-                :src="result.image"
-                :alt="'Image of ' + result.name"
-              />
-            </span>
-            <span class="flex h-12 items-center">
+            <NuxtImg
+              loading="lazy"
+              :class="image"
+              :src="result.image"
+              :alt="result.name"
+            />
+
+            <span class="flex h-12 items-end">
               <p class="mx-auto line-clamp-2 text-center text-xl leading-tight">
                 {{ result.name }}
               </p>
             </span>
-            <p :class="'mx-auto text-center ' + value">
+            <p :class="`mx-auto text-center ${value}`">
               {{ result.price }}
             </p>
             <span :class="notButton">

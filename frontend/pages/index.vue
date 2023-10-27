@@ -1,4 +1,15 @@
 <script setup lang="ts">
+  import {
+    Ref,
+    computed,
+    onMounted,
+    provide,
+    readonly,
+    ref,
+    watch
+  } from 'vue-demi';
+  import { useCookie } from 'nuxt/app';
+  import { useHead } from '@unhead/vue';
   import TouchContainer from '~/components/effects/TouchContainer.vue';
   import { cookieOptions } from '~/components/effects/effectUtils';
   import MyFooter from '~/components/footer/MyFooter.vue';
@@ -6,6 +17,9 @@
   import MyMain from '~/components/main/MyMain.vue';
   import CookieBanner from '~/components/body/CookieBanner.vue';
   import SkipLinks from '~/components/body/SkipLinks.vue';
+  import Obitron from '~/assets/fonts/Orbitron-VariableFont_wght.woff2';
+  import LatoRegular from '~/assets/fonts/Lato-Regular.woff2';
+  import LatoBold from '~/assets/fonts/Lato-Bold.woff2';
 
   export interface theme {
     darkTheme: Readonly<Ref<boolean>>;
@@ -39,10 +53,36 @@
     _darkTheme.value = true;
 
   useHead({
+    htmlAttrs: {
+      lang: 'en'
+    },
+    link: [
+      {
+        rel: 'preload',
+        href: Obitron,
+        crossorigin: '',
+        as: 'font',
+        type: 'font/woff2'
+      },
+      {
+        rel: 'preload',
+        href: LatoRegular,
+        crossorigin: '',
+        as: 'font',
+        type: 'font/woff2'
+      },
+      {
+        rel: 'preload',
+        href: LatoBold,
+        crossorigin: '',
+        as: 'font',
+        type: 'font/woff2'
+      }
+    ],
     script: [
       {
         children: `
-      if (${_darkTheme.value}) 
+      if (${_darkTheme.value})
         document.documentElement.classList.add('dark');
       else document.documentElement.classList.remove('dark');
         `,
