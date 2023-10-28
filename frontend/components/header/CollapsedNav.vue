@@ -4,6 +4,7 @@
   import MyOverlay from '../effects/MyOverlay.vue';
   import { trapFocus } from '../effects/effectUtils';
   import BIcons from '../icons/BIcons.vue';
+  import MyButton from '../effects/MyButton.vue';
   import MySwitch from './MySwitch.vue';
   import CountrySelect from './country/CountrySelect.vue';
   import MembersButton from './members/MembersButton.vue';
@@ -11,7 +12,7 @@
 
   const { colorScheme } = inject('theme') as theme;
 
-  const hamburgerRef = ref<HTMLButtonElement | null>(null);
+  const hamburgerRef = ref<InstanceType<typeof MyButton> | null>(null);
   const modalRef = ref<HTMLDivElement | null>(null);
   const opened = ref(false);
 
@@ -52,7 +53,7 @@
 
 <template>
   <div>
-    <button
+    <MyButton
       ref="hamburgerRef"
       aria-label="Menu"
       type="button"
@@ -65,7 +66,7 @@
       "
     >
       <BIcons class="rounded-full" icon="list" size="1.5rem" />
-    </button>
+    </MyButton>
 
     <MyAnimations name="fade">
       <MyOverlay v-if="opened" z="z-10" @click="close" />
@@ -81,7 +82,7 @@
         :class="drawer"
         @keydown.esc="
           (event) => {
-            opened = false;
+            if (!event.repeat) opened = false;
             event.stopImmediatePropagation();
           }
         "
@@ -92,14 +93,15 @@
           }
         "
       >
-        <button
+        <MyButton
           aria-label="Close"
           type="button"
           :class="exitButton"
           @click="close"
         >
           <BIcons icon="x-square-fill" size="1.5rem" />
-        </button>
+        </MyButton>
+
         <div class="mb-2 mt-4 flex flex-col items-center gap-y-8 p-8">
           <MembersButton />
           <MySwitch />

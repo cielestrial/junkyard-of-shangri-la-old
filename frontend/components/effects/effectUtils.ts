@@ -64,3 +64,9 @@ export function trapFocusHorizontal(
   event.preventDefault();
   return tabIndex;
 }
+
+export function repeatBlocker(event: KeyboardEvent) {
+  if (event.key === 'Enter' || event.key === ' ') {
+    if (event.repeat) event.preventDefault();
+  }
+}

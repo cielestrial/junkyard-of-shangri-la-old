@@ -59,7 +59,7 @@
     'w-fit mx-auto px-2 sm:px-8 pb-8 grow flex flex-wrap gap-8 ' +
     'justify-evenly list-outside scroll-my-36 relative z-10 ';
   const link =
-    'flex h-fit w-44 flex-col gap-4 rounded p-2 transition ' +
+    'flex h-fit w-44 flex-col gap-4 rounded p-2 transition leading-tight ' +
     'active:scale-95 active:bg-gray-300 dark:active:bg-gray-600 ' +
     'hover:bg-gray-200 dark:hover:bg-gray-500 ';
   const value = 'transition text-green-700 dark:text-green-400';
@@ -69,7 +69,6 @@
   <section
     id="resultWindow"
     ref="resultWindowRef"
-    role="region"
     aria-labelledby="resultWindowLabel totalResults"
     :class="resultWindow"
     @keydown.arrow-left="setPageIndex(pageIndex - 1)"
@@ -114,9 +113,7 @@
             />
 
             <div class="flex h-12 items-end">
-              <span
-                class="mx-auto line-clamp-2 text-center text-xl leading-tight"
-              >
+              <span class="mx-auto line-clamp-2 text-center text-xl">
                 {{ result.name }}
               </span>
             </div>

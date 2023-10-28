@@ -4,8 +4,9 @@
   import MyCard from './MyCard.vue';
   import MyAnimations from '~/components/effects/MyAnimations.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
+  import MyButton from '~/components/effects/MyButton.vue';
 
-  const membersRef = ref<HTMLButtonElement | null>(null);
+  const membersRef = ref<InstanceType<typeof MyButton> | null>(null);
   const opened = ref(false);
 
   const styling =
@@ -29,7 +30,7 @@
       />
     </MyAnimations>
 
-    <button
+    <MyButton
       ref="membersRef"
       type="button"
       :class="styling"
@@ -42,6 +43,6 @@
         size="1rem"
         class="rotate-12 scale-x-[-1] self-end"
       />
-    </button>
+    </MyButton>
   </div>
 </template>

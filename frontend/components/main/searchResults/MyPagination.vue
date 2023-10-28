@@ -3,14 +3,15 @@
   import { pages } from '../schemas';
   import BIcons from '~/components/icons/BIcons.vue';
   import { theme } from '~/pages/index.vue';
+  import MyButton from '~/components/effects/MyButton.vue';
 
   defineProps<{ pos: 'top' | 'bottom' }>();
 
   const { colorScheme } = inject('theme') as theme;
   const { pageIndex, totalPages, setPageIndex } = inject('pages') as pages;
 
-  const prevButtonRef = ref<HTMLButtonElement | null>();
-  const nextButtonRef = ref<HTMLButtonElement | null>();
+  const prevButtonRef = ref<InstanceType<typeof MyButton> | null>();
+  const nextButtonRef = ref<InstanceType<typeof MyButton> | null>();
 
   const totalRotatingButtons = computed(() =>
     Math.min(totalPages.value - 2, 3)
@@ -99,8 +100,8 @@
     :class="pagination"
     @keydown="paginationNavigation"
   >
-    <span class="flex flex-nowrap justify-center">
-      <button
+    <div class="flex flex-nowrap justify-center">
+      <MyButton
         ref="prevButtonRef"
         aria-label="Goto Previous Page"
         type="button"
@@ -122,9 +123,9 @@
         >
           <BIcons class="m-auto -rotate-90" icon="chevron-up" size="1rem" />
         </span>
-      </button>
+      </MyButton>
 
-      <button
+      <MyButton
         :aria-label="(pageIndex + 1 === 1 ? '' : 'Goto ') + 'Page 1'"
         :aria-current="pageIndex + 1 === 1"
         type="button"
@@ -132,20 +133,20 @@
         @click="setPageIndex(0)"
       >
         1
-      </button>
+      </MyButton>
 
-      <div
+      <span
         v-if="totalPages > 5 && pageIndex > 2"
         aria-label="ellipsis"
         tabindex="-1"
         :class="ellipsisCell"
       >
         <BIcons :class="ellipsis" icon="three-dots" size="1rem" />
-      </div>
-    </span>
+      </span>
+    </div>
 
-    <span v-if="totalPages > 2" class="flex flex-nowrap justify-center">
-      <button
+    <div v-if="totalPages > 2" class="flex flex-nowrap justify-center">
+      <MyButton
         v-for="i in totalRotatingButtons"
         :key="i"
         type="button"
@@ -162,20 +163,20 @@
         @click="setPageIndex(rotatingButtons[i] - 1)"
       >
         {{ rotatingButtons[i] }}
-      </button>
-    </span>
+      </MyButton>
+    </div>
 
-    <span class="flex flex-nowrap justify-center">
-      <div
+    <div class="flex flex-nowrap justify-center">
+      <span
         v-if="totalPages > 5 && totalPages - pageIndex > 3"
         aria-label="ellipsis"
         tabindex="-1"
         :class="ellipsisCell"
       >
         <BIcons :class="ellipsis" icon="three-dots" size="1rem" />
-      </div>
+      </span>
 
-      <button
+      <MyButton
         v-if="totalPages > 1"
         :aria-label="
           (pageIndex + 1 === totalPages ? '' : 'Goto ') + `Page ${totalPages}`
@@ -186,9 +187,9 @@
         @click="setPageIndex(totalPages - 1)"
       >
         {{ totalPages }}
-      </button>
+      </MyButton>
 
-      <button
+      <MyButton
         ref="nextButtonRef"
         aria-label="Goto Next Page"
         type="button"
@@ -210,7 +211,7 @@
         >
           <BIcons class="m-auto rotate-90" icon="chevron-up" size="1rem" />
         </span>
-      </button>
-    </span>
+      </MyButton>
+    </div>
   </nav>
 </template>

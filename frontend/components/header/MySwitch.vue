@@ -5,6 +5,14 @@
   import { theme } from '~/pages/index.vue';
 
   const { darkTheme, changeTheme } = inject('theme') as theme;
+
+  function keyboardHandler(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      if (!event.repeat) changeTheme();
+      event.preventDefault();
+    }
+  }
+
   const outer =
     'relative flex border-4 box-content rounded-full w-14 h-8 ' +
     'cursor-pointer transition bg-sky-300 border-gray-600 ' +
@@ -24,6 +32,7 @@
     :aria-checked="darkTheme"
     :class="outer"
     @click="changeTheme"
+    @keydown="keyboardHandler"
   >
     <div :class="inner">
       <MyAnimations name="switch">

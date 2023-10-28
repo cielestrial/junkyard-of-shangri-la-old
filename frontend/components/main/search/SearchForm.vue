@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { computed, inject, provide, readonly, ref, watch } from 'vue-demi';
   import { useCookie } from 'nuxt/app';
+  import { computed, inject, provide, readonly, ref, watch } from 'vue-demi';
   import { optionsArrayT, optionsList } from '../optionsList';
   import { api } from '../schemas';
   import SearchOptions from './SearchOptions.vue';
@@ -9,12 +9,13 @@
   import { cookieOptions } from '~/components/effects/effectUtils';
   import BIcons from '~/components/icons/BIcons.vue';
   import { consent } from '~/pages/index.vue';
+  import MyButton from '~/components/effects/MyButton.vue';
 
   const { getSearchResults } = inject('api') as api;
 
   const searchBarRef = ref<HTMLInputElement | null>(null);
-  const searchButtonRef = ref<HTMLButtonElement | null>(null);
-  const optionsButtonRef = ref<HTMLButtonElement | null>(null);
+  const searchButtonRef = ref<InstanceType<typeof MyButton> | null>(null);
+  const optionsButtonRef = ref<InstanceType<typeof MyButton> | null>(null);
 
   const searchItem = ref('');
   const opened = ref(false);
@@ -72,7 +73,7 @@
     else if (searchError.value && searchBarRef.value !== null)
       searchBarRef.value.focus();
     else if (optionsError.value && optionsButtonRef.value !== null)
-      optionsButtonRef.value.focus();
+      optionsButtonRef.value?.focus();
   }
 
   function validate(form: 'search' | 'option' | 'both') {
@@ -100,9 +101,6 @@
   provide('options', { selectedOptions, setSelectedOptions });
 
   /*
-  v-model doesn't work with IME languages like Japanese
-  incase: @compositionupdate="updateText"
-
   function updateText() {
     if (inputRef.value !== null) searchItem.value = inputRef.value.value;
   }
@@ -151,6 +149,10 @@
   >
     <div :class="searchGroup">
       <span class="w-fit h-fit relative">
+        <!--
+          v-model doesn't work with IME languages like Japanese
+          incase: @compositionupdate="updateText"
+        -->
         <input
           id="searchBar"
           ref="searchBarRef"
@@ -165,7 +167,11 @@
           aria-autocomplete="none"
           :aria-invalid="searchError !== null"
           aria-describedby="searchError"
-          @keydown.enter="submitForm"
+          @keydown.enter="
+            (event) => {
+              if (!event.repeat) submitForm(event);
+            }
+          "
         />
         <span class="absolute h-full top-0 left-3 flex">
           <BIcons
@@ -177,7 +183,7 @@
       </span>
 
       <span class="flex flex-nowrap gap-2">
-        <button
+        <MyButton
           id="searchButton"
           ref="searchButtonRef"
           name="searchButton"
@@ -186,9 +192,9 @@
           @click="submitForm"
         >
           Search
-        </button>
+        </MyButton>
 
-        <button
+        <MyButton
           id="optionsButton"
           ref="optionsButtonRef"
           name="optionsButton"
@@ -204,7 +210,7 @@
             icon="gear-fill"
             size="1.5rem"
           />
-        </button>
+        </MyButton>
       </span>
 
       <MyAnimations name="fade">

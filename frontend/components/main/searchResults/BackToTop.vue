@@ -1,10 +1,11 @@
 <script setup lang="ts">
   import { inject, ref } from 'vue-demi';
+  import MyButton from '~/components/effects/MyButton.vue';
   import { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 
-  const backToTopRef = ref<HTMLButtonElement | null>(null);
+  const backToTopRef = ref<InstanceType<typeof MyButton> | null>(null);
 
   function jumpToTop() {
     const element = document.getElementById('container');
@@ -22,7 +23,7 @@
 <template>
   <span class="absolute w-full h-full top-0 flex flex-col">
     <span class="relative w-full grow mt-[27.5rem] flex justify-end items-end">
-      <button
+      <MyButton
         id="backToTop"
         ref="backToTopRef"
         type="button"
@@ -30,7 +31,7 @@
         @click="jumpToTop"
       >
         Back to Top
-      </button>
+      </MyButton>
     </span>
   </span>
 </template>

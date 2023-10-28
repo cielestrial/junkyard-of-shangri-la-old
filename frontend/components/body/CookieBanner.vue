@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { inject, ref, onMounted } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
+  import MyButton from '../effects/MyButton.vue';
   import { consent, theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
@@ -41,9 +42,9 @@
           <br />
           By interacting with this site, you agree to the use of cookies.
         </p>
-        <button type="button" :class="acceptButton" @click="giveConsent">
+        <MyButton type="button" :class="acceptButton" @click="giveConsent">
           Accept
-        </button>
+        </MyButton>
       </div>
     </div>
   </MyAnimations>

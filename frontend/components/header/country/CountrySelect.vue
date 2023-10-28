@@ -83,7 +83,7 @@
   function keyboardHandler(event: KeyboardEvent) {
     if (event.key === 'Escape') {
       if (opened.value) {
-        opened.value = false;
+        if (!event.repeat) opened.value = false;
         event.stopImmediatePropagation();
       }
     } else if (event.key === 'Tab')
@@ -91,7 +91,7 @@
         tabList.value?.[tabIndex.value]?.id as countryCodesT | undefined
       );
     else if (event.key === 'Enter' || event.key === ' ') {
-      handleCombobox();
+      if (!event.repeat) handleCombobox();
       event.preventDefault();
     } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown')
       navigateDescendants(event);
@@ -105,7 +105,7 @@
         tabLength.value,
         tabIndex.value
       );
-      (tabList.value?.[tabIndex.value] as HTMLButtonElement)?.scrollIntoView(
+      (tabList.value?.[tabIndex.value] as HTMLUListElement)?.scrollIntoView(
         false
       );
     } else {

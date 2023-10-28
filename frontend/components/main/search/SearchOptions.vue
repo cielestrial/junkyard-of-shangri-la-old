@@ -6,6 +6,7 @@
   import { trapFocus } from '~/components/effects/effectUtils';
   import BIcons from '~/components/icons/BIcons.vue';
   import { theme } from '~/pages/index.vue';
+  import MyButton from '~/components/effects/MyButton.vue';
 
   defineEmits<{ (e: 'close'): void }>();
 
@@ -92,7 +93,7 @@
       :class="checkboxOuterArea"
       @keydown.esc="
         (event) => {
-          $emit('close');
+          if (!event.repeat) $emit('close');
           event.stopImmediatePropagation();
         }
       "
@@ -107,14 +108,14 @@
     >
       <div :class="checkboxInnerArea">
         <div class="flex h-fit w-full flex-col pb-1 pt-2">
-          <button
+          <MyButton
             aria-label="Close"
             type="button"
             :class="exitButton"
             @click="$emit('close')"
           >
             <BIcons icon="x-square-fill" size="1.5rem" />
-          </button>
+          </MyButton>
           <div
             class="mt-2 flex h-fit w-fit gap-x-1 self-start hover:animate-pulse"
           >

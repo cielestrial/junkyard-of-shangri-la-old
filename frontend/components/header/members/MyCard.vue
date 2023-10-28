@@ -4,6 +4,7 @@
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import { trapFocus } from '~/components/effects/effectUtils';
   import { theme } from '~/pages/index.vue';
+  import MyButton from '~/components/effects/MyButton.vue';
 
   defineEmits<{ (e: 'close'): void }>();
 
@@ -46,7 +47,7 @@
       :class="outer"
       @keydown.esc="
         (event) => {
-          $emit('close');
+          if (!event.repeat) $emit('close');
           event.stopImmediatePropagation();
         }
       "
@@ -72,7 +73,7 @@
             size="2rem"
             class="absolute left-0 top-0 m-[1vmin] rotate-12 scale-y-[-1] animate-[pulse_2s_ease-in-out_1.5s_infinite]"
           />
-          <button
+          <MyButton
             type="button"
             class="absolute right-0 top-0 m-[1vmin] rounded-full text-red-600 dark:text-red-400 transition active:scale-90"
             aria-label="Close"
@@ -83,7 +84,7 @@
               size="2rem"
               class="-rotate-12 scale-[-1] hover:animate-pulse"
             />
-          </button>
+          </MyButton>
         </div>
         <div class="h-9 transition text-yellow-700 dark:text-yellow-500">
           <BIcons
