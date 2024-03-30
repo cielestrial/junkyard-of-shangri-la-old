@@ -1,8 +1,8 @@
 import asyncio
 
 import pytest
-from api.mySchemas import MyTimeoutError
-from api.myUtils import MAX_DURATION, monitor
+from api.my_schemas import MyTimeoutError
+from api.my_utils import MAX_DURATION, monitor
 
 
 @pytest.mark.asyncio

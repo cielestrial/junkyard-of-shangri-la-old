@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import {
-    Ref,
+    type Ref,
     computed,
     onMounted,
     provide,
@@ -21,16 +21,16 @@
   import LatoRegular from '~/assets/fonts/Lato-Regular.woff2';
   import LatoBold from '~/assets/fonts/Lato-Bold.woff2';
 
-  export interface theme {
+  export type theme = {
     darkTheme: Readonly<Ref<boolean>>;
     changeTheme: () => void;
     colorScheme: string;
-  }
+  };
 
-  export interface consent {
+  export type consent = {
     setConsentCookie: (newVal: boolean) => void;
     hasConsent: Readonly<Ref<boolean>>;
-  }
+  };
 
   const consentCookie = useCookie<any>('consent', cookieOptions);
   const _hasConsent = computed(

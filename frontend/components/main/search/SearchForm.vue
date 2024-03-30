@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { useCookie } from 'nuxt/app';
   import { computed, inject, provide, readonly, ref, watch } from 'vue-demi';
-  import { optionsArrayT, optionsList } from '../optionsList';
-  import { api } from '../schemas';
+  import { optionsList, type optionsArrayT } from '../optionsList';
+  import type { api } from '../schemas';
   import SearchOptions from './SearchOptions.vue';
   import MyAnimations from '~/components/effects/MyAnimations.vue';
+  import MyButton from '~/components/effects/MyButton.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import { cookieOptions } from '~/components/effects/effectUtils';
   import BIcons from '~/components/icons/BIcons.vue';
-  import { consent } from '~/pages/index.vue';
-  import MyButton from '~/components/effects/MyButton.vue';
+  import type { consent } from '~/pages/index.vue';
 
   const { getSearchResults } = inject('api') as api;
 

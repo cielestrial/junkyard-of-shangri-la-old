@@ -1,9 +1,9 @@
 import sys
 
-from api.mySchemas import MessageSchema
+from api.my_schemas import MessageSchema
 from fastapi.encoders import jsonable_encoder
 from fastapi.testclient import TestClient
-from main import app
+from ..main import app
 
 sys.path.append("api")
 

@@ -2,7 +2,7 @@
   import { inject } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
   import BIcons from '../icons/BIcons.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
 
   const { darkTheme, changeTheme } = inject('theme') as theme;
 

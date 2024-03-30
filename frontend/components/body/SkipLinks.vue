@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { inject, onMounted, ref } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
 
   type landmarks = ['Main', 'Footer'];
   const props = defineProps<{ to: landmarks[number] }>();

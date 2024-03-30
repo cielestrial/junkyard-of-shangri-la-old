@@ -5,8 +5,8 @@ from typing import Any, Coroutine
 
 import redis.asyncio as redis
 from aiohttp import ClientSession
-from api.mySchemas import MyTimeoutError, scrapedProductSchema
-from api.myScraper import getHTMLContent
+from .my_schemas import MyTimeoutError, ScrapedProductSchema
+from .my_scraper import get_html_content
 from dotenv import load_dotenv
 from redis.asyncio import StrictRedis
 
@@ -34,40 +34,42 @@ async def monitor(
         raise MyTimeoutError("Time limit exceeded")
 
 
-async def createRedisInstance():
+async def create_redis_instance():
     if REDIS_URL is not None:
-        try:
-            redis_instance = redis.StrictRedis.from_url(
-                url=REDIS_URL, decode_responses=True, single_connection_client=True
-            )
-            ping = await redis_instance.ping()
-            print(f"Redis Connection Established: {ping}")
-            return redis_instance
-        except:
-            print("Error connecting to Redis server")
+        async with redis.StrictRedis.from_url(
+            url=REDIS_URL, decode_responses=True, single_connection_client=True
+        ) as redis_instance:
+            try:
+                ping = await redis_instance.ping()
+                print(f"Redis Connection Established: {ping}")
+                return redis_instance
+            except:
+                print("Error connecting to Redis server")
     return None
 
 
-def splitIntoBatches(searchParams: list[str], paramsLength: int):
+def split_into_batches(search_params: list[str], param_length: int):
     partitions = 3
-    batch_size = math.ceil(paramsLength / partitions)
+    batch_size = math.ceil(param_length / partitions)
     print(f"Batch Size: {batch_size}")
     batches: list[list[str]] = []
-    for i in range(0, paramsLength, batch_size):
-        batches.append(searchParams[i : i + batch_size])
+    for i in range(0, param_length, batch_size):
+        batches.append(search_params[i : i + batch_size])
     return batches
 
 
-async def batchScrape(searchString: str, paramBatch: list[str], client: ClientSession):
-    results: list[scrapedProductSchema] = []
-    batchLength = len(paramBatch)
+async def batch_scrape(
+    search_string: str, param_batch: list[str], client: ClientSession
+):
+    results: list[ScrapedProductSchema] = []
+    batch_length = len(param_batch)
 
-    redis_instance = await createRedisInstance()
+    redis_instance = await create_redis_instance()
 
-    async def _batchScrape():
+    async def _batch_scrape():
         scrape_tasks = [
-            getHTMLContent(searchString, paramBatch[i], "", client, redis_instance)
-            for i in range(batchLength)
+            get_html_content(search_string, param_batch[i], "", client, redis_instance)
+            for i in range(batch_length)
         ]
         for results_future in asyncio.as_completed(scrape_tasks):
             result = await results_future
@@ -77,4 +79,4 @@ async def batchScrape(searchString: str, paramBatch: list[str], client: ClientSe
             await redis_instance.close()
         return results
 
-    return await monitor(_batchScrape(), redis_instance, client)
+    return await monitor(_batch_scrape(), redis_instance, client)

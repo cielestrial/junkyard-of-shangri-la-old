@@ -2,7 +2,7 @@
   import { inject } from 'vue-demi';
   import BIcons from '../icons/BIcons.vue';
   import MyLogo from '../icons/MyLogo.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 
@@ -26,7 +26,8 @@
       aria-labelledby="contactText"
       href="https://cielestrial.github.io/#Contact"
       target="_blank"
-      rel="noreferrer noopener"
+      rel="noopener author"
+      referrerPolicy="strict-origin-when-cross-origin"
       :class="linkButton"
     >
       <MyLogo class="rounded-full" :size="iconSize" />
@@ -41,7 +42,8 @@
           aria-label="My porfolio website"
           href="https://cielestrial.github.io/#Home"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener author"
+          referrerPolicy="strict-origin-when-cross-origin"
           :class="link"
         >
           <MyLogo class="rounded-full" :size="iconSize" />
@@ -50,7 +52,8 @@
           aria-label="My LinkedIn profile"
           href="https://www.linkedin.com/in/boladale-ogunleye-089937186"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener author"
+          referrerPolicy="strict-origin-when-cross-origin"
           :class="link"
         >
           <BIcons
@@ -63,7 +66,8 @@
           aria-label="My Github profile"
           href="https://github.com/cielestrial"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener author"
+          referrerPolicy="strict-origin-when-cross-origin"
           :class="link"
         >
           <BIcons class="rounded-full" icon="github" :size="iconSize" />
@@ -76,7 +80,8 @@
         <a
           href="https://www.termsfeed.com/live/34ad6597-6ca3-4f3a-8124-71d952006d2f"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener terms-of-service"
+          referrerPolicy="strict-origin-when-cross-origin"
           :class="link"
         >
           Terms & Conditions
@@ -84,7 +89,8 @@
         <a
           href="https://www.termsfeed.com/live/68e2bd3c-90d0-4e03-bc08-84b24e71065b"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener privacy-policy"
+          referrerPolicy="strict-origin-when-cross-origin"
           :class="link"
         >
           Privacy Policy

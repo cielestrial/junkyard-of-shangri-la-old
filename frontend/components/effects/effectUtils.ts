@@ -1,5 +1,5 @@
-import { CookieOptions } from 'nuxt/dist/app';
-import { Ref, computed } from 'vue-demi';
+import type { CookieOptions } from 'nuxt/dist/app/composables/cookie';
+import { type Ref, computed } from 'vue-demi';
 
 export type touch = { touchDevice: Readonly<Ref<boolean>> };
 
@@ -15,7 +15,7 @@ const inAYear = computed(() => {
   return { expiryDate, expiryTime };
 });
 
-export const cookieOptions: CookieOptions = {
+export const cookieOptions: CookieOptions & { readonly?: false | undefined } = {
   expires: inAYear.value.expiryDate,
   maxAge: inAYear.value.expiryTime,
   sameSite: 'strict',

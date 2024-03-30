@@ -11,9 +11,14 @@
     watch
   } from 'vue-demi';
   import MyLoader from '../effects/MyLoader.vue';
-  import { touch } from '../effects/effectUtils';
-  import { optionsArrayT, optionsList } from './optionsList';
-  import { messageT, orderByT, orderFromT, resultTemplate } from './schemas';
+  import type { touch } from '../effects/effectUtils';
+  import { optionsList, type optionsArrayT } from './optionsList';
+  import type {
+    messageT,
+    orderByT,
+    orderFromT,
+    resultTemplate
+  } from './schemas';
   import SearchForm from './search/SearchForm.vue';
   import ResultWindow from './searchResults/ResultWindow.vue';
 

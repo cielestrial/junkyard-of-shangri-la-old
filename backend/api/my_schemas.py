@@ -27,7 +27,7 @@ class MessageSchema(BaseModel):
     details: str = Field(examples=["Hello World!"])
 
 
-class scrapedProductSchema(BaseModel):
+class ScrapedProductSchema(BaseModel):
     """
     Has the following properties: image, name, price, status, and link.
     The values of these properties are all of type(str).
@@ -52,13 +52,13 @@ class scrapedProductSchema(BaseModel):
         return f"{self.name}, {self.status}, {self.price}, {self.category}"
 
 
-class scrapedProductsSchema(BaseModel):
+class ScrapedProductsSchema(BaseModel):
     status_code: int = Field(examples=[200])
     total: int = Field(examples=[1])
-    results: list[scrapedProductSchema]
+    results: list[ScrapedProductSchema]
 
 
-class promoSchema(BaseModel):
+class PromoSchema(BaseModel):
     promoParams: list[str] = Field(
         examples=[
             [
@@ -77,7 +77,7 @@ class promoSchema(BaseModel):
     )
 
 
-class searchSchema(BaseModel):
+class SearchSchema(BaseModel):
     searchString: str = Field(examples=["The Attic"])
     searchParams: list[str] = Field(
         examples=[
@@ -97,7 +97,7 @@ class searchSchema(BaseModel):
     )
 
 
-searchParamURL = {
+search_param_url = {
     "Travel": "travel_2",
     "Mystery": "mystery_3",
     "Historical Fiction": "historical-fiction_4",

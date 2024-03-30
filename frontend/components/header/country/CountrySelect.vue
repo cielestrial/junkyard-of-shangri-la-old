@@ -1,16 +1,20 @@
 <script setup lang="ts">
-  import { computed, inject, ref, watch } from 'vue-demi';
   import { useCookie } from 'nuxt/app';
+  import { computed, inject, ref, watch } from 'vue-demi';
   import BIcons from '../../icons/BIcons.vue';
   import FlagsEn from './FlagsEn.vue';
-  import { countryCodes, countryCodesT, allCountries } from './countryData';
+  import {
+    allCountries,
+    countryCodes,
+    type countryCodesT
+  } from './countryData';
   import MyAnimations from '~/components/effects/MyAnimations.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import {
     cookieOptions,
     trapFocusDescendant
   } from '~/components/effects/effectUtils';
-  import { consent, theme } from '~/pages/index.vue';
+  import type { consent, theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 

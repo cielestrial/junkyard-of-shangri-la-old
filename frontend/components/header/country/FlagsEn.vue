@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { countryCodesT } from './countryData';
+  import type { countryCodesT } from './countryData';
   import AU from './flags/AU.vue';
   import CA from './flags/CA.vue';
   import EU from './flags/EU.vue';

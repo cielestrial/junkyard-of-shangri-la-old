@@ -10,7 +10,9 @@
 
   const title =
     'title w-fit h-fit text-center cursor-default mx-auto z-0 my-10 ' +
-    'text-4xl leading-tight sm:text-6xl sm:leading-none md:text-8xl md:leading-none ';
+    'text-4xl leading-tight sm:text-6xl sm:leading-none md:text-8xl md:leading-none ' +
+    'transition text-black/90 dark:text-white/90 hover:animate-hue-rotate ' +
+    'hover:text-yellow-700 dark:hover:text-yellow-500 ';
 </script>
 
 <template>

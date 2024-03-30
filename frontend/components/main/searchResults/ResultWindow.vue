@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { computed, inject, onMounted, provide, ref } from 'vue-demi';
-  import { api, productTemplate } from '../schemas';
+  import type { api, productTemplate } from '../schemas';
   import BackToTop from './BackToTop.vue';
   import MyPagination from './MyPagination.vue';
   import SkipLinks from '~/components/body/SkipLinks.vue';
   import MyAnimations from '~/components/effects/MyAnimations.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
   const { searchResults, resultType, batchSize } = inject('api') as api;
@@ -99,11 +99,13 @@
         :class="resultPage"
       >
         <li v-for="(result, key) in resultList[pageIndex]" :key="key">
+          <!-- referrerPolicy="strict-origin-when-cross-origin" -->
           <a
             :class="link"
             :href="result.link"
             target="_blank"
-            rel="noreferrer noopener"
+            rel="noopener"
+            referrerPolicy="no-referrer"
           >
             <NuxtImg
               loading="lazy"

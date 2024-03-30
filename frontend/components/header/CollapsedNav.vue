@@ -8,7 +8,7 @@
   import MySwitch from './MySwitch.vue';
   import CountrySelect from './country/CountrySelect.vue';
   import MembersButton from './members/MembersButton.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 

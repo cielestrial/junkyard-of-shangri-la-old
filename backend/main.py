@@ -2,16 +2,21 @@ import os
 
 import uvicorn
 from aiohttp import ClientSession
-from api.mySchemas import (
+from api.my_schemas import (
     MessageSchema,
     MyTimeoutError,
     RedisConnectionError,
-    promoSchema,
-    scrapedProductSchema,
-    scrapedProductsSchema,
-    searchSchema,
+    PromoSchema,
+    ScrapedProductSchema,
+    ScrapedProductsSchema,
+    SearchSchema,
 )
-from api.myUtils import batchScrape, createRedisInstance, monitor, splitIntoBatches
+from api.my_utils import (
+    batch_scrape,
+    create_redis_instance,
+    monitor,
+    split_into_batches,
+)
 from fastapi import Body, FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
@@ -79,24 +84,24 @@ async def ping(response: Response) -> MessageSchema:
 async def clear_cache(response: Response) -> MessageSchema:
     try:
         filter_key = "http"
-        redis_instance = await createRedisInstance()
+        redis_instance = await create_redis_instance()
         if not isinstance(redis_instance, StrictRedis):
             message = "Error clearing cache"
             print(message)
             raise RedisConnectionError(message)
 
         async def _clear_cache():
-            allKeys: list[str] = (await redis_instance.scan(0))[1]
-            junkyardKeys: list[str] = [key for key in allKeys if filter_key in key]
-            print(f"All Keys:{junkyardKeys}")
+            all_keys: list[str] = (await redis_instance.scan(0))[1]
+            junkyard_keys: list[str] = [key for key in all_keys if filter_key in key]
+            print(f"All Keys:{junkyard_keys}")
 
-            while len(junkyardKeys) > 0:
-                await redis_instance.delete(*junkyardKeys)
-                allKeys = (await redis_instance.scan(0))[1]
-                junkyardKeys = [key for key in allKeys if filter_key in key]
+            while len(junkyard_keys) > 0:
+                await redis_instance.delete(*junkyard_keys)
+                all_keys = (await redis_instance.scan(0))[1]
+                junkyard_keys = [key for key in all_keys if filter_key in key]
 
             await redis_instance.close()
-            print(f"All Keys:{junkyardKeys}")
+            print(f"All Keys:{junkyard_keys}")
             message = "Cache cleared"
             print(message)
             response.status_code = 200
@@ -115,24 +120,23 @@ async def clear_cache(response: Response) -> MessageSchema:
 @app.post("/search")
 async def search_scrape(
     response: Response,
-    searchRequest: searchSchema = Body(...),
-) -> scrapedProductsSchema | MessageSchema:
+    search_request: SearchSchema = Body(...),
+) -> ScrapedProductsSchema | MessageSchema:
     try:
-        # print(f"\nSearch:\n{searchRequest}\n")
-        searchString = searchRequest.searchString
-        searchParams = searchRequest.searchParams
-        paramsLength = len(searchParams)
-        results: list[scrapedProductSchema] = []
+        # print(f"\nSearch:\n{search_request}\n")
+        search_string = search_request.searchString
+        search_params = search_request.searchParams
+        param_length = len(search_params)
+        results: list[ScrapedProductSchema] = []
 
-        if searchString != "" and paramsLength > 0:
-            batches = splitIntoBatches(searchParams, paramsLength)
+        if search_string != "" and param_length > 0:
+            batches = split_into_batches(search_params, param_length)
             headers = {"Content-Type": "text/html"}
             async with ClientSession(headers=headers) as client:
                 for batch in batches:
-                    batch_results = await batchScrape(searchString, batch, client)
+                    batch_results = await batch_scrape(search_string, batch, client)
                     if isinstance(batch_results, list):
                         results.extend(batch_results)
-            await client.close()
 
         # print(f"\nResults:\n{results}\n")
         total = len(results)
@@ -145,7 +149,7 @@ async def search_scrape(
         return MessageSchema(status_code=response.status_code, details=f"{err}")
     else:
         response.status_code = 200
-        return scrapedProductsSchema(
+        return ScrapedProductsSchema(
             status_code=response.status_code, total=total, results=results
         )
 
@@ -153,23 +157,22 @@ async def search_scrape(
 @app.post("/promo")
 async def promo_scrape(
     response: Response,
-    promoRequest: promoSchema = Body(...),
-) -> scrapedProductsSchema | MessageSchema:
+    promo_request: PromoSchema = Body(...),
+) -> ScrapedProductsSchema | MessageSchema:
     try:
-        # print(f"\nSearch:\n{searchRequest}\n")
-        promoParams = promoRequest.promoParams
-        paramsLength = len(promoParams)
-        results: list[scrapedProductSchema] = []
+        # print(f"\nPromo:\n{promo_request}\n")
+        promo_params = promo_request.promoParams
+        param_length = len(promo_params)
+        results: list[ScrapedProductSchema] = []
 
-        if paramsLength > 0:
-            batches = splitIntoBatches(promoParams, paramsLength)
+        if param_length > 0:
+            batches = split_into_batches(promo_params, param_length)
             headers = {"Content-Type": "text/html"}
             async with ClientSession(headers=headers) as client:
                 for batch in batches:
-                    batch_results = await batchScrape("", batch, client)
+                    batch_results = await batch_scrape("", batch, client)
                     if isinstance(batch_results, list):
                         results.extend(batch_results)
-            await client.close()
 
         # print(f"\nResults:\n{results}\n")
         total = len(results)
@@ -182,7 +185,7 @@ async def promo_scrape(
         return MessageSchema(status_code=response.status_code, details=f"{err}")
     else:
         response.status_code = 200
-        return scrapedProductsSchema(
+        return ScrapedProductsSchema(
             status_code=response.status_code, total=total, results=results
         )
 

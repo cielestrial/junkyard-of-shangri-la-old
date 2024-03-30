@@ -2,7 +2,7 @@
   import { inject, ref, onMounted } from 'vue-demi';
   import MyAnimations from '../effects/MyAnimations.vue';
   import MyButton from '../effects/MyButton.vue';
-  import { consent, theme } from '~/pages/index.vue';
+  import type { consent, theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
   const { hasConsent, setConsentCookie } = inject('consent') as consent;

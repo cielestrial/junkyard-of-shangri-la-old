@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { computed, inject, ref, watch } from 'vue-demi';
-  import { pages } from '../schemas';
+  import type { pages } from '../schemas';
   import BIcons from '~/components/icons/BIcons.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
   import MyButton from '~/components/effects/MyButton.vue';
 
   defineProps<{ pos: 'top' | 'bottom' }>();

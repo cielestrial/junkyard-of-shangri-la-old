@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import { inject, onMounted, ref, watch } from 'vue-demi';
-  import { optionsArrayT, optionsList } from '../optionsList';
-  import { options } from '../schemas';
+  import { optionsList, type optionsArrayT } from '../optionsList';
+  import type { options } from '../schemas';
+  import MyButton from '~/components/effects/MyButton.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import { trapFocus } from '~/components/effects/effectUtils';
   import BIcons from '~/components/icons/BIcons.vue';
-  import { theme } from '~/pages/index.vue';
-  import MyButton from '~/components/effects/MyButton.vue';
+  import type { theme } from '~/pages/index.vue';
 
   defineEmits<{ (e: 'close'): void }>();
 

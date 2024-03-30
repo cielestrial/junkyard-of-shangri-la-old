@@ -3,7 +3,7 @@
   import BIcons from '../../icons/BIcons.vue';
   import MyOverlay from '~/components/effects/MyOverlay.vue';
   import { trapFocus } from '~/components/effects/effectUtils';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
   import MyButton from '~/components/effects/MyButton.vue';
 
   defineEmits<{ (e: 'close'): void }>();

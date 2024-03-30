@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { inject, ref } from 'vue-demi';
   import MyButton from '~/components/effects/MyButton.vue';
-  import { theme } from '~/pages/index.vue';
+  import type { theme } from '~/pages/index.vue';
 
   const { colorScheme } = inject('theme') as theme;
 
