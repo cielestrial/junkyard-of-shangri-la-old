@@ -191,46 +191,51 @@
         }
       "
     />
+
     <div :class="select" @click="toggle">
-      <span class="flex">
-        <FlagsEn class="my-auto mr-2" :country="selected" size="2rem" />
-        <span class="my-auto text-left">
-          {{ selected }}
+      <ClientOnly>
+        <span class="flex">
+          <FlagsEn class="my-auto mr-2" :country="selected" size="2rem" />
+          <span class="my-auto text-left">
+            {{ selected }}
+          </span>
+          <span class="visually-hidden"> {{ allCountries[selected] }}</span>
         </span>
-        <span class="visually-hidden"> {{ allCountries[selected] }}</span>
-      </span>
-      <BIcons :class="caret" icon="caret-down-fill" size="1rem" />
+        <BIcons :class="caret" icon="caret-down-fill" size="1rem" />
+      </ClientOnly>
     </div>
 
-    <MyAnimations name="slide-down">
-      <ol
-        v-show="opened"
-        id="myListbox"
-        ref="listboxRef"
-        role="listbox"
-        :class="dropdownList"
-      >
-        <li
-          v-for="(option, key) in options"
-          :id="option"
-          :key="key"
-          role="option"
-          :aria-selected="option === selected"
-          :class="{
-            'my-active': option === selected,
-            'my-focus': option === tabList?.[tabIndex]?.id
-          }"
-          @click="() => menuHandler(option)"
+    <ClientOnly>
+      <MyAnimations name="slide-down">
+        <ol
+          v-show="opened"
+          id="myListbox"
+          ref="listboxRef"
+          role="listbox"
+          :class="dropdownList"
         >
-          <div :class="dropdownItem">
-            <FlagsEn class="my-auto mr-2" :country="option" size="2.5rem" />
-            <span class="my-auto text-left">
-              {{ option }}
-            </span>
-            <span class="visually-hidden"> {{ allCountries[option] }}</span>
-          </div>
-        </li>
-      </ol>
-    </MyAnimations>
+          <li
+            v-for="(option, key) in options"
+            :id="option"
+            :key="key"
+            role="option"
+            :aria-selected="option === selected"
+            :class="{
+              'my-active': option === selected,
+              'my-focus': option === tabList?.[tabIndex]?.id
+            }"
+            @click="() => menuHandler(option)"
+          >
+            <div :class="dropdownItem">
+              <FlagsEn class="my-auto mr-2" :country="option" size="2.5rem" />
+              <span class="my-auto text-left">
+                {{ option }}
+              </span>
+              <span class="visually-hidden"> {{ allCountries[option] }}</span>
+            </div>
+          </li>
+        </ol>
+      </MyAnimations>
+    </ClientOnly>
   </div>
 </template>

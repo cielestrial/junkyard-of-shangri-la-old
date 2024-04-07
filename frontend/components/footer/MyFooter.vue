@@ -50,7 +50,7 @@
         </a>
         <a
           aria-label="My LinkedIn profile"
-          href="https://www.linkedin.com/in/boladale-ogunleye-089937186"
+          href="https://www.linkedin.com/in/cielestrial"
           target="_blank"
           rel="noopener author"
           referrerPolicy="strict-origin-when-cross-origin"

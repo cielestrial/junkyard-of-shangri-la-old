@@ -5,8 +5,8 @@
     onMounted,
     provide,
     readonly,
-    ref,
-    watch
+    watch,
+    ref
   } from 'vue-demi';
   import { useCookie } from 'nuxt/app';
   import { useHead } from '@unhead/vue';

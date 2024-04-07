@@ -35,14 +35,16 @@
     @keydown="keyboardHandler"
   >
     <div :class="inner">
-      <MyAnimations name="switch">
-        <span v-if="darkTheme" class="m-auto text-white">
-          <BIcons icon="moon-stars-fill" size="0.8rem" />
-        </span>
-        <span v-else class="m-auto text-black">
-          <BIcons icon="cloud-sun" size="1.1rem" />
-        </span>
-      </MyAnimations>
+      <ClientOnly>
+        <MyAnimations name="switch">
+          <span v-if="darkTheme" class="m-auto text-white">
+            <BIcons icon="moon-stars-fill" size="0.8rem" />
+          </span>
+          <span v-else class="m-auto text-black">
+            <BIcons icon="cloud-sun" size="1.1rem" />
+          </span>
+        </MyAnimations>
+      </ClientOnly>
     </div>
   </div>
 </template>

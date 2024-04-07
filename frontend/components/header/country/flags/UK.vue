@@ -1,11 +1,5 @@
 <script setup lang="ts">
-  import { computed } from 'vue-demi';
-
   defineProps<{ size: string }>();
-
-  const randomId = computed(() =>
-    new Uint8Array(8).map(() => Math.floor(Math.random() * 256)).join('')
-  );
 </script>
 
 <template>
@@ -16,7 +10,7 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g :clip-path="`url(#clip0_208_654_${randomId})`">
+    <g :clip-path="`url(#clip0_208_654)`">
       <mask
         id="mask0_208_654"
         style="mask-type: luminance"
@@ -57,7 +51,7 @@
       </g>
     </g>
     <defs>
-      <clipPath :id="`clip0_208_654_${randomId}`">
+      <clipPath :id="`clip0_208_654`">
         <rect width="60" height="30" fill="white" />
       </clipPath>
     </defs>
