@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+if (!process.env.NITRO_PRESET) throw new Error('NITRO_PRESET not found');
 export default defineNuxtConfig({
   app: {
     head: {
@@ -27,14 +28,11 @@ export default defineNuxtConfig({
       autoprefixer: {}
     }
   },
+  ssr: true,
   nitro: {
+    preset: process.env.NITRO_PRESET,
     compressPublicAssets: {
       brotli: true
-    },
-    routeRules: {
-      '/_nuxt/**': {
-        swr: 60 * 60
-      }
     }
   }
 });

@@ -21,7 +21,8 @@
   const inner =
     'rounded-full box-content w-6 h-6 flex self-center my-auto ' +
     'border-2 transition bg-white border-gray-700 translate-x-[0.1rem] ' +
-    'dark:bg-sky-700 dark:border-gray-300 dark:translate-x-[1.65rem] ';
+    'dark:bg-sky-700 dark:border-gray-300 dark:translate-x-[1.65rem] ' +
+    'text-black dark:text-white ';
 </script>
 
 <template>
@@ -37,10 +38,10 @@
     <div :class="inner">
       <ClientOnly>
         <MyAnimations name="switch">
-          <span v-if="darkTheme" class="m-auto text-white">
+          <span v-if="darkTheme" class="m-auto">
             <BIcons icon="moon-stars-fill" size="0.8rem" />
           </span>
-          <span v-else class="m-auto text-black">
+          <span v-else class="m-auto">
             <BIcons icon="cloud-sun" size="1.1rem" />
           </span>
         </MyAnimations>
