@@ -17,7 +17,8 @@
     "lintfix": "prettier --write --list-different . && yarn lint:js --fix"
   },
   "dependencies": {
-    "@nuxt/image": "^1.0.0"
+    "@nuxt/image": "^1.0.0",
+    "junkyard-of-shagri-la": "file:"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
@@ -36,6 +37,7 @@
   "engines": {
     "node": ">=18.18.0 <19.0.0"
   },
+  "packageManager": "^yarn@1.22.19",
   "browserslist": [
     "defaults and supports es6-module",
     "maintained node versions"
