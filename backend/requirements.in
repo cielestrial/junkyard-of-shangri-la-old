@@ -1,5 +1,8 @@
-fastapi
+fastapi[standard]
 uvicorn[standard]
 selectolax
 redis[hiredis]
 aiohttp[speedups]
+pytest
+pytest-asyncio
+click

@@ -76,7 +76,7 @@ async def batch_scrape(
             if isinstance(result, list):
                 results.extend(result)
         if isinstance(redis_instance, StrictRedis):
-            await redis_instance.close()
+            await redis_instance.aclose()
         return results
 
     return await monitor(_batch_scrape(), redis_instance, client)

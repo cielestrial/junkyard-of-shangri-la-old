@@ -4,8 +4,10 @@ import pytest
 from api.my_schemas import MyTimeoutError
 from api.my_utils import MAX_DURATION, monitor
 
+pytest_plugins = ("pytest_asyncio",)
 
-@pytest.mark.asyncio
+
+@pytest.mark.asyncio(loop_scope="function")
 async def test_monitor():
     async def _test_monitor(countdown: int):
         while countdown > 0:
