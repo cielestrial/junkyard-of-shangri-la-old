@@ -28,7 +28,7 @@ async def monitor(
     except TimeoutError:
         task.cancel()
         if isinstance(redis_instance, StrictRedis):
-            await redis_instance.close()
+            await redis_instance.aclose()
         if isinstance(client, ClientSession):
             await client.close()
         raise MyTimeoutError("Time limit exceeded")

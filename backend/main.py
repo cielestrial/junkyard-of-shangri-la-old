@@ -100,7 +100,7 @@ async def clear_cache(response: Response) -> MessageSchema:
                 all_keys = (await redis_instance.scan(0))[1]
                 junkyard_keys = [key for key in all_keys if filter_key in key]
 
-            await redis_instance.close()
+            await redis_instance.aclose()
             print(f"All Keys:{junkyard_keys}")
             message = "Cache cleared"
             print(message)
