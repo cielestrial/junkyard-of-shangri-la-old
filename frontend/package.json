@@ -17,8 +17,7 @@
     "lint:fix": "prettier --write --list-different . && npm run lint:js --fix"
   },
   "dependencies": {
-    "@nuxt/image": "^1.0.0",
-    "junkyard-of-shagri-la": "file:"
+    "@nuxt/image": "^1.0.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
