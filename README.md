@@ -19,6 +19,6 @@ New website at https://junkyardsl.com.
 
 The code in this repo is from its early stages as a web scraping demo project. You can search for products from an "[online bookstore](https://books.toscrape.com)". The backend is written in Python with the FastAPI framework. The frontend is SSR with the Nuxt 3 framework, written with Vue 3, utilizing TypeScript, and styled with Tailwind CSS.
 
-This project makes a strong effort to follow the WCAG 2.0, to create a rich & accessible experience for a wide breadth of users. This is achieved through the utilization of aria labelling, support for keyboard interactions, focus traps, and many more techniques.
+This project makes a strong effort to follow the WCAG, to create a rich & accessible experience for a wide breadth of users. This is achieved through the utilization of aria labelling, support for keyboard interactions, focus traps, and many more techniques.
 
 #### _Author: cielestrial_
