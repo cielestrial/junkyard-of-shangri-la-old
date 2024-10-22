@@ -15,7 +15,7 @@ and tools, and build your collection with confidence today!
 
 New website at https://junkyardsl.com.
 
-## Old
+## This Repo
 
 The code in this repo is from its early stages as a web scraping demo project. You can search for products from an "[online bookstore](https://books.toscrape.com)". The backend is written in Python with the FastAPI framework. The frontend is SSR with the Nuxt 3 framework, written with Vue 3, utilizing TypeScript, and styled with Tailwind CSS.
 
